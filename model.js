@@ -22,7 +22,7 @@ var converter = new Converter({});
 
 
 function initDb(uri, callback) {
-    logger.info('model.initDb');
+    logger.info('model.initDb: uri', uri);
     var statusResponse;
     mongoDb.MongoClient.connect(uri,function (err, db) {
         if(err) {
@@ -31,6 +31,7 @@ function initDb(uri, callback) {
             callback(err, {modelName: 'mgoModel', dbName: 'shades'});
         }
         else {
+          logger.info('mongodb connected');
             _db = db;
             callback(err, {modelName: 'model', dbName: ''});
         }

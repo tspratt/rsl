@@ -55,7 +55,8 @@ app.use(function(err, req, res, next) {
 });
 
 
-var uri = process.env.MONGOLAB_URI;
+var uri = process.env.MONGOLAB_URI || 'mongodb://heroku_92hfl11l:i4s7f4il6o2dc6n0m3phhhth4l@ds049744.mongolab.com:49744/heroku_92hfl11l';
+logger.info('uri:', uri)
 model.initDb(uri, function(err, db){
   app.listen(app.get('port'), function() {
     console.log("Node app is running at localhost:" + app.get('port'));
