@@ -38,10 +38,10 @@ function initDb(uri, callback) {
     })
 }//
 
-/*
+
 function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
     var oMember;
-    db.collection('members', {safe: true},
+    _db.collection('members', {safe: true},
       function(err, collection){
           var iSkip = 0;
           var iLimit = 0;
@@ -69,12 +69,9 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
 
 function filterMembersByName(matchString, oFieldSpec, callback){
     var oMember;
-    db.collection('members', {safe: true},
+    _db.collection('members', {safe: true},
       function(err, collection){
-          var aMembers = collection.find({$or:[
-            {"first_name": new RegExp(matchString,'i')},
-            {"last_name": new RegExp(matchString,'i')}
-          ]}, oFieldSpec)
+          var aMembers = collection.find({"llcname": new RegExp(matchString,'i')}, oFieldSpec)
             .toArray(function (err, data) {
                 if (err) {
                     callback(err, null);
@@ -84,12 +81,12 @@ function filterMembersByName(matchString, oFieldSpec, callback){
             });
       });
 }
-*/
+
 
 /**
  * run only once for a new collection!
  */
-
+/*
 function parseJson () {
     var sCollection = 'members';
     converter.on("end_parsed", function (jsonArray) {
@@ -111,11 +108,11 @@ function insertData(sCollection, json){
       });
 
 }
-
+*/
 
 function getMember(id, callback){
   var oMember;
-  db.collection('members', {safe: true},
+  _db.collection('members', {safe: true},
     function(err, collection){
       var oId = new ObjectId(id);
       collection.findOne({_id: oId},function (err, data) {
@@ -132,9 +129,9 @@ function getMember(id, callback){
 
 
 
-//exports.getMember = getMember;
-//exports.filterMembersByName = filterMembersByName;
-//exports.listMembers = listMembers;
+exports.getMember = getMember;
+exports.filterMembersByName = filterMembersByName;
+exports.listMembers = listMembers;
 exports.db = _db;
 exports.initDb = initDb;
 //exports.insertMembers = insertMembers;
