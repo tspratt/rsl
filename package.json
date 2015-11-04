@@ -1,0 +1,30 @@
+{
+  "name": "rsl",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "csvtojson": "^0.4.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "mongodb": "^2.0.39",
+    "serve-favicon": "~2.3.0",
+    "winston": "^1.0.2"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/rsl"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ]
+}
