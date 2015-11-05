@@ -1,10 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+<html >
 <head>
-  <meta charset="UTF-8">
-  <title>RSL</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Richards - Spratt Lakemont, LLC</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="./app.js"></script>
 </head>
-<body>
- Richards - Spratt Lakemont, LLC
+
+<body ng-app="rsl">
+<div class="container" ng-controller="MainCtrl">
+  <div class="content">
+    <div class="logo">
+
+      <span class="log-out" ng-show="true" ng-click="isLoggedIn=false">log out</span>
+    </div>
+
+    <ul class="horiz-menu" ng-show="isLoggedIn">
+      <li ng-class="{'selected':'member-list' === activeState}">
+        <a href="#" ng-click="goView('member-list')">Browse List</a></li>
+      <li ng-class="{'selected':'name-search' === activeState}">
+        <a href="#" ng-click="goView('name-search')">Name Search</a></li>
+      <li ng-class="{'selected':'field-filter' === activeState}">
+        <a href="#" ng-click="goView('field-filter')">Filter</a></li>
+    </ul>
+    <hr class="menu">
+    <div ui-view=""></div>
+  </div>
+
+</div>
+
+
+<script src="controllers/main.js"></script>
+<script src="controllers/member-list.js"></script>
+<script src="controllers/name-search.js"></script>
+<script src="controllers/field-filter.js"></script>
+<script src="controllers/paginator.js"></script>
+<script src="providers/app-constants.js"></script>
+
+<script src="providers/member-data.js"></script>
+<!--<script src="directives/paginator.js"></script>-->
 </body>
 </html>

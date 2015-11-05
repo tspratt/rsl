@@ -1,0 +1,17 @@
+<div>
+  <ul class="horiz-menu">
+    <li ><button class="paginator"  ng-click="firstPage()">&lt;&lt;</button></li>
+    <li><button class="paginator" ng-click="prevPage()">&lt;</button></li>
+    <li>
+      <span class="paginator-label page-num">Page Num: </span><span class="paginator-value">{{pageNum+1}}</span>
+    </li>
+    <li><span class="paginator-label">Length:</span>
+      <select class="paginator" ng-model="pageLen" ng-change="onChangePageLen()">
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+    </select></li>
+    <li><button class="paginator" ng-click="nextPage()">&gt;</button></li>
+    <li><button class="paginator" ng-click="lastPage()">&gt;&gt;</button></li>
+  </ul>
+</div>

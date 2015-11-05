@@ -1,0 +1,34 @@
+<div>
+  <span>Filter Field:</span>
+  <select ng-model="filterField" ng-change="onChangeField()">
+    <option value="state" selected>State</option>
+    <option value="city">City</option>
+    <option value="zip">Zip</option>
+  </select>
+
+  <input id="inputFilterValue" type="text" placeholder="Value" class="filter-value"
+         ng-model="filterValue" on-enter-key="onClickFilter()">
+  <button ng-click="onClickFilter()">Find</button>
+  <hr>
+  <div class="container">
+    <div class="member-list">
+      <div
+          ng-repeat="member in members"
+          ng-click="onClickMember(member)">
+    <span class="fullNameCol"
+          ng-class="{'selected-member':member._id === selectedId}">{{member.first_name}} {{member.last_name}}</span>
+      </div>
+    </div>
+
+    <div class="member-detail" ng-hide="!member">
+      <span class="form-label">Name:</span><span
+        class="form-value">{{member.first_name}} {{member.last_name}}</span><br>
+      <span class="form-label">Street:</span><span class="form-value">{{member.address}}</span><br>
+      <span class="form-label">City:</span><span class="form-value">{{member.city}}</span><br>
+      <span class="form-label">State:</span><span class="form-value">{{member.state}}</span><br>
+      <span class="form-label">Zip:</span><span class="form-value">{{member.zip}}</span><br>
+      <span class="form-label">Phone:</span><span class="form-value">{{member.phone}}</span><br>
+    </div>
+  </div>
+
+</div>
