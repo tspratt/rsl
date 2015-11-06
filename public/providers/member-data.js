@@ -7,7 +7,7 @@ angular.module('rsl')
     memberData.getMembers = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
       var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};
       if (bReducedPayload) {
-        oQueryParams.fieldSpec = '{"first_name":1,"last_name":1}';
+        oQueryParams.fieldSpec = '{"ssn": 0}';
       }
       var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'members',
         {params: oQueryParams})
