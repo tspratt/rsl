@@ -61,6 +61,10 @@ function insertMembers(callback){
 
 }
 
+function insertCollection(sCollection, callback) {
+	model.insertCollection(sCollection, callback)
+}
+
 function getHttpResponse(callback) {
 	request('http://www.google.com', function (error, response, body) {
 		if (!error && response.statusCode == 200) {
@@ -77,6 +81,4 @@ exports.getMember = getMember;
 exports.filterMembersByName = filterMembersByName;
 exports.listMembers = listMembers;
 exports.getHttpResponse = getHttpResponse;
-
-
-
+//exports.insertCollection = insertCollection;

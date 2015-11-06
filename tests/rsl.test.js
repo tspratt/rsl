@@ -38,6 +38,22 @@ describe('Setup tests', function () {
 		);
 	});//before
 
+	//describe.skip('insert collection data',
+	//		function () {
+	//			it('should return a success status response', function (done) {
+	//				business.insertCollection('branches',
+	//						function (err, statusResponse) {
+	//							asyncAssertionCheck(done, function () {
+	//								expect(err).to.not.exist;
+	//								expect(statusResponse.data).to.exist;
+	//								expect(statusResponse.status).to.equal('success');
+	//							});
+	//						}
+	//				);
+	//			});
+	//		}
+	//);
+
 	describe('Test isAlive (business)',
 		function () {
 			it('should return a success status response', function (done) {
@@ -121,7 +137,7 @@ describe('Setup tests', function () {
 				);
 			});
 			it('should return a single document by Id', function (done) {
-				var id = '563927d61048baf01dccc2d0';
+				var id = '563c2368bad73ad4191aed09';
 				business.getMember(id,
 					function (err, statusResponse) {
 						asyncAssertionCheck(done, function () {

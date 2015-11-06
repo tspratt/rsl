@@ -7,7 +7,7 @@ var logger = require('winston');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var members = require('./routes/members');
 var users = require('./routes/users');
 var model = require('./model');
 
@@ -20,10 +20,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+//app.get('/', members.isAlive);
+app.get('/isAlive', members.isAlive);
+app.get('/members', members.listMembers);
+app.get('/members/:oid', members.getMember);
 
+/*
 // catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -53,7 +57,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
+*/
 
 var uri = process.env.MONGOLAB_URI;
 logger.info('uri:', uri)

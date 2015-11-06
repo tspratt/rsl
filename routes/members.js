@@ -1,16 +1,14 @@
-var express = require('express');
-var router = express.Router();
+"use strict";
+var StatusResponse = require('../lib/statusResponse').StatusResponse;
 var business = require('../business');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+function isAlive(request, response){
   business.isAlive(function(err, statusResponse) {
-    res.writeHead(200, 'success', {'Content-Type':'application/json', 'Access-Control-Allow-Origin':'*'});
-    res.end(statusResponse);
+    response.json(statusResponse);
   });
-});
+}
 
-router.get('/members', function(req, res, next) {
+function listMembers(req, res, next) {
   var filterSpec = null;
   var pageSpec = null;
   var field = req.query.field;
@@ -29,7 +27,9 @@ router.get('/members', function(req, res, next) {
       res.send(statusResponse);
       return;
     }
-
+  }
+  else {
+    oFieldSpec = {"ssn": 0};
   }
 
   if (matchstring) {
@@ -49,12 +49,15 @@ router.get('/members', function(req, res, next) {
       res.send(statusResponse);
     })
   }
-});
-router.get('/members/:oid', function(req, res, next) {
-  var sOId = req.params.oid || '';
-  business.getMember(sOId, function(err, statusResponse) {
-    res.send(statusResponse);
-  });
-});
+};
 
-module.exports = router;
+function getMember(request, response) {
+  var sOId = request.params.oid || '';
+  business.getMember(sOId, function(err, statusResponse) {
+    response.send(statusResponse);
+  });
+}
+
+exports.getMember = getMember;
+exports.isAlive = isAlive;
+exports.listMembers = listMembers;
