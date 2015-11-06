@@ -1,11 +1,11 @@
 <div>
-  <input type="text" placeholder="user name" ng-model="username"><br>
-
-  <p>
+  <div class="login-inputs">
+    <input type="text" placeholder="user name" ng-model="username" focus-me="true"><br><br>
     <input type="password" placeholder="password"
            ng-model="password"
            ng-change="validateForm()" on-enter-key="logIn()">
-  </p>
+  </div>
+
   <button class="log-in"
           ng-click="logIn()"
           ng-disabled="!isFormValid">Log In

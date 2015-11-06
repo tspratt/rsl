@@ -1,14 +1,14 @@
 <div>
   <div class="container">
     <paginator></paginator>
-    <hr>
+    <hr class="paginator">
     <br>
     <div class="member-list">
       <div
           ng-repeat="member in members"
           ng-click="onClickMember(member)">
-      <span class="fullNameCol"
-          ng-class="{'selected-member':member._id === selectedId}">{{member.llcname}}</span>
+      <div class="fullNameCol"
+          ng-class="{'selected-member':member._id === selectedId}">{{member.llcname}}</div>
       </div>
     </div>
 

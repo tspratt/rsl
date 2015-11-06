@@ -6,6 +6,7 @@ angular.module('rsl')
       $scope.username = '';
       $scope.password = '';
       $scope.isFormValid = false;
+      $scope.showLogo = true;
 
       $scope.validateForm = function(){
         $scope.isFormValid = (this.password.length > 0)
@@ -21,7 +22,7 @@ angular.module('rsl')
       });
 
       $scope.logIn = function (){
-        $scope.isLoggedIn = true;
+        $scope.isLoggedIn = (this.password === 'ga8800b' || this.password === 'gabboob');
       };
 
       $rootScope.$on('$stateChangeStart',

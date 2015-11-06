@@ -5,19 +5,25 @@
   <title>Richards - Spratt Lakemont, LLC</title>
 
   <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="css/style.css">
   <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <!-- Bootstrap Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+  <!-- Bootstrap Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
   <script src="./app.js"></script>
 </head>
 
 <body ng-app="rsl">
 <div class="container" ng-controller="MainCtrl">
   <div class="content">
-    <div class="logo">
-
-      <span class="log-out" ng-show="true" ng-click="isLoggedIn=false">log out</span>
+    <div class="logo" ng-show="isLoggedIn===false"></div>
+    <div class="view-header" ng-show="isLoggedIn">
+      <img class="logo-small" src="./images/rsl-logo-square.png">
+      Richards - Spratt Lakemont, LLC
+      <span class="log-out" ng-click="isLoggedIn=false">log out</span>
     </div>
 
     <ul class="horiz-menu" ng-show="isLoggedIn">
@@ -34,6 +40,8 @@
 
 </div>
 
+<!-- Bootstrap compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
 <script src="controllers/main.js"></script>
 <script src="controllers/member-list.js"></script>
