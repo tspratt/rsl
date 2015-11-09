@@ -22,7 +22,7 @@ angular.module('rsl')
       });
 
       $scope.logIn = function (){
-        $scope.isLoggedIn = (this.password === 'ga8800b' || this.password === 'gabboob');
+        $scope.isLoggedIn = (this.password === 'demo' );
       };
 
       $rootScope.$on('$stateChangeStart',
