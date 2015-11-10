@@ -82,10 +82,12 @@ button.log-in {
   margin: 0.2em;
 }
 .login-input {
-  font-size: 2em;
-  width: 100%;
-  max-width: 12em;
+
   border: solid 1px;
+}
+.login-input input {
+  font-size: 2em;
+  width: 12em;
 }
 .content {
   padding: 0.2em;
