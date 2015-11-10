@@ -24,8 +24,13 @@ button:focus {
   outline: 0;
 }
 
+input[type="text"], input[type="password"] {
+  display: block;
+  margin : 0.25em auto;
+}
 
 input.match-string {
+  display: inline;
   width: 350px;
   font-weight: bold;
 }
@@ -70,15 +75,20 @@ hr.paginator {
   color:rgba(0, 0, 0, 0.75);
 }
 button.log-in {
-  float:right;
-  margin: 12px;
-}
-.login-inputs {
-  width: 60%;
   float: left;
+  height: 3.0em;
+  min-width: 4.0em;
+  font-size: 1.2em;
+  margin: 0.2em;
+}
+.login-input {
+  font-size: 2em;
+  width: 100%;
+  max-width: 12em;
+  border: solid 1px;
 }
 .content {
-  padding: 0.5em;
+  padding: 0.2em;
 }
 .horiz-menu {
   list-style-type: none;
@@ -109,6 +119,9 @@ button.log-in {
 .header {
   font-size: large;
 }
+.header-label {
+  font-family: "Bodoni MT Black";
+}
 .description {
   font-size: small;
   font-weight: normal;
@@ -125,6 +138,7 @@ button.log-in {
   opacity: 0.60;
 }
 .container{
+  clear: both;            /*we never want this element to float*/
   padding-right: 0.2em;
   padding-left: 0.2em;
 }
@@ -192,4 +206,26 @@ button.paginator:focus {
 }
 .logo-small {
   width: 40px;
+}
+div.module-menu {
+
+}
+button.module-menu-item {
+  float: left;
+  height: 3.0em;
+  min-width: 4.0em;
+  font-size: 1.2em;
+  margin: 0.2em;
+}
+
+button.module-menu-item:hover {
+  color: blue;
+  background-color:unset;
+  border: solid 1px slategrey;
+}
+
+div.module-menu button.selected {
+  color: blue;
+  background-color:unset;
+  border: solid 1px slategrey;
 }

@@ -13,6 +13,11 @@ angular
         url: '/log-in',
         templateUrl: '/views/log-in.html'
       })
+      .state('members', {
+        url: '/members',
+        templateUrl: '/views/members.html',
+        controller: 'MemberCtrl'
+      })
       .state('member-list', {
         url: '/member-list',
         templateUrl: '/views/member-list.html',
@@ -28,7 +33,21 @@ angular
         templateUrl: '/views/field-filter.html',
         controller: 'FieldFilterCtrl'
       })
-
+      .state('book', {
+        url: '/book',
+        templateUrl: '/views/book.html',
+        controller: 'BookingCtrl'
+      })
+      .state('booking-schedule', {
+        url: '/booking-schedule',
+        templateUrl: '/views/booking-schedule.html',
+        controller: 'BookingCtrl'
+      })
+      .state('settings', {
+        url: '/settings',
+        templateUrl: '/views/settings.html',
+        controller: 'BookingCtrl'
+      })
   })
   .run(['$rootScope', '$state', function($rootScope, $state) {
     $rootScope.$state = $state;
@@ -51,16 +70,14 @@ angular
       });
     };
   })
-  .directive('focusMe', function($timeout) {
+  .directive('focusMe', function() {
     return {
       link: function(scope, element, attrs) {
         scope.$watch(attrs.focusMe, function(value) {
           if(value === true) {
             console.log('value=',value);
-            //$timeout(function() {
             element[0].focus();
             scope[attrs.focusMe] = false;
-            //});
           }
         });
       }

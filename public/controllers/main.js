@@ -3,13 +3,13 @@ angular.module('rsl')
     function ($rootScope, $scope, $state, memberData) {
       $scope.activeState = 'sign-in';
       $scope.isLoggedIn = false;
-      $scope.username = '';
-      $scope.password = '';
+      $scope.username = 'demo';
+      $scope.password = 'demo';
       $scope.isFormValid = false;
       $scope.showLogo = true;
 
       $scope.validateForm = function(){
-        $scope.isFormValid = (this.password.length > 0)
+        $scope.isFormValid = ($scope.password.length > 0 || this.password.length > 0)
       };
 
       $scope.$watch('isLoggedIn', function(){
@@ -21,8 +21,9 @@ angular.module('rsl')
         }
       });
 
-      $scope.logIn = function (){
+      $scope.logIn = function (sState){
         $scope.isLoggedIn = (this.password === 'demo' );
+        $scope.goView(sState);
       };
 
       $rootScope.$on('$stateChangeStart',
@@ -33,5 +34,7 @@ angular.module('rsl')
       $scope.goView = function (state) {
         $state.go(state)
       };
+
+      $scope.validateForm();
 
     }]);

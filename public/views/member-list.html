@@ -1,7 +1,17 @@
 <div>
   <div class="container">
-    <paginator></paginator>
-    <hr class="paginator">
+    <hr class="menu">
+    <ul class="horiz-menu" >
+      <li ng-class="{'selected':'member-list' === activeState}">
+        <a href="#" ng-click="goView('member-list')">Browse List</a></li>
+      <li ng-class="{'selected':'name-search' === activeState}">
+        <a href="#" ng-click="goView('name-search')">Name Search</a></li>
+      <li ng-class="{'selected':'field-filter' === activeState}">
+        <a href="#" ng-click="goView('field-filter')">Filter</a></li>
+    </ul>
+
+    <!--<paginator></paginator>-->
+    <hr class="menu">
     <br>
     <div class="member-list">
       <div

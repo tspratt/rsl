@@ -1,13 +1,25 @@
 <div>
-  <div class="login-inputs">
-    <input type="text" placeholder="user name" ng-model="username" focus-me="true"><br><br>
+  <div class="login-input">
+    <input type="text" placeholder="user name" ng-model="username" focus-me="true">
     <input type="password" placeholder="password"
            ng-model="password"
            ng-change="validateForm()" on-enter-key="logIn()">
   </div>
 
-  <button class="log-in"
-          ng-click="logIn()"
-          ng-disabled="!isFormValid">Log In
+  <button class="module-menu-item"
+          ng-click="logIn('book')"
+          ng-disabled="!isFormValid">Book
+  </button>
+  <button class="module-menu-item"
+          ng-click="logIn('booking-schedule')"
+          ng-disabled="!isFormValid">Schedule
+  </button>
+  <button class="module-menu-item"
+          ng-click="logIn('member-list')"
+          ng-disabled="!isFormValid">Members
+  </button>
+  <button class="module-menu-item"
+          ng-click="logIn('settings')"
+          ng-disabled="!isFormValid">Settings
   </button>
 </div>

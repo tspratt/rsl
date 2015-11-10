@@ -22,19 +22,32 @@
     <div class="logo" ng-show="isLoggedIn===false"></div>
     <div class="view-header" ng-show="isLoggedIn">
       <img class="logo-small" src="./images/rsl-logo-square.png">
-      Richards - Spratt Lakemont, LLC
+      <span class="header-label">Richards - Spratt Lakemont, LLC</span>
       <span class="log-out" ng-click="isLoggedIn=false">log out</span>
+      <div  class="module-menu">
+        <button class="module-menu-item"
+                ng-class="{'selected':'book' === activeState}"
+                ng-click="logIn('book')"
+                ng-disabled="!isFormValid">Book
+        </button>
+        <button class="module-menu-item"
+                ng-class="{'selected':'booking-schedule' === activeState}"
+                ng-click="logIn('booking-schedule')"
+                ng-disabled="!isFormValid">Schedule
+        </button>
+        <button class="module-menu-item"
+                ng-class="{'selected':'member-list' === activeState}"
+                ng-click="logIn('member-list')"
+                ng-disabled="!isFormValid">Members
+        </button>
+        <button class="module-menu-item"
+                ng-class="{'selected':'settings' === activeState}"
+                ng-click="logIn('settings')"
+                ng-disabled="!isFormValid">Settings
+        </button>
+      </div>
     </div>
 
-    <ul class="horiz-menu" ng-show="isLoggedIn">
-      <li ng-class="{'selected':'member-list' === activeState}">
-        <a href="#" ng-click="goView('member-list')">Browse List</a></li>
-      <li ng-class="{'selected':'name-search' === activeState}">
-        <a href="#" ng-click="goView('name-search')">Name Search</a></li>
-      <li ng-class="{'selected':'field-filter' === activeState}">
-        <a href="#" ng-click="goView('field-filter')">Filter</a></li>
-    </ul>
-    <hr class="menu">
     <div ui-view=""></div>
   </div>
 
@@ -48,9 +61,11 @@
 <script src="controllers/name-search.js"></script>
 <script src="controllers/field-filter.js"></script>
 <script src="controllers/paginator.js"></script>
+<script src="controllers/booking.js"></script>
 <script src="providers/app-constants.js"></script>
 
 <script src="providers/member-data.js"></script>
+<script src="providers/booking-data.js"></script>
 <!--<script src="directives/paginator.js"></script>-->
 </body>
 </html>

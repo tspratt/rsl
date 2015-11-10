@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var cors = require('cors');
+var os = require('os');
 
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -65,7 +66,7 @@ var uri = process.env.MONGOLAB_URI;
 logger.info('uri:', uri)
 model.initDb(uri, function(err, db){
   app.listen(app.get('port'), function() {
-    console.log("Node app is running at ??:" + app.get('port'));
+    console.log("Node app is running at " + os.hostname() +':' + app.get('port'));
   });
 });
 
