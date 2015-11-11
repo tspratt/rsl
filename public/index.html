@@ -33,7 +33,7 @@
         <button class="module-menu-item"
                 ng-class="{'selected':'booking-schedule' === activeState}"
                 ng-click="logIn('booking-schedule')"
-                ng-disabled="!isFormValid">Schedule
+                ng-disabled="!isFormValid">Bookings
         </button>
         <button class="module-menu-item"
                 ng-class="{'selected':'member-list' === activeState}"
@@ -55,7 +55,7 @@
 
 <!-- Bootstrap compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-
+<script src="lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
 <script src="controllers/main.js"></script>
 <script src="controllers/member-list.js"></script>
 <script src="controllers/name-search.js"></script>
@@ -66,6 +66,6 @@
 
 <script src="providers/member-data.js"></script>
 <script src="providers/booking-data.js"></script>
-<!--<script src="directives/paginator.js"></script>-->
+<script src="directives/member-detail.js"></script>
 </body>
 </html>
