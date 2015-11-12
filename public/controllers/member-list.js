@@ -6,6 +6,10 @@ angular.module('rsl')
       $scope.selectedId = '';
       var totalCount = 100;
 
+      $scope.shareToPercent = function(share) {
+        return Math.round(share * 1000000)/10000;
+      };
+
       //paginator code: TODO: move into directive
       $scope.pageNum = 0;
       $scope.pageLen = "10";

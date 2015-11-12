@@ -1,5 +1,19 @@
-<div class="member-detail" ng-hide="!member">
-  <span class="form-label">Name:</span><span class="form-value">{{member.llcname}}</span><br>
-  <span class="form-label">Branch:</span><span class="form-value">{{member.branchid}}</span><br>
-  <span class="form-label">Share:</span><span class="form-value">{{member.share}}</span><br>
-</div>
+<form class="form-horizontal">
+  <div class="form-group" >
+    <label class="control-label col-xs-2" for="name">Name:</label>
+    <div class="col-xs-10">
+      <input type="text" class="form-control" id="name" placeholder="name" ng-value="member.llcname">
+    </div>
+    <label class="control-label col-xs-2" for="branch">Branch:</label>
+    <div class="col-xs-10">
+      <input type="text" class="form-control" id="branch" placeholder="branch" ng-value="member.branchid">
+    </div>
+    <label class="control-label col-xs-2" for="share">Share:</label>
+    <div class="col-xs-5">
+      <input type="text" class="form-control" id="share" placeholder="share" ng-value="member.share">
+    </div>
+    <div class="col-xs-4">
+      ({{shareToPercent(member.share)}}%)
+    </div>
+  </div>
+</form>
