@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('MemberCtrl', ['$scope', '$state', 'appConstants', 'memberData',
-    function($scope, $state, appConstants, memberData) {
+  .controller('MemberCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
+    function($scope, $state, appConstants, PersonData) {
       $scope.members = [];
       $scope.member = {};
       $scope.selectedId = '';
@@ -55,7 +55,7 @@ angular.module('rsl')
       function getMembers () {
         $scope.member = null;
         $scope.selectedId = '';
-        memberData.getMembers($scope.pageNum,parseInt($scope.pageLen),null,null, false)
+        PersonData.getMembers($scope.pageNum,parseInt($scope.pageLen),null,null, false)
           .then(function (res) {
             if (res.status >= 200 && res.status < 300) {
               $scope.members = res.data.data;

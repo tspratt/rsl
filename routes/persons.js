@@ -8,7 +8,7 @@ function isAlive(request, response){
   });
 }
 
-function listMembers(req, res, next) {
+function listPersons(req, res, next) {
   var filterSpec = null;
   var pageSpec = null;
   var field = req.query.field;
@@ -23,7 +23,7 @@ function listMembers(req, res, next) {
       oFieldSpec = JSON.parse(sFieldSpec);
     }
     catch (error){
-      var statusResponse = new StatusResponse('error','invalid fieldSpec parameter','','routes.listMembers',{config:sFieldSpec});
+      var statusResponse = new StatusResponse('error','invalid fieldSpec parameter','','routes.listPersons',{config:sFieldSpec});
       res.send(statusResponse);
       return;
     }
@@ -33,7 +33,7 @@ function listMembers(req, res, next) {
   }
 
   if (matchstring) {
-    business.filterMembersByName(matchstring, oFieldSpec, function (err, statusResponse) {
+    business.filterPersonsByName(matchstring, oFieldSpec, function (err, statusResponse) {
       res.send(statusResponse);
     });
   }
@@ -45,19 +45,19 @@ function listMembers(req, res, next) {
       pageSpec = {pageLength: parseInt(pageLength), pageNum: parseInt(pageNum)};
     }
 
-    business.listMembers(filterSpec, pageSpec, oFieldSpec, function (err, statusResponse) {
+    business.listPersons(filterSpec, pageSpec, oFieldSpec, function (err, statusResponse) {
       res.send(statusResponse);
     })
   }
-};
+}
 
-function getMember(request, response) {
+function getPerson(request, response) {
   var sOId = request.params.oid || '';
-  business.getMember(sOId, function(err, statusResponse) {
+  business.getPerson(sOId, function(err, statusResponse) {
     response.send(statusResponse);
   });
 }
 
-exports.getMember = getMember;
+exports.getPerson = getPerson;
 exports.isAlive = isAlive;
-exports.listMembers = listMembers;
+exports.listPersons = listPersons;

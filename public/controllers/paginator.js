@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('Paginator', ['$scope', '$state', 'appConstants', 'memberData',
-    function($scope, $state, appConstants, memberData) {
+  .controller('Paginator', ['$scope', '$state', 'appConstants', 'PersonData',
+    function($scope, $state, appConstants, PersonData) {
      /* $scope.pageNum = 10;
       $scope.pageLen = 10;
 

@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('MainCtrl', ['$rootScope','$scope', '$state', 'memberData',
-    function ($rootScope, $scope, $state, memberData) {
+  .controller('MainCtrl', ['$rootScope','$scope', '$state', 'PersonData',
+    function ($rootScope, $scope, $state, PersonData) {
       $scope.activeState = 'sign-in';
       $scope.isLoggedIn = false;
       $scope.username = 'demo';

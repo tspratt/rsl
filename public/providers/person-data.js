@@ -1,10 +1,10 @@
 'use strict';
 angular.module('rsl')
-  .factory('memberData', ['$http', 'appConstants', function ($http, appConstants) {
-    var memberData = {};
+  .factory('PersonData', ['$http', 'appConstants', function ($http, appConstants) {
+    var PersonData = {};
 
 
-    memberData.getMembers = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
+    PersonData.getMembers = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
       var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};
       if (bReducedPayload) {
         oQueryParams.fieldSpec = '{"ssn": 0}';
@@ -22,7 +22,7 @@ angular.module('rsl')
     };
 
 
-    memberData.getMembersByNameMatch = function (sMatchString) {
+    PersonData.getMembersByNameMatch = function (sMatchString) {
       var oQueryParams = {matchstring: sMatchString};
       var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'members',
         {params: oQueryParams})
@@ -36,7 +36,7 @@ angular.module('rsl')
       return promise;
     };
 
-    memberData.getMember = function (sOid) {
+    PersonData.getMember = function (sOid) {
       var oQueryParams = {oid: sOid};
       var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'members/' + sOid,
         {params: oQueryParams})
@@ -51,5 +51,5 @@ angular.module('rsl')
     };
 
 
-    return memberData;
+    return PersonData;
   }]);

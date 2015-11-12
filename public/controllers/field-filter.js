@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('FieldFilterCtrl', ['$scope', '$state', 'appConstants', 'memberData',
-    function($scope, $state, appConstants, memberData) {
+  .controller('FieldFilterCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
+    function($scope, $state, appConstants, PersonData) {
       $scope.members = [];
       $scope.member = null;
       $scope.selectedId = '';
@@ -18,7 +18,7 @@ angular.module('rsl')
       $scope.onClickFilter = function(){
         $scope.member = null;
         $scope.selectedId = '';
-        memberData.getMembers(0,0,$scope.filterField, $scope.filterValue, false)
+        PersonData.getMembers(0,0,$scope.filterField, $scope.filterValue, false)
           .then(function (res) {
             if (res.status >= 200 && res.status < 300) {
               $scope.members = res.data.data;

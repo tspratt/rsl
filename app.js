@@ -9,7 +9,7 @@ var logger = require('winston');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var members = require('./routes/members');
+var persons = require('./routes/persons');
 var users = require('./routes/users');
 var model = require('./model');
 
@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.get('/', members.isAlive);
-app.get('/isAlive', members.isAlive);
-app.get('/members', members.listMembers);
-app.get('/members/:oid', members.getMember);
+//app.get('/', persons.isAlive);
+app.get('/isAlive', persons.isAlive);
+app.get('/persons', persons.listPersons);
+app.get('/persons/:oid', persons.getPerson);
 
 /*
 // catch 404 and forward to error handler
@@ -65,9 +65,21 @@ app.use(function(err, req, res, next) {
 var uri = process.env.MONGOLAB_URI;
 logger.info('uri:', uri)
 model.initDb(uri, function(err, db){
-  app.listen(app.get('port'), function() {
-    console.log("Node app is running at " + os.hostname() +':' + app.get('port'));
-  });
+  if (err) {
+    logger.error(err);
+  }
+  else {
+    model.initMgDb(uri, function(err, db){
+      if (err) {
+        logger.error(err);
+      }
+      else {
+        app.listen(app.get('port'), function() {
+          console.log("Node app is running at " + os.hostname() +':' + app.get('port'));
+        });
+      }
+    });
+  }
 });
 
 module.exports = app;

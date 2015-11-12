@@ -16,48 +16,48 @@ function isAlive(callback){
 }
 
 
-function listMembers(filterSpec,pageSpec, fieldSpec, callback){
+function listPersons(filterSpec,pageSpec, fieldSpec, callback){
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
-	model.listMembers(filterSpec, pageSpec, fieldSpec, function(err, aMembers){
+	model.listPersons(filterSpec, pageSpec, fieldSpec, function(err, aPersons){
 		if (err) {
-			var statusResponse = new StatusResponse('error','listMembers','','business',err);
+			var statusResponse = new StatusResponse('error','listPersons','','business',err);
 		}
 		else {
-			var statusResponse = new StatusResponse('success','listMembers','','business',aMembers);
+			var statusResponse = new StatusResponse('success','listPersons','','business',aPersons);
 		}
 
 		callback(err,statusResponse);
 	});
 }
 
-function filterMembersByName(matchString, oFieldSpec, callback){
-	model.filterMembersByName(matchString,oFieldSpec,function(err, aMembers){
+function filterPersonsByName(matchString, oFieldSpec, callback){
+	model.filterPersonsByName(matchString,oFieldSpec,function(err, aPersons){
 		if (err) {
-			var statusResponse = new StatusResponse('error','filterMembersByName','','business',err);
+			var statusResponse = new StatusResponse('error','filterPersonsByName','','business',err);
 		}
 		else {
-			var statusResponse = new StatusResponse('success','filterMembersByName','','business',aMembers);
+			var statusResponse = new StatusResponse('success','filterPersonsByName','','business',aPersons);
 		}
 
 		callback(err,statusResponse);
 	});
 }
 
-function getMember(id, callback){
-	model.getMember(id,function(err, aMembers){
+function getPerson(id, callback){
+	model.getPerson(id,function(err, aPersons){
 		if (err) {
 			var statusResponse = new StatusResponse('error','v','','business',err);
 		}
 		else {
-			var statusResponse = new StatusResponse('success','getMember','','business',aMembers);
+			var statusResponse = new StatusResponse('success','getPerson','','business',aPersons);
 		}
 
 		callback(err,statusResponse);
 	});
 }
 
-function insertMembers(callback){
-	model.insertMembers(callback);
+function insertPersons(callback){
+	model.insertPersons(callback);
 
 }
 
@@ -77,8 +77,8 @@ function getHttpResponse(callback) {
 
 
 exports.isAlive = isAlive;
-exports.getMember = getMember;
-exports.filterMembersByName = filterMembersByName;
-exports.listMembers = listMembers;
+exports.getPerson = getPerson;
+exports.filterPersonsByName = filterPersonsByName;
+exports.listPersons = listPersons;
 exports.getHttpResponse = getHttpResponse;
 //exports.insertCollection = insertCollection;

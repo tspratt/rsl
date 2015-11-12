@@ -14,8 +14,10 @@ var logger = new (winston.Logger)({
 //var async = require('async');
 var fs = require("fs");
 var mongoDb = require('mongodb');
+var mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
 var _db;
+var mgDb;
 
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({});
@@ -35,13 +37,28 @@ function initDb(uri, callback) {
       _db = db;
       callback(err, {modelName: 'model', dbName: ''});
     }
-  })
+  });
 }//
 
+function initMgDb(uri, callback) {
+  logger.info('model.initDb: uri', uri);
+  var statusResponse;
+  mongoose.connect(uri);
+  mgDb = mongoose.connection;
+  mgDb.on('error', function (err) {
+    statusResponse = new StatusResponse('error', "System Error, please try again", '', null, err);
+    logger.error(JSON.stringify(statusResponse));
+    callback(err, {modelName: 'mgoModel', dbName: 'shades'});
+  });
+  mgDb.once('open', function () {
+    logger.info('Mongoose connected');
+    callback(null, {});
+  });
+}
 
-function listMembers(filterSpec, pageSpec, oFieldSpec, callback) {
-  var oMember;
-  _db.collection('members', {safe: true},
+function listPersons(filterSpec, pageSpec, oFieldSpec, callback) {
+  var oPerson;
+  _db.collection('persons', {safe: true},
     function (err, collection) {
       var iSkip = 0;
       var iLimit = 0;
@@ -54,7 +71,7 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback) {
         var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
         oQuery = JSON.parse(sQuery);
       }
-      var aMembers = collection.find(oQuery, oFieldSpec)
+      var aPersons = collection.find(oQuery, oFieldSpec)
         .skip(iSkip)
         .limit(iLimit)
         .toArray(function (err, data) {
@@ -67,11 +84,14 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback) {
     });
 }
 
-function filterMembersByName(matchString, oFieldSpec, callback) {
-  var oMember;
-  _db.collection('members', {safe: true},
+function filterPersonsByName(matchString, oFieldSpec, callback) {
+  var oPerson;
+  _db.collection('persons', {safe: true},
     function (err, collection) {
-      var aMembers = collection.find({"llcname": new RegExp(matchString, 'i')}, oFieldSpec)
+      var aPersons = collection.find({$or:[
+        {"firstname": new RegExp(matchString,'i')},
+        {"lastname": new RegExp(matchString,'i')}
+      ]}, oFieldSpec)
         .toArray(function (err, data) {
           if (err) {
             callback(err, null);
@@ -111,9 +131,9 @@ function insertCollection(sCollection, callback) {
 }
 
 
-function getMember(id, callback) {
-  var oMember;
-  _db.collection('members', {safe: true},
+function getPerson(id, callback) {
+  var oPerson;
+  _db.collection('persons', {safe: true},
     function (err, collection) {
       var oId = new ObjectId(id);
       collection.findOne({_id: oId}, function (err, data) {
@@ -128,11 +148,13 @@ function getMember(id, callback) {
 }
 
 
-exports.getMember = getMember;
-exports.filterMembersByName = filterMembersByName;
-exports.listMembers = listMembers;
+exports.getPerson = getPerson;
+exports.filterPersonsByName = filterPersonsByName;
+exports.listPersons = listPersons;
 exports.db = _db;
+exports.mgDb = mgDb;
 exports.initDb = initDb;
+exports.initMgDb = initMgDb;
 exports.insertCollection = insertCollection;
 
 

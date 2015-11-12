@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('NameSearchCtrl', ['$scope', '$state', '$timeout', 'appConstants','memberData',
-    function($scope, $state, $timeout, appConstants, memberData) {
+  .controller('NameSearchCtrl', ['$scope', '$state', '$timeout', 'appConstants','PersonData',
+    function($scope, $state, $timeout, appConstants, PersonData) {
       $scope.members = [];
       $scope.member = null;
       $scope.selectedId = '';
@@ -16,7 +16,7 @@ angular.module('rsl')
         $timeout(function () {
           $scope.member = null;
           $scope.selectedId = '';
-          memberData.getMembersByNameMatch($scope.matchString)
+          PersonData.getMembersByNameMatch($scope.matchString)
             .then(function (res) {
               if (res.status >= 200 && res.status < 300) {
                 $scope.members = res.data.data;

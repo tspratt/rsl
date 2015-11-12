@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('bookingCtrl', ['$scope', '$state', 'appConstants', 'bookingData', 'memberData',
-    function($scope, $state, appConstants, bookingData, memberData) {
+  .controller('bookingCtrl', ['$scope', '$state', 'appConstants', 'bookingData', 'PersonData',
+    function($scope, $state, appConstants, bookingData, PersonData) {
 
       function initModule(){
         getBookings();
