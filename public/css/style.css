@@ -1,6 +1,9 @@
 .nav, .pagination, .carousel, .panel-title a { /*for bootstrap*/
   cursor: pointer;
 }
+.control-label {
+  font-size: smaller;
+}
 body {
   padding: 0;
   margin: 0;
