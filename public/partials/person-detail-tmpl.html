@@ -1,36 +1,52 @@
-<form class="form-horizontal">
-  <div class="form-group" >
-    <label class="control-label col-xs-3" for="firstname">First Name:</label>
-    <div class="col-xs-9">
-      <input type="text" class="form-control" id="firstname" placeholder="name" ng-value="person.firstname">
-    </div>
-    <label class="control-label col-xs-3" for="lastname">Last Name:</label>
-    <div class="col-xs-9">
-      <input type="text" class="form-control" id="lastname" placeholder="branch" ng-value="person.lastname">
-    </div>
-    <label class="control-label col-xs-3" for="address">Address:</label>
-    <div class="col-xs-9">
-      <input type="text" class="form-control" id="address" placeholder="address" ng-value="person.address">
-    </div>
+<form class="form-horizontal person-list-detail">
+	<div class="form-group">
+		<label class="control-label col-xs-2" for="firstname">First Name:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="firstname" placeholder="name"
+						 ng-value="person.firstname"
+						 ng-disabled="person._id!==loggedInPersonId">
+		</div>
 
-  </div>
+		<label class="control-label col-xs-2" for="lastname">Last Name:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="lastname" placeholder="branch"
+						 ng-value="person.lastname"
+						 ng-disabled="person._id!==loggedInPersonId">
+		</div>
 
-  <div class="form-group" ng-show=person.member==='self'>
-    LLC Membership Info<br>
-    <label class="control-label col-xs-2" for="name">Name:</label>
-    <div class="col-xs-10">
-      <input type="text" class="form-control" id="name" placeholder="name" ng-value="person.llcname">
-    </div>
-    <label class="control-label col-xs-2" for="branch">Branch:</label>
-    <div class="col-xs-10">
-      <input type="text" class="form-control" id="branch" placeholder="branch" ng-value="person.branchid">
-    </div>
-    <label class="control-label col-xs-2" for="share">Share:</label>
-    <div class="col-xs-5">
-      <input type="text" class="form-control" id="share" placeholder="share" ng-value="person.share">
-    </div>
-    <div class="col-xs-4">
-      ({{shareToPercent(person.share)}}%)
-    </div>
-  </div>
+		<label class="control-label col-xs-2" for="address">Address:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="address" placeholder="address"
+						 ng-value="person.address"
+						 ng-disabled="person._id!==loggedInPersonId">
+		</div>
+
+	</div>
+
+	<div class="form-group" ng-show=person.member==='self'>
+		LLC Membership Info<br>
+		<label class="control-label col-xs-2" for="name">Name:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="name" placeholder="name"
+						 ng-value="person.llcname"
+						 ng-disabled="person._id!==loggedInPersonId">
+		</div>
+
+		<label class="control-label col-xs-2" for="branch">Branch:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="branch" placeholder="branch"
+						 ng-value="person.branchid"
+						 ng-disabled="person._id!==loggedInPersonId">
+		</div>
+
+		<label class="control-label col-xs-2" for="share">Share:</label>
+		<div class="col-xs-5">
+			<input type="text" class="form-control" id="share" placeholder="share"
+						 ng-value="person.share"
+						 ng-disabled="person._id!==loggedInPersonId">
+		</div>
+		<div class="col-xs-4">
+			({{shareToPercent(person.share)}}%)
+		</div>
+	</div>
 </form>

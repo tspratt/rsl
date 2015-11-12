@@ -1,231 +1,262 @@
 .nav, .pagination, .carousel, .panel-title a { /*for bootstrap*/
-  cursor: pointer;
+	cursor: pointer;
 }
-.control-label {
-  font-size: smaller;
+
+.form-control {
+	font-size: 12px;
+	font-weight:  normal;
 }
+
 body {
-  padding: 0;
-  margin: 0;
-  font: 14px "Oswald" ;
-  font-weight: bold;
-  color:steelblue;
-  background-color: papayawhip;
+	padding: 0;
+	margin: 0;
+	font: 14px "Oswald";
+	font-weight: bold;
+	color: steelblue;
+	background-color: papayawhip;
 }
+
 label {
-  font-weight: bold;
-  color:steelblue;
+	font-weight: bold;
+	color: steelblue;
 }
 
 button {
-  /*margin: 12px;*/
-  font: 12px "Oswald" ;
-  font-weight: bold;
-  color: #ffffff;
-  background-color:slategrey;
-  border-radius: 25px;
-  /*border: 1px solid;*/
+	/*margin: 12px;*/
+	font: 12px "Oswald";
+	font-weight: bold;
+	color: #ffffff;
+	background-color: slategrey;
+	border-radius: 25px;
+	/*border: 1px solid;*/
 }
+
 button:focus {
-  outline: 0;
+	outline: 0;
 }
 
 input[type="text"], input[type="password"] {
-  display: block;
-  margin : 0.25em auto;
+	display: block;
+	margin: 0.25em auto;
 }
 
 input.match-string {
-  display: inline;
-  width: 350px;
-  font-weight: bold;
+	display: inline;
+	width: 350px;
+	font-weight: bold;
 }
-input.filter-value{
-  margin-left: 1em;
-  max-width: 100px;
+
+input.filter-value {
+	margin-left: 1em;
+	max-width: 100px;
 }
 
 button:hover:enabled {
-  color:rgba(0, 0, 0, 0.75);
+	color: rgba(0, 0, 0, 0.75);
 }
 
 button:active {
-  color:rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
 }
 
 hr.header {
-  width:100%;
-  color:rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
-  border: 2px solid darkslateblue;
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
+	width: 100%;
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+	border: 2px solid darkslateblue;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
 }
 
 hr.paginator {
-  color:rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
-  border: 3px solid darkslateblue;
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+	border: 3px solid darkslateblue;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
 }
+
 .log-out {
-  float:right;
-  cursor: pointer;
+	float: right;
+	cursor: pointer;
 }
+
 .log-out:hover {
-  color:rgba(0, 0, 0, 0.75);
+	color: rgba(0, 0, 0, 0.75);
 }
+
 button.log-in {
-  float: left;
-  height: 3.0em;
-  min-width: 4.0em;
-  font-size: 1.2em;
-  margin: 0.2em;
+	float: left;
+	height: 3.0em;
+	min-width: 4.0em;
+	font-size: 1.2em;
+	margin: 0.2em;
 }
+
 .login-input {
 
-  border: solid 1px;
+	border: solid 1px;
 }
+
 .login-input input {
-  font-size: 2em;
-  width: 12em;
+	font-size: 2em;
+	width: 12em;
 }
+
 .content {
-  padding: 0.2em;
+	padding: 0.2em;
 }
 
 .view-content {
-  position:absolute;
-  top: 105px;
-  left:0px;
-  right:0px;
-  bottom:0px;
-  overflow-y:scroll;
+	position: absolute;
+	top: 105px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	overflow-y: scroll;
 }
+
 .horiz-menu {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
 }
 
 .horiz-menu li {
-  float: left;
+	float: left;
 }
 
 .horiz-menu a {
-  padding-right:20px;
-  width: 100px;
-  color:darkslateblue;
-  text-decoration: none;
+	padding-right: 20px;
+	width: 100px;
+	color: darkslateblue;
+	text-decoration: none;
 }
+
 .horiz-menu li.selected {
-  color:rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
-  text-decoration: underline;
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+	text-decoration: underline;
 }
+
 .horiz-menu li:hover {
-  color:rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
 }
+
 .header {
-  font-size: large;
+	font-size: large;
 }
+
 .header-label {
-  font-family: "Bodoni MT Black";
+	font-family: "Bodoni MT Black";
 }
+
 .description {
-  font-size: small;
-  font-weight: normal;
+	font-size: small;
+	font-weight: normal;
 }
 
-.container{
-  clear: both;            /*we never want this element to float*/
-  padding-right: 0.2em;
-  padding-left: 0.2em;
+.container {
+	clear: both; /*we never want this element to float*/
+	padding-right: 0.2em;
+	padding-left: 0.2em;
+}
+.person-list-heading {
+	font-size: 16px;
+}
+.person-list-detail {
+	font-size: 12px;
 }
 
-.person-detail {
-  /*padding: 0.5em;*/
-}
 .form-label {
-  float:left;
-  /*width:50px;*/
-  font-weight: bold;
-  font-size:smaller;
-  color:steelblue;
-  text-align: right;
-  margin-right: 0.5em;
+	float: left;
+	/*width:50px;*/
+	color: steelblue;
+	text-align: right;
+	margin-right: 0.5em;
 }
+
 .form-value {
-  color: #000000;
+	color: #000000;
 }
+
 button.paginator {
-  padding: 0;
-  margin: 0;
-  width: 30px;
+	padding: 0;
+	margin: 0;
+	width: 30px;
 }
+
 select.paginator {
-  margin-left: 1em;
-  margin-right: 1em;
+	margin-left: 1em;
+	margin-right: 1em;
 }
+
 button.paginator:focus {
-  outline: 0;
+	outline: 0;
 }
-.paginator-label{
-  float:left;
-  width:30px;
-  font-weight: normal;
-  color:steelblue;
-  margin-left:5px;
+
+.paginator-label {
+	float: left;
+	width: 30px;
+	font-weight: normal;
+	color: steelblue;
+	margin-left: 5px;
 }
-.paginator-value{
-  color: #000000;
-  float:left;
-  width: 1em;
+
+.paginator-value {
+	color: #000000;
+	float: left;
+	width: 1em;
 }
-.paginator-label.page-num{
-  width: 70px;
+
+.paginator-label.page-num {
+	width: 70px;
 }
+
 .logo {
-  width: 100%;
-  height: 200px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("../images/rsl-logo-2.png");
+	width: 100%;
+	height: 200px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url("../images/rsl-logo-2.png");
 }
+
 .view-header {
 
-  width: 100%;
+	width: 100%;
 }
+
 .logo-small {
-  width: 40px;
+	width: 40px;
 }
+
 div.module-menu {
 
 }
+
 button.module-menu-item {
-  float: left;
-  height: 3.0em;
-  min-width: 4.0em;
-  font-size: 1.2em;
-  margin: 0.2em;
+	float: left;
+	height: 3.0em;
+	min-width: 4.0em;
+	font-size: 1.2em;
+	margin: 0.2em;
 }
 
 button.module-menu-item:hover {
-  color: blue;
-  background-color:unset;
-  border: solid 1px slategrey;
+	color: blue;
+	background-color: unset;
+	border: solid 1px slategrey;
 }
 
 div.module-menu button.selected {
-  color: blue;
-  background-color:unset;
-  border: solid 1px slategrey;
+	color: blue;
+	background-color: unset;
+	border: solid 1px slategrey;
 }
