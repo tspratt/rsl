@@ -14,7 +14,7 @@ angular.module('rsl')
 
       $scope.$watch('isLoggedIn', function(){
         if ($scope.isLoggedIn) {
-          $scope.goView('member-list');
+          $scope.goView('person-list');
         }
         else {
           $scope.goView('log-in');

@@ -7,19 +7,19 @@ angular.module('rsl')
       $scope.nextPage = function (){
         console.log('nextPage');
         $scope.pageNum ++;
-        getMembers();
+        getPersons();
       };
       $scope.prevPage = function (){
         console.log('prevPage');
         if ($scope.pageNum > 0) {
           $scope.pageNum --;
-          getMembers();
+          getPersons();
         }
       };
       $scope.firstPage = function (){
         console.log('firstPage');
         $scope.pageNum = 0;
-        getMembers();
+        getPersons();
       };
       $scope.lastPage = function (){
 
@@ -27,7 +27,7 @@ angular.module('rsl')
 
       $scope.onChangePageLen = function(){
         console.log('onChangePageLen');
-        //getMembers();
+        //getPersons();
       };*/
 
 }])

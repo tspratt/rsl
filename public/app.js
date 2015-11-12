@@ -14,15 +14,15 @@ angular
         url: '/log-in',
         templateUrl: '/views/log-in.html'
       })
-      .state('members', {
-        url: '/members',
-        templateUrl: '/views/members.html',
-        controller: 'MemberCtrl'
+      .state('persons', {
+        url: '/persons',
+        templateUrl: '/views/persons.html',
+        controller: 'PersonCtrl'
       })
-      .state('member-list', {
-        url: '/member-list',
-        templateUrl: '/views/member-list.html',
-        controller: 'MemberCtrl'
+      .state('person-list', {
+        url: '/person-list',
+        templateUrl: '/views/person-list.html',
+        controller: 'PersonCtrl'
       })
       .state('name-search', {
         url: '/name-search',

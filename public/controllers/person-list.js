@@ -1,8 +1,8 @@
 angular.module('rsl')
-  .controller('MemberCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
+  .controller('PersonCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
     function($scope, $state, appConstants, PersonData) {
-      $scope.members = [];
-      $scope.member = {};
+      $scope.persons = [];
+      $scope.person = {};
       $scope.selectedId = '';
       var totalCount = 100;
 
@@ -15,7 +15,7 @@ angular.module('rsl')
       $scope.pageLen = "10";
 
       function initModule(){
-        getMembers();
+        getPersons();
       }
 
       $scope.nextPage = function (){
@@ -23,7 +23,7 @@ angular.module('rsl')
         var iPageLen = parseInt($scope.pageLen);
         if ((iPageLen * ($scope.pageNum+1)) < totalCount){
           $scope.pageNum ++;
-          getMembers();
+          getPersons();
         }
 
       };
@@ -31,36 +31,36 @@ angular.module('rsl')
         console.log('prevPage');
         if ($scope.pageNum > 0) {
           $scope.pageNum --;
-          getMembers();
+          getPersons();
         }
       };
       $scope.firstPage = function (){
         console.log('firstPage');
         $scope.pageNum = 0;
-        getMembers();
+        getPersons();
       };
       $scope.lastPage = function (){
         var iPageLen = parseInt($scope.pageLen);
         $scope.pageNum = Math.floor(totalCount / iPageLen) - 1;
-        getMembers();
+        getPersons();
       };
 
       $scope.onChangePageLen = function(){
         console.log('onChangePageLen');
         $scope.pageNum = 0;
-        getMembers();
+        getPersons();
       };
       //END paginator code
 
-      function getMembers () {
-        $scope.member = null;
+      function getPersons () {
+        $scope.person = null;
         $scope.selectedId = '';
-        PersonData.getMembers($scope.pageNum,parseInt($scope.pageLen),null,null, false)
+        PersonData.getPersons($scope.pageNum,parseInt($scope.pageLen),null,null, false)
           .then(function (res) {
             if (res.status >= 200 && res.status < 300) {
-              $scope.members = res.data.data;
-              if ($scope.members.length === 1) {
-                $scope.member = $scope.members[0];
+              $scope.persons = res.data.data;
+              if ($scope.persons.length === 1) {
+                $scope.person = $scope.persons[0];
               }
             }
             else {
@@ -71,9 +71,9 @@ angular.module('rsl')
       }
 
 
-      $scope.onClickMember = function(oMember) {
-        $scope.member = oMember;
-        $scope.selectedId = oMember._id
+      $scope.onClickPerson = function(oPerson) {
+        $scope.person = oPerson;
+        $scope.selectedId = oPerson._id
       };
 
       initModule();

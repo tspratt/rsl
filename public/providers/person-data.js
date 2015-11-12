@@ -4,47 +4,47 @@ angular.module('rsl')
     var PersonData = {};
 
 
-    PersonData.getMembers = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
+    PersonData.getPersons = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
       var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};
       if (bReducedPayload) {
         oQueryParams.fieldSpec = '{"ssn": 0}';
       }
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'members',
+      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'persons',
         {params: oQueryParams})
         .then(function (res) {
           return res;
         })
         .catch(function(res) {
-          console.error('getMembers', res.status, res.data);
+          console.error('getPersons', res.status, res.data);
           return res;
         });
       return promise;
     };
 
 
-    PersonData.getMembersByNameMatch = function (sMatchString) {
+    PersonData.getPersonsByNameMatch = function (sMatchString) {
       var oQueryParams = {matchstring: sMatchString};
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'members',
+      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'persons',
         {params: oQueryParams})
         .then(function (res) {
           return res;
         })
         .catch(function(res) {
-          console.error('getMembersByNameMatch', resp.status, res.data);
+          console.error('getPersonsByNameMatch', resp.status, res.data);
           return res;
         });
       return promise;
     };
 
-    PersonData.getMember = function (sOid) {
+    PersonData.getPerson = function (sOid) {
       var oQueryParams = {oid: sOid};
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'members/' + sOid,
+      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'persons/' + sOid,
         {params: oQueryParams})
         .then(function (res) {
           return res;
         })
         .catch(function(res) {
-          console.error('getMember', resp.status, res.data);
+          console.error('getPerson', resp.status, res.data);
           return res;
         });
       return promise;

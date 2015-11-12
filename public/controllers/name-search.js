@@ -1,8 +1,8 @@
 angular.module('rsl')
   .controller('NameSearchCtrl', ['$scope', '$state', '$timeout', 'appConstants','PersonData',
     function($scope, $state, $timeout, appConstants, PersonData) {
-      $scope.members = [];
-      $scope.member = null;
+      $scope.persons = [];
+      $scope.person = null;
       $scope.selectedId = '';
       $scope.selectedId = '';
       $scope.matchString = '';
@@ -14,14 +14,14 @@ angular.module('rsl')
 
       $scope.onChangeMatchString = function () {
         $timeout(function () {
-          $scope.member = null;
+          $scope.person = null;
           $scope.selectedId = '';
-          PersonData.getMembersByNameMatch($scope.matchString)
+          PersonData.getPersonsByNameMatch($scope.matchString)
             .then(function (res) {
               if (res.status >= 200 && res.status < 300) {
-                $scope.members = res.data.data;
-                if ($scope.members.length === 1) {
-                  $scope.member = $scope.members[0];
+                $scope.persons = res.data.data;
+                if ($scope.persons.length === 1) {
+                  $scope.person = $scope.persons[0];
                 }
               }
               else {
@@ -33,9 +33,9 @@ angular.module('rsl')
         },appConstants.QUERY_DELAY);
       };
 
-      $scope.onClickMember = function(oMember) {
-        $scope.member = oMember;
-        $scope.selectedId = oMember._id
+      $scope.onClickPerson = function(oPerson) {
+        $scope.person = oPerson;
+        $scope.selectedId = oPerson._id
       };
 
      initModule();

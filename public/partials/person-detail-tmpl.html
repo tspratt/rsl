@@ -2,15 +2,15 @@
   <div class="form-group" >
     <label class="control-label col-xs-2" for="firstname">First Name:</label>
     <div class="col-xs-10">
-      <input type="text" class="form-control" id="firstname" placeholder="name" ng-value="member.firstname">
+      <input type="text" class="form-control" id="firstname" placeholder="name" ng-value="person.firstname">
     </div>
     <label class="control-label col-xs-2" for="lastname">Last Name:</label>
     <div class="col-xs-10">
-      <input type="text" class="form-control" id="lastname" placeholder="branch" ng-value="member.lastname">
+      <input type="text" class="form-control" id="lastname" placeholder="branch" ng-value="person.lastname">
     </div>
     <label class="control-label col-xs-2" for="address">Address:</label>
     <div class="col-xs-10">
-      <input type="text" class="form-control" id="address" placeholder="address" ng-value="member.address">
+      <input type="text" class="form-control" id="address" placeholder="address" ng-value="person.address">
     </div>
 
   </div>
@@ -18,18 +18,18 @@
   <div class="form-group" >
     <label class="control-label col-xs-2" for="name">Name:</label>
     <div class="col-xs-10">
-      <input type="text" class="form-control" id="name" placeholder="name" ng-value="member.llcname">
+      <input type="text" class="form-control" id="name" placeholder="name" ng-value="person.llcname">
     </div>
     <label class="control-label col-xs-2" for="branch">Branch:</label>
     <div class="col-xs-10">
-      <input type="text" class="form-control" id="branch" placeholder="branch" ng-value="member.branchid">
+      <input type="text" class="form-control" id="branch" placeholder="branch" ng-value="person.branchid">
     </div>
     <label class="control-label col-xs-2" for="share">Share:</label>
     <div class="col-xs-5">
-      <input type="text" class="form-control" id="share" placeholder="share" ng-value="member.share">
+      <input type="text" class="form-control" id="share" placeholder="share" ng-value="person.share">
     </div>
     <div class="col-xs-4">
-      ({{shareToPercent(member.share)}}%)
+      ({{shareToPercent(person.share)}}%)
     </div>
   </div>
 </form>

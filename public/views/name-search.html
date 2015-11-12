@@ -1,28 +1,28 @@
 <div>
   <input id="inputMatchString" type="text" class="match-string"
-         placeholder="Enter a few letters in the member's First or last name"
+         placeholder="Enter a few letters in the person's First or last name"
          ng-model="matchString"
          ng-change="onChangeMatchString()">
 
   <hr>
   <div class="container">
-    <div class="member-list">
-      <div class="member-row"
-           ng-repeat="member in members"
-           ng-click="onClickMember(member)">
+    <div class="person-list">
+      <div class="person-row"
+           ng-repeat="person in persons"
+           ng-click="onClickPerson(person)">
       <span class="fullNameCol"
-            ng-class="{'selected-member':member._id === selectedId}">{{member.first_name}} {{member.last_name}}</span>
+            ng-class="{'selected-person':person._id === selectedId}">{{person.first_name}} {{person.last_name}}</span>
       </div>
     </div>
 
-    <div class="member-detail" ng-hide="!member">
+    <div class="person-detail" ng-hide="!person">
       <span class="form-label">Name:</span><span
-        class="form-value">{{member.first_name}} {{member.last_name}}</span><br>
-      <span class="form-label">Street:</span><span class="form-value">{{member.address}}</span><br>
-      <span class="form-label">City:</span><span class="form-value">{{member.city}}</span><br>
-      <span class="form-label">State:</span><span class="form-value">{{member.state}}</span><br>
-      <span class="form-label">Zip:</span><span class="form-value">{{member.zip}}</span><br>
-      <span class="form-label">Phone:</span><span class="form-value">{{member.phone}}</span><br>
+        class="form-value">{{person.first_name}} {{person.last_name}}</span><br>
+      <span class="form-label">Street:</span><span class="form-value">{{person.address}}</span><br>
+      <span class="form-label">City:</span><span class="form-value">{{person.city}}</span><br>
+      <span class="form-label">State:</span><span class="form-value">{{person.state}}</span><br>
+      <span class="form-label">Zip:</span><span class="form-value">{{person.zip}}</span><br>
+      <span class="form-label">Phone:</span><span class="form-value">{{person.phone}}</span><br>
     </div>
   </div>
 

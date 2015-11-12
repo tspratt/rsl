@@ -3,11 +3,11 @@
  */
 'use strict';
 angular.module('rsl')
-  .directive('memberDetail', function () {
+  .directive('personDetail', function () {
     return {
       restrict: 'E',
       scope: true,
-      templateUrl: 'partials/member-detail-tmpl.html',
+      templateUrl: 'partials/person-detail-tmpl.html',
       link: function (scope, element, attrs) {
 
       }
