@@ -23,30 +23,36 @@
 
 	</div>
 
-	<div class="form-group" ng-show=person.member==='self'>
-		LLC Membership Info<br>
-		<label class="control-label col-xs-2" for="name">Name:</label>
+	<div class="form-group" ng-show=person.memberrelationship!=='self'>
+		<label class="control-label col-xs-2" for="name">Member:</label>
+		<div class="col-xs-10">
+			<p class="form-control-static">{{person.member.llcname}} ({{person.memberrelationship}})</p>
+		</div>
+	</div>
+
+	<div class="form-group" ng-show=person.memberrelationship==='self'>
+		<label class="control-label col-xs-2" for="name">Member Name:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="name" placeholder="name"
-						 ng-value="person.llcname"
+						 ng-value="person.member.llcname"
 						 ng-disabled="person._id!==loggedInPersonId">
 		</div>
 
 		<label class="control-label col-xs-2" for="branch">Branch:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="branch" placeholder="branch"
-						 ng-value="person.branchid"
+						 ng-value="person.member.branch.branchname"
 						 ng-disabled="person._id!==loggedInPersonId">
 		</div>
 
 		<label class="control-label col-xs-2" for="share">Share:</label>
 		<div class="col-xs-5">
 			<input type="text" class="form-control" id="share" placeholder="share"
-						 ng-value="person.share"
+						 ng-value="person.member.share"
 						 ng-disabled="person._id!==loggedInPersonId">
 		</div>
 		<div class="col-xs-4">
-			({{shareToPercent(person.share)}}%)
+			({{shareToPercent(person.member.share)}}%)
 		</div>
 	</div>
 </form>
