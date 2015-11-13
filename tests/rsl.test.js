@@ -1,9 +1,8 @@
-// © 2013 Triton Digital, Inc.
 "use strict";
 var chai = require("chai");
 var expect = chai.expect;
 var packageJson = require('../package.json');
-var model = require('../model');
+var model = require('../models/model');
 var ObjectId = require('mongodb').ObjectID;
 var business = require('../business');
 
@@ -32,7 +31,17 @@ describe('Setup tests', function () {
 					}
 					else {
 						console.log('initDb SUCCESS');
-						done();
+						model.initMgDb(uri,
+						function (err){
+							if (err) {
+								var statusResponse = new StatusResponse('error', 'System Error. Please try again', '', 'initDb', err);
+								console.log(JSON.stringify(statusResponse));
+							}
+							else {
+								console.log('initMgDb success')
+							}
+							done();
+						});
 					}
 				}
 		);
@@ -72,24 +81,47 @@ describe('Setup tests', function () {
 	describe.skip('Test HTTP)',
 		function () {
 			it('should make an http request', function (done) {
-				business.getHttpResponse(	function (response) {
-						console.log('http test response; ', response);
+				model.setMemberIdToId(function (response) {
+						console.log('setMemberIdToId; ', response);
 						done();
 					}
 				);
 			});
 		}
 	);
+	describe.skip('setMemberIdTo Id)',
+			function () {
+				it('should make an http request', function (done) {
+					business.getHttpResponse(	function (response) {
+								console.log('http test response; ', response);
+								done();
+							}
+					);
+				});
+			}
+	);
 	describe('Test Data Access (business)',
 		function () {
-			it('should return a list of all persons', function (done) {
+			it.skip('should return a list of all members', function (done) {
+				model.listMembers(null,null, null,
+						function (err, members) {
+							asyncAssertionCheck(done, function () {
+								//expect(err).to.not.exist;
+								//expect(statusResponse.data).to.exist;
+								//expect(statusResponse.data).to.be.an.array;
+								console.log(JSON.stringify(statusResponse.members,null,2))
+							});
+						}
+				);
+			});
+			it.only('should return a list of all persons', function (done) {
 				business.listPersons(null,null, null,
 					function (err, statusResponse) {
 						asyncAssertionCheck(done, function () {
 							expect(err).to.not.exist;
 							expect(statusResponse.data).to.exist;
 							expect(statusResponse.data).to.be.an.array;
-							//console.log(JSON.stringify(statusResponse.data,null,2))
+							console.log(JSON.stringify(statusResponse.data,null,2))
 						});
 					}
 				);

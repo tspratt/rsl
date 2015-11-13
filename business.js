@@ -5,7 +5,7 @@
 var StatusResponse = require('./lib/statusResponse').StatusResponse;
 
 //var async = require('async');
-var model = require('./model');
+var model = require('./models/model');
 //var request = require('request');
 
 function isAlive(callback){

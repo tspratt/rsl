@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var app = express();
 var cors = require('cors');
@@ -11,7 +13,7 @@ var bodyParser = require('body-parser');
 
 var persons = require('./routes/persons');
 var users = require('./routes/users');
-var model = require('./model');
+var model = require('./models/model');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(cors());
