@@ -64,89 +64,62 @@ function initMgModels() {
 	}
 }
 
-function listPersonsMg(filterSpec, pageSpec, oFieldSpec, callback) {
-	var oPerson;
-	_db.collection('persons', {safe: true},
-			function (err, collection) {
-				var iSkip = 0;
-				var iLimit = 0;
-				if (pageSpec) {
-					iSkip = pageSpec.pageNum * pageSpec.pageLength;
-					iLimit = pageSpec.pageLength;
-				}
-				var oQuery = {};
-				if (filterSpec) {
-					var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
-					oQuery = JSON.parse(sQuery);
-				}
-
-				mongoose.model('Person').find(oQuery, oFieldSpec)
-						.skip(iSkip)
-						.limit(iLimit)
-						.populate( {path: 'Member'})
-						.exec(function(err, persons) {
-							mongoose.model('Person').populate(persons, {
-								path: 'member.branch',
-								model: 'branches'
-							},
-							function (err, persons) {
-								if (err) {
-									callback(err, null);
-								} else {
-									callback(null, persons);
-								}
-							});
-
-						});
-			});
-}
-
 function listPersons(filterSpec, pageSpec, oFieldSpec, callback) {
-	var oPerson;
-	_db.collection('persons', {safe: true},
-			function (err, collection) {
-				var iSkip = 0;
-				var iLimit = 0;
-				if (pageSpec) {
-					iSkip = pageSpec.pageNum * pageSpec.pageLength;
-					iLimit = pageSpec.pageLength;
-				}
-				var oQuery = {};
-				if (filterSpec) {
-					var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
-					oQuery = JSON.parse(sQuery);
-				}
-				var aPersons = collection.find(oQuery, oFieldSpec)
-						.skip(iSkip)
-						.limit(iLimit)
-						.toArray(function (err, data) {
+	var iSkip = 0;
+	var iLimit = 0;
+	if (pageSpec) {
+		iSkip = pageSpec.pageNum * pageSpec.pageLength;
+		iLimit = pageSpec.pageLength;
+	}
+	var oQuery = {};
+	if (filterSpec) {
+		var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
+		oQuery = JSON.parse(sQuery);
+	}
+	mongoose.model('Person').find(oQuery, oFieldSpec)
+			.skip(iSkip)
+			.limit(iLimit)
+			.populate( 'member')
+			.exec(function(err, persons) {
+				mongoose.model('Person').populate(persons, {
+							path: 'member.branch',
+							model: 'Branch'
+						},
+						function (err, persons) {
 							if (err) {
 								callback(err, null);
 							} else {
-								callback(null, data);
+								callback(null, persons);
 							}
 						});
+
 			});
 }
 
 function filterPersonsByName(matchString, oFieldSpec, callback) {
-	var oPerson;
-	_db.collection('persons', {safe: true},
-			function (err, collection) {
-				var aPersons = collection.find({
-							$or: [
-								{"firstname": new RegExp(matchString, 'i')},
-								{"lastname": new RegExp(matchString, 'i')}
-							]
-						}, oFieldSpec)
-						.toArray(function (err, data) {
+	var oQuery = {
+		$or: [
+			{"firstname": new RegExp(matchString, 'i')},
+			{"lastname": new RegExp(matchString, 'i')}
+		]
+	};
+	mongoose.model('Person').find(oQuery, oFieldSpec)
+			.populate( 'member')
+			.exec(function(err, persons) {
+				mongoose.model('Person').populate(persons, {
+							path: 'member.branch',
+							model: 'Branch'
+						},
+						function (err, persons) {
 							if (err) {
 								callback(err, null);
 							} else {
-								callback(null, data);
+								callback(null, persons);
 							}
 						});
+
 			});
+
 }
 
 
@@ -179,20 +152,24 @@ function insertCollection(sCollection, callback) {
 
 
 function getPerson(id, callback) {
-	var oPerson;
-	_db.collection('persons', {safe: true},
-			function (err, collection) {
-				var oId = new ObjectId(id);
-				collection.findOne({_id: oId}, function (err, data) {
-					if (err) {
-						callback(err, null);
-					} else {
-						callback(null, data);
-					}
-				});
-			});
+	var oId = new ObjectId(id);
+	mongoose.model('Person').findOne({_id: oId})
+			.populate( 'member')
+			.exec(function(err, persons) {
+				mongoose.model('Person').populate(persons, {
+							path: 'member.branch',
+							model: 'Branch'
+						},
+						function (err, persons) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, persons);
+							}
+						});
 
-}
+			});
+	}
 
 function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
 	var iSkip = 0;
@@ -261,7 +238,7 @@ function setMemberIdToId(callback) {
 
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
-exports.listPersons = listPersonsMg;
+exports.listPersons = listPersons;
 exports.db = _db;
 exports.mgDb = mgDb;
 exports.initDb = initDb;

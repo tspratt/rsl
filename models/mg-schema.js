@@ -21,7 +21,7 @@ var mgSchema = {
 		address: String,
 		phone: String,
 		email: String
-	}),
+	},{collection: 'persons'}),
 	Member: new Schema({
 		llcName: String,
 		branch: {
@@ -29,7 +29,7 @@ var mgSchema = {
 			ref: 'Branch'
 		},
 		share: Number
-	}),
+	},{collection: 'members'}),
 	User: new Schema ({
 		userid: String,
 		passwordHash: String,
@@ -39,7 +39,7 @@ var mgSchema = {
 		branchname: String,
 		parentid: Schema.ObjectId,
 		share: Number
-	}),
+	},{collection: 'branches'}),
 	Property: new Schema(),
 	Unit: new Schema({
 		branchid: Schema.ObjectId,
@@ -52,7 +52,7 @@ var mgSchema = {
 		capacity: Number,
 		expandable: Number,
 		displayName: String
-	}),
+	},{collection: 'rooms'}),
 	Booking: new Schema({
 		memberid: Schema.ObjectId,
 		roomid: Schema.ObjectId,
@@ -60,7 +60,7 @@ var mgSchema = {
 		residentCount: Number,
 		arrive: Date,
 		depart: Date
-	})
+	},{collection: 'bookings'})
 
 };
 

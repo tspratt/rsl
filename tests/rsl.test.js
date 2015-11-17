@@ -114,13 +114,14 @@ describe('Setup tests', function () {
 						}
 				);
 			});
-			it.only('should return a list of all persons', function (done) {
+			it('should return a list of all persons', function (done) {
 				business.listPersons(null,null, null,
 					function (err, statusResponse) {
 						asyncAssertionCheck(done, function () {
 							expect(err).to.not.exist;
 							expect(statusResponse.data).to.exist;
 							expect(statusResponse.data).to.be.an.array;
+							expect(statusResponse.data.length).to.be.greaterThan(0);
 							console.log(JSON.stringify(statusResponse.data,null,2))
 						});
 					}
@@ -141,7 +142,7 @@ describe('Setup tests', function () {
 					}
 				);
 			});
-			it('should return filtered list using contains', function (done) {
+			it('should return filtered list on firstname', function (done) {
 				var matchString = 'Trud';
 				business.filterPersonsByName(matchString, {},
 					function (err, statusResponse) {
@@ -153,6 +154,7 @@ describe('Setup tests', function () {
 							//var _id= elem0._id.toString();
 							var sTmp = elem0.firstname;
 							expect(sTmp.indexOf(matchString)).to.be.greaterThan(-1);  //make sure our match string is in our result somewhere
+							console.log(statusResponse.data);
 						});
 					}
 				);
@@ -166,6 +168,7 @@ describe('Setup tests', function () {
 							expect(statusResponse.data).to.exist;
 							expect(statusResponse.data).to.be.an.array;
 							expect(statusResponse.data[0].ssn).to.not.exist;
+							console.log(statusResponse.data);
 						});
 					}
 				);
@@ -179,6 +182,7 @@ describe('Setup tests', function () {
 							expect(statusResponse.data).to.exist;
 							expect(statusResponse.data).to.be.an.object;
 							expect(statusResponse.data._id.toString()).to.equal(id);  //make sure our match string is in our result somewhere
+							console.log(statusResponse.data);
 						});
 					}
 				);
