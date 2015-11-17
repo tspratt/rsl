@@ -102,14 +102,14 @@ describe('Setup tests', function () {
 	);
 	describe('Test Data Access (business)',
 		function () {
-			it.skip('should return a list of all members', function (done) {
+			it('should return a list of all members', function (done) {
 				model.listMembers(null,null, null,
 						function (err, members) {
 							asyncAssertionCheck(done, function () {
 								//expect(err).to.not.exist;
 								//expect(statusResponse.data).to.exist;
 								//expect(statusResponse.data).to.be.an.array;
-								console.log(JSON.stringify(statusResponse.members,null,2))
+								console.log(JSON.stringify(members,null,2))
 							});
 						}
 				);

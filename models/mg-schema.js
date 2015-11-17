@@ -5,12 +5,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var mgSchema = {
-	persons: new Schema({
+	Person: new Schema({
 		firstname: String,
 		lastname: String,
+		memberid: Schema.ObjectId,
 		member: {
 			type: Schema.ObjectId,
-			ref: 'members'
+			ref: 'Member'
 		},
 		memberrelationship: String,
 		parent: {
@@ -21,18 +22,44 @@ var mgSchema = {
 		phone: String,
 		email: String
 	}),
-	members: new Schema({
+	Member: new Schema({
 		llcName: String,
 		branch: {
 			type: Schema.ObjectId,
-			ref: 'branches'
+			ref: 'Branch'
 		},
 		share: Number
 	}),
-	branches: new Schema({
+	User: new Schema ({
+		userid: String,
+		passwordHash: String,
+		salt: String
+	}),
+	Branch: new Schema({
 		branchname: String,
-		parentid: String,
+		parentid: Schema.ObjectId,
 		share: Number
+	}),
+	Property: new Schema(),
+	Unit: new Schema({
+		branchid: Schema.ObjectId,
+		number: String,
+		name: String
+	}),
+	Room: new Schema ({
+		number: String,
+		unitid: Schema.ObjectId,
+		capacity: Number,
+		expandable: Number,
+		displayName: String
+	}),
+	Booking: new Schema({
+		memberid: Schema.ObjectId,
+		roomid: Schema.ObjectId,
+		residents: [{type: Schema.ObjectId, ref: 'Person'}],
+		residentCount: Number,
+		arrive: Date,
+		depart: Date
 	})
 
 };

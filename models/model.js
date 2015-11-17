@@ -80,12 +80,12 @@ function listPersonsMg(filterSpec, pageSpec, oFieldSpec, callback) {
 					oQuery = JSON.parse(sQuery);
 				}
 
-				mongoose.model('persons').find(oQuery, oFieldSpec)
+				mongoose.model('Person').find(oQuery, oFieldSpec)
 						.skip(iSkip)
 						.limit(iLimit)
-						.populate( {path: 'member'})
+						.populate( {path: 'Member'})
 						.exec(function(err, persons) {
-							mongoose.model('persons').populate(persons, {
+							mongoose.model('Person').populate(persons, {
 								path: 'member.branch',
 								model: 'branches'
 							},
@@ -195,30 +195,28 @@ function getPerson(id, callback) {
 }
 
 function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
-	var oMember;
-	_db.collection('members', {safe: true},
-			function(err, collection){
-				var iSkip = 0;
-				var iLimit = 0;
-				if (pageSpec) {
-					iSkip = pageSpec.pageNum * pageSpec.pageLength;
-					iLimit = pageSpec.pageLength;
+	var iSkip = 0;
+	var iLimit = 0;
+	if (pageSpec) {
+		iSkip = pageSpec.pageNum * pageSpec.pageLength;
+		iLimit = pageSpec.pageLength;
+	}
+	var oQuery = {};
+	if (filterSpec) {
+		var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
+		oQuery = JSON.parse(sQuery);
+	}
+
+	mongoose.model('Member').find(oQuery, oFieldSpec)
+			.skip(iSkip)
+			.limit(iLimit)
+			.populate( 'branch')
+			.exec(function(err, persons) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, persons);
 				}
-				var oQuery = {};
-				if (filterSpec) {
-					var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
-					oQuery = JSON.parse(sQuery);
-				}
-				collection.find(oQuery, oFieldSpec)
-						.skip(iSkip)
-						.limit(iLimit)
-						.toArray(function (err, data) {
-							if (err) {
-								callback(err, null);
-							} else {
-								callback(null, data);
-							}
-						});
 			});
 }
 
