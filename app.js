@@ -13,6 +13,7 @@ var bodyParser = require('body-parser');
 
 var persons = require('./routes/persons');
 var users = require('./routes/users');
+var booking = require('./routes/booking');
 var model = require('./models/model');
 
 app.set('port', (process.env.PORT || 5000));
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(users);     //returns router to handle user requests
+app.use(booking);     //returns router to handle user requests
 
 //app.get('/', persons.isAlive);
 app.get('/isAlive', persons.isAlive);

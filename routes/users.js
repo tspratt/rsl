@@ -4,11 +4,6 @@ var router = express.Router();
 var business = require('../business');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-	res.send('respond with a resource');
-});
-
 router.get('/loginUser', function (req, res, next) {
 	console.log(JSON.stringify(req.query, null, 2));
 	var userid = req.query.userid;

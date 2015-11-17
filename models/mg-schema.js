@@ -40,7 +40,8 @@ var mgSchema = {
 	Branch: new Schema({
 		branchname: String,
 		parentid: Schema.ObjectId,
-		share: Number
+		share: Number,
+		unit: String
 	},{collection: 'branches'}),
 	Property: new Schema({
 		name: String,

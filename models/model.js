@@ -79,8 +79,8 @@ function listPersons(filterSpec, pageSpec, oFieldSpec, callback) {
 	mongoose.model('Person').find(oQuery, oFieldSpec)
 			.skip(iSkip)
 			.limit(iLimit)
-			.populate( 'member')
-			.exec(function(err, persons) {
+			.populate('member')
+			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',
 							model: 'Branch'
@@ -104,8 +104,8 @@ function filterPersonsByName(matchString, oFieldSpec, callback) {
 		]
 	};
 	mongoose.model('Person').find(oQuery, oFieldSpec)
-			.populate( 'member')
-			.exec(function(err, persons) {
+			.populate('member')
+			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',
 							model: 'Branch'
@@ -152,8 +152,8 @@ function insertCollection(sCollection, callback) {
 
 function getUser(oQuery, callback) {
 	mongoose.model('User').findOne(oQuery)
-			.populate( 'personid')
-			.exec(function(err, persons) {
+			.populate('personid')
+			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',
 							model: 'Branch'
@@ -172,8 +172,8 @@ function getUser(oQuery, callback) {
 function getPerson(id, callback) {
 	var oId = new ObjectId(id);
 	mongoose.model('Person').findOne({_id: oId})
-			.populate( 'member')
-			.exec(function(err, persons) {
+			.populate('member')
+			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',
 							model: 'Branch'
@@ -189,7 +189,7 @@ function getPerson(id, callback) {
 			});
 }
 
-function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
+function listMembers(filterSpec, pageSpec, oFieldSpec, callback) {
 	var iSkip = 0;
 	var iLimit = 0;
 	if (pageSpec) {
@@ -205,8 +205,8 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
 	mongoose.model('Member').find(oQuery, oFieldSpec)
 			.skip(iSkip)
 			.limit(iLimit)
-			.populate( 'branch')
-			.exec(function(err, persons) {
+			.populate('branch')
+			.exec(function (err, persons) {
 				if (err) {
 					callback(err, null);
 				} else {
@@ -215,6 +215,33 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
 			});
 }
 
+function listRooms(filterSpec, pageSpec, oFieldSpec, callback) {
+	var iSkip = 0;
+	var iLimit = 0;
+	if (pageSpec) {
+		iSkip = pageSpec.pageNum * pageSpec.pageLength;
+		iLimit = pageSpec.pageLength;
+	}
+	var oQuery = {};
+	if (filterSpec) {
+		var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
+		oQuery = JSON.parse(sQuery);
+	}
+
+	mongoose.model('Room').find(oQuery, oFieldSpec)
+			.skip(iSkip)
+			.limit(iLimit)
+			.populate('branch')
+			.exec(function (err, persons) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, persons);
+				}
+			});
+}
+
+/*
 function insertItem(callback) {
 	var ItemModel = mongoose.model('Unit');
 	var item = new ItemModel({
@@ -226,16 +253,43 @@ function insertItem(callback) {
 		branchid: ObjectId('563c2429404d259013af4a8b'),
 		images: ['images/units/lakemontb-1.jpg']
 	});
-	item.save(function(err){
-		callback(err,JSON.stringify(item,null,2));
+	item.save(function (err) {
+		callback(err, JSON.stringify(item, null, 2));
 	})
 }
+*/
 
-function createUsers(callback){
+
+function setProperty(callback) {
+	try {
+		_db.collection('rooms', {safe: true},
+				function (err, collection) {
+					collection.update({}, {
+								$set: {
+									"property": 'Lakemont'
+								}
+							},
+							function (err, data) {
+								if (err) {
+									callback(err, null);
+								} else {
+									callback(null, data);
+								}
+							});
+				})
+	}
+	catch (err) {
+		callback(err, undefined);
+	}
+}
+
+
+/*
+function createUsers(callback) {
 	var salt = utils.generateSalt();
 	var password = 'gabboob';
 
-	listPersons(null,null, null,
+	listPersons(null, null, null,
 			function (err, persons) {
 				var aUsers = [];
 				var doc;
@@ -245,7 +299,7 @@ function createUsers(callback){
 					doc = new User({
 						personid: person._id,
 						userid: person.firstname,
-						passwordHash: utils.buildHash(password,salt),
+						passwordHash: utils.buildHash(password, salt),
 						salt: salt
 					});
 					doc.save();
@@ -254,7 +308,7 @@ function createUsers(callback){
 			}
 	);
 }
-
+*/
 exports.getUser = getUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
@@ -264,6 +318,8 @@ exports.mgDb = mgDb;
 exports.initDb = initDb;
 exports.initMgDb = initMgDb;
 exports.insertCollection = insertCollection;
-exports.createUsers = createUsers;
+//exports.createUsers = createUsers;
 exports.listMembers = listMembers;
+exports.listRooms = listRooms;
+exports.setProperty = setProperty;
 

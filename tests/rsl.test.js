@@ -47,38 +47,9 @@ describe('Setup tests', function () {
 		);
 	});//before
 
-	describe.skip('insert item data',
-			function () {
-				it('should return an schema object', function (done) {
-					model.insertItem(
-							function (err, sItemJson) {
-								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(sItemJson).to.exist;
-									console.log(sItemJson);
-								});
-							}
-					);
-				});
-			}
-	);
+	/*
 
-
-	describe.skip('insert item data',
-			function () {
-				it('should return an schema object', function (done) {
-					model.createUsers(
-							function (err, sItemJson) {
-								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(sItemJson).to.exist;
-									console.log(sItemJson);
-								});
-							}
-					);
-				});
-			}
-	);
+	*/
 
 	describe('Test isAlive (business)',
 		function () {
@@ -127,13 +98,27 @@ describe('Setup tests', function () {
 	describe('Test Data Access (business)',
 		function () {
 			it('should return a list of all members', function (done) {
-				model.listMembers(null,null, null,
-						function (err, members) {
+				business.listMembers(null,null, null,
+						function (err, statusResponse) {
 							asyncAssertionCheck(done, function () {
-								//expect(err).to.not.exist;
-								//expect(statusResponse.data).to.exist;
-								//expect(statusResponse.data).to.be.an.array;
-								console.log(JSON.stringify(members,null,2))
+								expect(err).to.not.exist;
+								expect(statusResponse.data).to.exist;
+								expect(statusResponse.data).to.be.an.array;
+								expect(statusResponse.data.length).to.be.greaterThan(0);
+								console.log(JSON.stringify(statusResponse.data,null,2))
+							});
+						}
+				);
+			});
+			it('should return a list of members by branch id', function (done) {
+				business.listMembers({field: "branch", value: new ObjectId("563c2429404d259013af4a8a")},null, null,
+						function (err, statusResponse) {
+							asyncAssertionCheck(done, function () {
+								expect(err).to.not.exist;
+								expect(statusResponse.data).to.exist;
+								expect(statusResponse.data).to.be.an.array;
+								expect(statusResponse.data.length).to.be.greaterThan(0);
+								console.log(JSON.stringify(statusResponse.data,null,2))
 							});
 						}
 				);
@@ -211,7 +196,73 @@ describe('Setup tests', function () {
 					}
 				);
 			});
+
+			it('should return a list of Rooms for Unit "A"', function (done) {
+				business.listRooms({"field": "unit", "value": "A"},null, null,
+						function (err, statusResponse) {
+							asyncAssertionCheck(done, function () {
+								expect(err).to.not.exist;
+								expect(statusResponse.data).to.exist;
+								expect(statusResponse.data).to.be.an.array;
+								expect(statusResponse.data.length).to.be.greaterThan(0);
+								console.log(JSON.stringify(statusResponse.data,null,2))
+							});
+						}
+				);
+			});
 		}
 	);
 
+	/*
+	describe.skip('insert item data',
+			function () {
+				it('should return an schema object', function (done) {
+					model.insertItem(
+							function (err, sItemJson) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(sItemJson).to.exist;
+									console.log(sItemJson);
+								});
+							}
+					);
+				});
+			}
+	);
+*/
+
+/*	describe.skip('set a property',
+			function () {
+				it('should return an schema object', function (done) {
+					model.setProperty(
+							function (err, sItemJson) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(sItemJson).to.exist;
+									console.log(sItemJson);
+								});
+							}
+					);
+				});
+			}
+	);
+*/
+
+/*
+	describe.skip('insert item data',
+			function () {
+				it('should return an schema object', function (done) {
+					model.createUsers(
+							function (err, sItemJson) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(sItemJson).to.exist;
+									console.log(sItemJson);
+								});
+							}
+					);
+				});
+			}
+	);
+	*/
 });

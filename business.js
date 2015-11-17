@@ -4,9 +4,7 @@
 "use strict";
 var StatusResponse = require('./lib/statusResponse').StatusResponse;
 var utils = require('./lib/utils');
-//var async = require('async');
 var model = require('./models/model');
-//var request = require('request');
 
 function isAlive(callback){
 	var oData = {};
@@ -16,21 +14,21 @@ function isAlive(callback){
 }
 
 function loginUser(userid, password, callback){
-
 	model.getUser({userid: userid}, function(err, user){
+		var statusResponse;
 		if (err) {
-			var statusResponse = new StatusResponse('error','loginUser','','business',err);
+			statusResponse = new StatusResponse('error','loginUser','','business',err);
 		}
 		else {
 			if (!user) {
-				var statusResponse = new StatusResponse('fail','loginUser','','business',{message:'user not found'});
+				statusResponse = new StatusResponse('fail','loginUser','','business',{message:'user not found'});
 			}
 			else {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
-					var statusResponse = new StatusResponse('success','loginUser','','business',user);
+					statusResponse = new StatusResponse('success','loginUser','','business',user);
 				}
 				else {
-					var statusResponse = new StatusResponse('fail','loginUser','','business',{message: 'incorrect password ' + userid});
+					statusResponse = new StatusResponse('fail','loginUser','','business',{message: 'incorrect password ' + userid});
 				}
 			}
 		}
@@ -40,12 +38,13 @@ function loginUser(userid, password, callback){
 
 function listPersons(filterSpec,pageSpec, fieldSpec, callback){
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
+	var statusResponse;
 	model.listPersons(filterSpec, pageSpec, fieldSpec, function(err, aPersons){
 		if (err) {
-			var statusResponse = new StatusResponse('error','listPersons','','business',err);
+			statusResponse = new StatusResponse('error','listPersons','','business',err);
 		}
 		else {
-			var statusResponse = new StatusResponse('success','listPersons','','business',aPersons);
+			statusResponse = new StatusResponse('success','listPersons','','business',aPersons);
 		}
 
 		callback(err,statusResponse);
@@ -53,12 +52,13 @@ function listPersons(filterSpec,pageSpec, fieldSpec, callback){
 }
 
 function filterPersonsByName(matchString, oFieldSpec, callback){
+	var statusResponse;
 	model.filterPersonsByName(matchString,oFieldSpec,function(err, aPersons){
 		if (err) {
-			var statusResponse = new StatusResponse('error','filterPersonsByName','','business',err);
+			statusResponse = new StatusResponse('error','filterPersonsByName','','business',err);
 		}
 		else {
-			var statusResponse = new StatusResponse('success','filterPersonsByName','','business',aPersons);
+			statusResponse = new StatusResponse('success','filterPersonsByName','','business',aPersons);
 		}
 
 		callback(err,statusResponse);
@@ -66,12 +66,44 @@ function filterPersonsByName(matchString, oFieldSpec, callback){
 }
 
 function getPerson(id, callback){
+	var statusResponse;
 	model.getPerson(id,function(err, aPersons){
 		if (err) {
-			var statusResponse = new StatusResponse('error','v','','business',err);
+			statusResponse = new StatusResponse('error','v','','business',err);
 		}
 		else {
-			var statusResponse = new StatusResponse('success','getPerson','','business',aPersons);
+			statusResponse = new StatusResponse('success','getPerson','','business',aPersons);
+		}
+
+		callback(err,statusResponse);
+	});
+}
+
+
+function listMembers(filterSpec,pageSpec, fieldSpec, callback){
+	var statusResponse;
+	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
+	model.listMembers(filterSpec, pageSpec, fieldSpec, function(err, aMembers){
+		if (err) {
+			statusResponse = new StatusResponse('error','listMembers','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','listMembers','','business',aMembers);
+		}
+
+		callback(err,statusResponse);
+	});
+}
+
+function listRooms(filterSpec,pageSpec, fieldSpec, callback){
+	var statusResponse;
+	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
+	model.listRooms(filterSpec, pageSpec, fieldSpec, function(err, aPersons){
+		if (err) {
+			statusResponse = new StatusResponse('error','listRooms','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','listRooms','','business',aPersons);
 		}
 
 		callback(err,statusResponse);
@@ -87,21 +119,11 @@ function insertCollection(sCollection, callback) {
 	model.insertCollection(sCollection, callback)
 }
 
-function getHttpResponse(callback) {
-	request('http://www.google.com', function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-			console.log(body); // Show the HTML for the Google homepage.
-			callback(response);
-		}
-	})
-
-}
-
-
 exports.isAlive = isAlive;
 exports.loginUser = loginUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
-exports.getHttpResponse = getHttpResponse;
+exports.listMembers = listMembers;
+exports.listRooms = listRooms;
 //exports.insertCollection = insertCollection;
