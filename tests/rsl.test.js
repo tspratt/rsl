@@ -47,21 +47,38 @@ describe('Setup tests', function () {
 		);
 	});//before
 
-	//describe.skip('insert collection data',
-	//		function () {
-	//			it('should return a success status response', function (done) {
-	//				business.insertCollection('branches',
-	//						function (err, statusResponse) {
-	//							asyncAssertionCheck(done, function () {
-	//								expect(err).to.not.exist;
-	//								expect(statusResponse.data).to.exist;
-	//								expect(statusResponse.status).to.equal('success');
-	//							});
-	//						}
-	//				);
-	//			});
-	//		}
-	//);
+	describe.skip('insert item data',
+			function () {
+				it('should return an schema object', function (done) {
+					model.insertItem(
+							function (err, sItemJson) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(sItemJson).to.exist;
+									console.log(sItemJson);
+								});
+							}
+					);
+				});
+			}
+	);
+
+
+	describe.skip('insert item data',
+			function () {
+				it('should return an schema object', function (done) {
+					model.createUsers(
+							function (err, sItemJson) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(sItemJson).to.exist;
+									console.log(sItemJson);
+								});
+							}
+					);
+				});
+			}
+	);
 
 	describe('Test isAlive (business)',
 		function () {
@@ -78,28 +95,35 @@ describe('Setup tests', function () {
 			});
 		}
 	);
-	describe.skip('Test HTTP)',
-		function () {
-			it('should make an http request', function (done) {
-				model.setMemberIdToId(function (response) {
-						console.log('setMemberIdToId; ', response);
-						done();
-					}
-				);
-			});
-		}
-	);
-	describe.skip('setMemberIdTo Id)',
+
+	describe('Test Users endpoints (business)',
 			function () {
-				it('should make an http request', function (done) {
-					business.getHttpResponse(	function (response) {
-								console.log('http test response; ', response);
-								done();
+				it('should return a person from login with good credentials', function (done) {
+					business.loginUser('Tracy', 'gabboob',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+									console.log(statusResponse.data);
+								});
+							}
+					);
+				});
+				it('should fail login with bad credentials', function (done) {
+					business.loginUser('Tracy', 'xxxxx',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('fail');
+								});
 							}
 					);
 				});
 			}
 	);
+
 	describe('Test Data Access (business)',
 		function () {
 			it('should return a list of all members', function (done) {

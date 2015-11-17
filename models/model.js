@@ -10,7 +10,7 @@ var logger = new (winston.Logger)({
 		new (winston.transports.Console)({'timestamp': true, level: 'info'})
 	]
 });
-
+var utils = require('../lib/utils');
 //var async = require('async');
 var fs = require("fs");
 var mgSchema = require('./mg-schema').mgSchema;
@@ -150,6 +150,24 @@ function insertCollection(sCollection, callback) {
 	fs.createReadStream('./data/' + sCollection + '.csv').pipe(converter);
 }
 
+function getUser(oQuery, callback) {
+	mongoose.model('User').findOne(oQuery)
+			.populate( 'personid')
+			.exec(function(err, persons) {
+				mongoose.model('Person').populate(persons, {
+							path: 'member.branch',
+							model: 'Branch'
+						},
+						function (err, persons) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, persons);
+							}
+						});
+
+			});
+}
 
 function getPerson(id, callback) {
 	var oId = new ObjectId(id);
@@ -169,7 +187,7 @@ function getPerson(id, callback) {
 						});
 
 			});
-	}
+}
 
 function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
 	var iSkip = 0;
@@ -197,45 +215,47 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback){
 			});
 }
 
-function setMemberIdToId(callback) {
-	var oPerson;
-
-	listMembers(null, null, null,
-			function (err, persons) {
-				var person;
-				var oId;
-				for (var i = 0; i < persons.length; i++) {
-					person = persons[i];
-					oId = person._id;
-					db.collections('persons')
-				}
-			})
-
-	listPersons(null, null, null,
-			function (err, persons) {
-				var person;
-				var oId;
-				for (var i = 0; i < persons.length; i++) {
-					person = persons[i];
-					oId = person._id;
-					db.collections('persons')
-				}
-			});
-	_db.collection('persons', {safe: true},
-			function (err, collection) {
-				var oId = new ObjectId(id);
-				collection.findOne({_id: oId}, function (err, data) {
-					if (err) {
-						callback(err, null);
-					} else {
-						callback(null, data);
-					}
-				});
-			});
-
+function insertItem(callback) {
+	var ItemModel = mongoose.model('Unit');
+	var item = new ItemModel({
+		property: 'Lakemont',
+		number: 'B',
+		description: 'East wing',
+		capacity: '14',
+		expandable: '5',
+		branchid: ObjectId('563c2429404d259013af4a8b'),
+		images: ['images/units/lakemontb-1.jpg']
+	});
+	item.save(function(err){
+		callback(err,JSON.stringify(item,null,2));
+	})
 }
 
+function createUsers(callback){
+	var salt = utils.generateSalt();
+	var password = 'gabboob';
 
+	listPersons(null,null, null,
+			function (err, persons) {
+				var aUsers = [];
+				var doc;
+				var User = mongoose.model('User');
+				for (var i = 1; i < persons.length; i++) {
+					var person = persons[i];
+					doc = new User({
+						personid: person._id,
+						userid: person.firstname,
+						passwordHash: utils.buildHash(password,salt),
+						salt: salt
+					});
+					doc.save();
+				}
+
+			}
+	);
+}
+
+exports.getUser = getUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
@@ -244,6 +264,6 @@ exports.mgDb = mgDb;
 exports.initDb = initDb;
 exports.initMgDb = initMgDb;
 exports.insertCollection = insertCollection;
-exports.setMemberIdToId = setMemberIdToId;
+exports.createUsers = createUsers;
 exports.listMembers = listMembers;
 

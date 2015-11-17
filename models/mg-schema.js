@@ -28,9 +28,11 @@ var mgSchema = {
 			type: Schema.ObjectId,
 			ref: 'Branch'
 		},
-		share: Number
+		share: Number,
+		defaultroom: Schema.ObjectId
 	},{collection: 'members'}),
 	User: new Schema ({
+		personid: {type: Schema.ObjectId, ref: 'Person'},
 		userid: String,
 		passwordHash: String,
 		salt: String
@@ -40,18 +42,35 @@ var mgSchema = {
 		parentid: Schema.ObjectId,
 		share: Number
 	},{collection: 'branches'}),
-	Property: new Schema(),
+	Property: new Schema({
+		name: String,
+		description: String,
+		capacity: Number,
+		expandable: Number,
+		images: [String]
+	},{collection: 'properties'}),
 	Unit: new Schema({
-		branchid: Schema.ObjectId,
+		property: String,
 		number: String,
-		name: String
-	}),
+		description: String,
+		capacity: Number,
+		expandable: Number,
+		branchid: Schema.ObjectId,
+		branch: {
+			type: Schema.ObjectId,
+			ref: 'Branch'
+		},
+		images: [String]
+	},{collection: 'units'}),
 	Room: new Schema ({
 		number: String,
 		unitid: Schema.ObjectId,
+		unit: String,
+		description: String,
 		capacity: Number,
 		expandable: Number,
-		displayName: String
+		displayName: String,
+		images: [String]
 	},{collection: 'rooms'}),
 	Booking: new Schema({
 		memberid: Schema.ObjectId,

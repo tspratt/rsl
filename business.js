@@ -3,7 +3,7 @@
  */
 "use strict";
 var StatusResponse = require('./lib/statusResponse').StatusResponse;
-
+var utils = require('./lib/utils');
 //var async = require('async');
 var model = require('./models/model');
 //var request = require('request');
@@ -15,6 +15,28 @@ function isAlive(callback){
 
 }
 
+function loginUser(userid, password, callback){
+
+	model.getUser({userid: userid}, function(err, user){
+		if (err) {
+			var statusResponse = new StatusResponse('error','loginUser','','business',err);
+		}
+		else {
+			if (!user) {
+				var statusResponse = new StatusResponse('fail','loginUser','','business',{message:'user not found'});
+			}
+			else {
+				if (utils.compareHash(password, user.salt, user.passwordHash)) {
+					var statusResponse = new StatusResponse('success','loginUser','','business',user);
+				}
+				else {
+					var statusResponse = new StatusResponse('fail','loginUser','','business',{message: 'incorrect password ' + userid});
+				}
+			}
+		}
+		callback(err,statusResponse);
+	});
+}
 
 function listPersons(filterSpec,pageSpec, fieldSpec, callback){
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
@@ -77,6 +99,7 @@ function getHttpResponse(callback) {
 
 
 exports.isAlive = isAlive;
+exports.loginUser = loginUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
