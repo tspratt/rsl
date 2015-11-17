@@ -3,6 +3,19 @@ angular.module('rsl')
   .factory('PersonData', ['$http', 'appConstants', function ($http, appConstants) {
     var PersonData = {};
 
+    PersonData.loginUser = function (userid, password) {
+      var oBody = {userid: userid, password: password};
+
+      var promise =  $http.post(appConstants.SERVICE_URL_BASE + 'loginUser', oBody)
+          .then(function (res) {
+            return res;
+          })
+          .catch(function(res) {
+            console.error('loginUser', res.status, res.data);
+            return res;
+          });
+      return promise;
+    };
 
     PersonData.getPersons = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
       var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};

@@ -4,10 +4,10 @@ var router = express.Router();
 var business = require('../business');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 
-router.get('/loginUser', function (req, res, next) {
+router.post('/loginUser', function (req, res, next) {
 	console.log(JSON.stringify(req.query, null, 2));
-	var userid = req.query.userid;
-	var pwd = req.query.password;
+	var userid = req.body.userid;
+	var pwd = req.body.password;
 	business.loginUser(userid, pwd,
 			function (err, statusResponse) {
 				res.send(statusResponse);

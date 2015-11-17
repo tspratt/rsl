@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('MainCtrl', ['$rootScope','$scope', '$state', 'PersonData',
-    function ($rootScope, $scope, $state, PersonData) {
+  .controller('MainCtrl', ['$rootScope','$scope', '$state', 'appData', 'PersonData',
+    function ($rootScope, $scope, $state, appData, PersonData) {
       $scope.activeState = 'sign-in';
       $scope.isLoggedIn = false;
       $scope.username = 'demo';
@@ -21,9 +21,24 @@ angular.module('rsl')
         }
       });
 
-      $scope.logIn = function (sState){
-        $scope.isLoggedIn = (this.password === 'demo' );
-        $scope.goView(sState);
+      $scope.logIn = function (sState) {
+        if (this.password === 'demo') {
+          $scope.isLoggedIn = true;
+          $scope.goView(sState);
+        }
+        else {
+          PersonData.loginUser(this.username, this.password)
+              .then(function (res) {
+                if (res.status >= 200 && res.status < 300) {
+                  AppData.loggedInUser = res.data.data;
+                  $scope.isLoggedIn = true;
+                }
+                else {
+                  console.log('HTTP Error: ' + res.statusText);
+                  $scope.isLoggedIn = false;
+                }
+              })
+        }
       };
 
       $rootScope.$on('$stateChangeStart',
