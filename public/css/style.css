@@ -84,7 +84,8 @@ hr.paginator {
 .header-link {
 	float: right;
 	cursor: pointer;
-	padding-left: 5px
+	padding-left: 5px;
+	text-decoration: underline;
 }
 
 .header-link:hover {
