@@ -249,14 +249,19 @@ button.module-menu-item {
 	margin: 0.2em;
 }
 
-button.module-menu-item:hover {
-	color: blue;
-	background-color: unset;
-	border: solid 1px slategrey;
-}
 
 div.module-menu button.selected {
 	color: blue;
 	background-color: unset;
 	border: solid 1px slategrey;
+}
+
+.system-alert {
+	position: absolute;
+	top: 15em;
+	left: 1em;
+	background-color: white;
+	color: red;
+	width: 20em;
+	font-size: 1.2em;
 }

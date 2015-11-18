@@ -28,7 +28,7 @@ function loginUser(userid, password, callback){
 					statusResponse = new StatusResponse('success','loginUser','','business',user);
 				}
 				else {
-					statusResponse = new StatusResponse('fail','loginUser','','business',{message: 'incorrect password ' + userid});
+					statusResponse = new StatusResponse('fail','loginUser','','business',{message: 'incorrect password for ' + userid});
 				}
 			}
 		}

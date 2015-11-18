@@ -7,18 +7,22 @@
   </div>
 
   <button class="module-menu-item"
+          ng-class="{'selected':'book' === activeState}"
           ng-click="logIn('book')"
           ng-disabled="!isFormValid">Book
   </button>
   <button class="module-menu-item"
+          ng-class="{'selected':'booking-schedule' === activeState}"
           ng-click="logIn('booking-schedule')"
           ng-disabled="!isFormValid">Bookings
   </button>
   <button class="module-menu-item"
+          ng-class="{'selected':'person-list' === activeState}"
           ng-click="logIn('person-list')"
           ng-disabled="!isFormValid">Persons
   </button>
   <button class="module-menu-item"
+          ng-class="{'selected':'settings' === activeState}"
           ng-click="logIn('settings')"
           ng-disabled="!isFormValid">Settings
   </button>
