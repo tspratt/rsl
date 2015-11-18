@@ -1,5 +1,5 @@
 angular.module('rsl')
-  .controller('PersonCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
+  .controller('personCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
     function($scope, $state, appConstants, PersonData) {
       $scope.persons = [];
       $scope.person = {};

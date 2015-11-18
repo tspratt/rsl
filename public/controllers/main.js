@@ -13,10 +13,7 @@ angular.module('rsl')
       };
 
       $scope.$watch('isLoggedIn', function(){
-        if ($scope.isLoggedIn) {
-          $scope.goView('person-list');
-        }
-        else {
+        if ($scope.isLoggedIn === false) {
           $scope.goView('log-in');
         }
       });
@@ -63,6 +60,7 @@ angular.module('rsl')
         function(event, toState, toParams, fromState, fromParams){
           $scope.activeState = toState.name;
         });
+
       $scope.goView = function (state) {
         $state.go(state)
       };

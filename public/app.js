@@ -17,12 +17,12 @@ angular
       .state('persons', {
         url: '/persons',
         templateUrl: '/views/persons.html',
-        controller: 'PersonCtrl'
+        controller: 'personCtrl'
       })
       .state('person-list', {
         url: '/person-list',
         templateUrl: '/views/person-list.html',
-        controller: 'PersonCtrl'
+        controller: 'personCtrl'
       })
       .state('name-search', {
         url: '/name-search',
@@ -37,17 +37,17 @@ angular
       .state('book', {
         url: '/book',
         templateUrl: '/views/book.html',
-        controller: 'BookingCtrl'
+        controller: 'bookingCtrl'
       })
       .state('booking-schedule', {
         url: '/booking-schedule',
         templateUrl: '/views/booking-schedule.html',
-        controller: 'BookingCtrl'
+        controller: 'bBookingCtrl'
       })
       .state('settings', {
         url: '/settings',
         templateUrl: '/views/settings.html',
-        controller: 'BookingCtrl'
+        controller: 'bookingCtrl'
       })
   })
   .run(['$rootScope', '$state', function($rootScope, $state) {
