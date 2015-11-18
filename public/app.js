@@ -42,7 +42,7 @@ angular
       .state('booking-schedule', {
         url: '/booking-schedule',
         templateUrl: '/views/booking-schedule.html',
-        controller: 'bBookingCtrl'
+        controller: 'bookingCtrl'
       })
       .state('settings', {
         url: '/settings',
