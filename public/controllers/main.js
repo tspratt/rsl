@@ -7,6 +7,7 @@ angular.module('rsl')
       $scope.password = 'gabboob';
       $scope.isFormValid = false;
       $scope.showLogo = true;
+      $scope.loggedInUser = {};
 
       $scope.validateForm = function(){
         $scope.isFormValid = ($scope.password.length > 0 || this.password.length > 0)
@@ -36,6 +37,7 @@ angular.module('rsl')
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
                     $scope.isLoggedIn = true;
+                    $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
                       $scope.addAlert('warning', 'Only members can book, showing schedule');
                       sState = 'booking-schedule'

@@ -81,12 +81,13 @@ hr.paginator {
 	margin-bottom: 0.2em;
 }
 
-.log-out {
+.header-link {
 	float: right;
 	cursor: pointer;
+	padding-left: 5px
 }
 
-.log-out:hover {
+.header-link:hover {
 	color: rgba(0, 0, 0, 0.75);
 }
 
@@ -156,6 +157,9 @@ button.log-in {
 
 .header-label {
 	font-family: "Bodoni MT Black";
+	position: absolute;
+	top: 1.75em;
+	left: 50px;
 }
 
 .description {

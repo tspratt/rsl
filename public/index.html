@@ -23,7 +23,8 @@
     <div ng-show="isLoggedIn">
       <img class="logo-small" src="./images/rsl-logo-square.png">
       <span class="header-label">Richards - Spratt Lakemont, LLC</span>
-      <span class="log-out" ng-click="isLoggedIn=false">log out</span>
+      <span class="header-link" ng-click="isLoggedIn=false">log out</span>
+      <span class="header-link" ng-click="goView('settings)">{{loggedInUser.person.firstname}}</span>
       <div  class="module-menu">
         <button class="module-menu-item"
                 ng-class="{'selected':'book' === activeState}"
