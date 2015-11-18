@@ -254,6 +254,10 @@ button.module-menu-item {
 	margin: 0.2em;
 }
 
+button.module-menu-item[disabled] {
+	color: lightgray;
+}
+
 
 div.module-menu button.selected {
 	color: blue;

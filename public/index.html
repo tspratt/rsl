@@ -29,22 +29,22 @@
         <button class="module-menu-item"
                 ng-class="{'selected':'book' === activeState}"
                 ng-click="goView('book')"
-                ng-disabled="!isFormValid">Book
+                ng-disabled="loggedInUser.person.memberrelationship!=='self'">Book
         </button>
         <button class="module-menu-item"
                 ng-class="{'selected':'booking-schedule' === activeState}"
                 ng-click="goView('booking-schedule')"
-                ng-disabled="!isFormValid">Bookings
+                ng-disabled="false">Bookings
         </button>
         <button class="module-menu-item"
                 ng-class="{'selected':'person-list' === activeState}"
                 ng-click="goView('person-list')"
-                ng-disabled="!isFormValid">Persons
+                ng-disabled="false">Persons
         </button>
         <button class="module-menu-item"
                 ng-class="{'selected':'settings' === activeState}"
                 ng-click="goView('settings')"
-                ng-disabled="!isFormValid">Settings
+                ng-disabled="false">Settings
         </button>
       </div>
       <hr class="header">
