@@ -53,7 +53,17 @@ angular
   .run(['$rootScope', '$state', function($rootScope, $state) {
     $rootScope.$state = $state;
 
-
+    $rootScope.$on("$locationChangeStart",function(event, next, current){
+      console.log(JSON.stringify(next,null,2));
+      if ($rootScope.isLoggedIn) {
+        if (next.indexOf('log-in') > -1) {
+          event.preventDefault();
+        }
+      }
+      else {
+        $state.go('log-in');
+      }
+    });
 
   }])
   .directive('onEnterKey', function () {

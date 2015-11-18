@@ -14,6 +14,7 @@ angular.module('rsl')
       };
 
       $scope.$watch('isLoggedIn', function(){
+        $rootScope.isLoggedIn = $scope.isLoggedIn;
         if ($scope.isLoggedIn === false) {
           $scope.goView('log-in');
         }
