@@ -32,7 +32,7 @@ var mgSchema = {
 		defaultroom: Schema.ObjectId
 	},{collection: 'members'}),
 	User: new Schema ({
-		personid: {type: Schema.ObjectId, ref: 'Person'},
+		person: {type: Schema.ObjectId, ref: 'Person'},
 		userid: String,
 		passwordHash: String,
 		salt: String

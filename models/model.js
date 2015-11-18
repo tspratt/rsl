@@ -152,7 +152,7 @@ function insertCollection(sCollection, callback) {
 
 function getUser(oQuery, callback) {
 	mongoose.model('User').findOne(oQuery)
-			.populate('personid')
+			.populate('person')
 			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',

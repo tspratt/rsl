@@ -25,6 +25,10 @@ angular.module('rsl')
         $scope.addAlert('success', '...working');
         if (this.password === 'demo') {
           $scope.isLoggedIn = true;
+          if (sState === 'book') {
+            $scope.addAlert('warning', 'Demo users cannot book, showing schedule');
+            sState = 'booking-schedule';
+          }
           $scope.goView(sState);
         }
         else {
@@ -35,8 +39,8 @@ angular.module('rsl')
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
                     $scope.isLoggedIn = true;
-                    if (sState === 'book' && appData.loggedInUser.memberrelationship !== 'self') {
-                      $scope.addAlert('warning', 'Only members can add bookings');
+                    if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
+                      $scope.addAlert('warning', 'Only members can book, showing schedule');
                       sState = 'booking-schedule'
                     }
                     $scope.goView(sState);
