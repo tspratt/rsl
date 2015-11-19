@@ -1,8 +1,7 @@
 'use strict';
 angular.module('rsl')
-  .factory('bookingData', ['$http', 'appConstants', function ($http, appConstants) {
+  .factory('bookingData', ['$http', 'appConstants', 'appData', function ($http, appConstants, appData) {
     var bookingData = {};
-
 
     bookingData.getBookings = function (dateEarliest, dateLatest) {
       var oQueryParams = {dateEarliest: dateEarliest, dateLatest: dateLatest};
@@ -31,6 +30,20 @@ angular.module('rsl')
           console.error('getBooking', resp.status, res.data);
           return res;
         });
+      return promise;
+    };
+
+    bookingData.getRooms = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
+      var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};
+      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'listRooms',
+          {params: oQueryParams})
+          .then(function (res) {
+            return res;
+          })
+          .catch(function(res) {
+            console.error('getPersons', res.status, res.data);
+            return res;
+          });
       return promise;
     };
 

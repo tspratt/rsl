@@ -1,9 +1,10 @@
 angular.module('rsl')
-  .controller('bookingCtrl', ['$scope', '$state', 'appConstants', 'bookingData', 'PersonData',
-    function($scope, $state, appConstants, bookingData, PersonData) {
-
+  .controller('bookingCtrl', ['$scope', '$state', 'appConstants', 'appData', 'bookingData', 'PersonData',
+    function($scope, $state, appConstants, appData, bookingData, PersonData) {
+      $scope.rooms = [];
       function initModule(){
-        getBookings();
+        //getBookings();
+        getRooms();
       }
 
       function getBookings () {
@@ -24,7 +25,18 @@ angular.module('rsl')
           });
       }
 
+      function getRooms () {
+        bookingData.getRooms(null, null, null, {field: 'unit', value: appData.loggedInUser.person.member.branch.unit}, null)
+            .then(function (res) {
+              if (res.status >= 200 && res.status < 300) {
+                $scope.rooms = res.data.data;
+              }
+              else {
+                console.log('HTTP Error: ' + res.statusText);
+              }
 
+            });
+      }
 
 
       initModule();

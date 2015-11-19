@@ -4,7 +4,7 @@ var router = express.Router();
 var business = require('../business');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 
-router.get('/listRooms', function (req, res, next) {
+router.get('/rooms', function (req, res, next) {
 	var filterSpec = null;
 	var pageSpec = null;
 	var field = req.query.field;
