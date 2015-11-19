@@ -11,12 +11,14 @@ var logger = new (winston.Logger)({
 	]
 });
 var utils = require('../lib/utils');
+
 //var async = require('async');
 var fs = require("fs");
 var mgSchema = require('./mg-schema').mgSchema;
 var mongoDb = require('mongodb');
 var mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var _db;
 var mgDb;
 
@@ -62,6 +64,7 @@ function initMgModels() {
 	for (var schema in mgSchema) {
 		mongoose.model(schema, mgSchema[schema]);
 	}
+
 }
 
 function listPersons(filterSpec, pageSpec, oFieldSpec, callback) {
@@ -79,20 +82,14 @@ function listPersons(filterSpec, pageSpec, oFieldSpec, callback) {
 	mongoose.model('Person').find(oQuery, oFieldSpec)
 			.skip(iSkip)
 			.limit(iLimit)
-			.populate('member')
+			.deepPopulate('member.branch')
+			.lean()
 			.exec(function (err, persons) {
-				mongoose.model('Person').populate(persons, {
-							path: 'member.branch',
-							model: 'Branch'
-						},
-						function (err, persons) {
-							if (err) {
-								callback(err, null);
-							} else {
-								callback(null, persons);
-							}
-						});
-
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, persons);
+				}
 			});
 }
 
@@ -104,7 +101,8 @@ function filterPersonsByName(matchString, oFieldSpec, callback) {
 		]
 	};
 	mongoose.model('Person').find(oQuery, oFieldSpec)
-			.populate('member')
+			.deepPopulate('member.branch')
+			.lean()
 			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',
@@ -152,27 +150,22 @@ function insertCollection(sCollection, callback) {
 
 function getUser(oQuery, callback) {
 	mongoose.model('User').findOne(oQuery)
-			.populate('person')
+			.deepPopulate('person.member.branch')
+			.lean()
 			.exec(function (err, persons) {
-				mongoose.model('Person').populate(persons, {
-							path: 'member.branch',
-							model: 'Branch'
-						},
-						function (err, persons) {
-							if (err) {
-								callback(err, null);
-							} else {
-								callback(null, persons);
-							}
-						});
-
+					if (err) {
+						callback(err, null);
+					} else {
+						callback(null, persons);
+					}
 			});
 }
 
 function getPerson(id, callback) {
 	var oId = new ObjectId(id);
 	mongoose.model('Person').findOne({_id: oId})
-			.populate('member')
+			.deepPopulate('member.branch')
+			.lean()
 			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
 							path: 'member.branch',
@@ -206,6 +199,7 @@ function listMembers(filterSpec, pageSpec, oFieldSpec, callback) {
 			.skip(iSkip)
 			.limit(iLimit)
 			.populate('branch')
+			.lean()
 			.exec(function (err, persons) {
 				if (err) {
 					callback(err, null);
@@ -232,6 +226,7 @@ function listRooms(filterSpec, pageSpec, oFieldSpec, callback) {
 			.skip(iSkip)
 			.limit(iLimit)
 			.populate('branch')
+			.lean()
 			.exec(function (err, persons) {
 				if (err) {
 					callback(err, null);
@@ -259,7 +254,7 @@ function insertItem(callback) {
 }
 */
 
-
+/*
 function setProperty(callback) {
 	try {
 		_db.collection('rooms', {safe: true},
@@ -282,7 +277,7 @@ function setProperty(callback) {
 		callback(err, undefined);
 	}
 }
-
+*/
 
 /*
 function createUsers(callback) {
@@ -321,5 +316,5 @@ exports.insertCollection = insertCollection;
 //exports.createUsers = createUsers;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
-exports.setProperty = setProperty;
+//exports.setProperty = setProperty;
 

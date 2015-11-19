@@ -76,6 +76,7 @@ describe('Setup tests', function () {
 									expect(err).to.not.exist;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.status).to.equal('success');
+									expect(statusResponse.data.person.member.unit).to.exist;
 									console.log(statusResponse.data);
 								});
 							}

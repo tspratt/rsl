@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var mgSchema = {
 	Person: new Schema({
@@ -21,7 +22,8 @@ var mgSchema = {
 		address: String,
 		phone: String,
 		email: String
-	},{collection: 'persons'}),
+	},{collection: 'persons'})
+			.plugin(deepPopulate, {}),
 	Member: new Schema({
 		llcName: String,
 		branch: {
@@ -30,13 +32,15 @@ var mgSchema = {
 		},
 		share: Number,
 		defaultroom: Schema.ObjectId
-	},{collection: 'members'}),
+	},{collection: 'members'})
+			.plugin(deepPopulate, {}),
 	User: new Schema ({
 		person: {type: Schema.ObjectId, ref: 'Person'},
 		userid: String,
 		passwordHash: String,
 		salt: String
-	}),
+	},{collection: 'users'})
+			.plugin(deepPopulate, {}),
 	Branch: new Schema({
 		branchname: String,
 		parentid: Schema.ObjectId,
@@ -62,7 +66,8 @@ var mgSchema = {
 			ref: 'Branch'
 		},
 		images: [String]
-	},{collection: 'units'}),
+	},{collection: 'units'})
+			.plugin(deepPopulate, {}),
 	Room: new Schema ({
 		number: String,
 		unitid: Schema.ObjectId,
@@ -74,13 +79,14 @@ var mgSchema = {
 		images: [String]
 	},{collection: 'rooms'}),
 	Booking: new Schema({
-		memberid: Schema.ObjectId,
-		roomid: Schema.ObjectId,
+		member: Schema.ObjectId,
+		room: Schema.ObjectId,
 		residents: [{type: Schema.ObjectId, ref: 'Person'}],
 		residentCount: Number,
 		arrive: Date,
 		depart: Date
 	},{collection: 'bookings'})
+			.plugin(deepPopulate, {})
 
 };
 
