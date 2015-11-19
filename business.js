@@ -25,6 +25,8 @@ function loginUser(userid, password, callback){
 			}
 			else {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
+					delete user.passwordHash;
+					delete user.salt;
 					statusResponse = new StatusResponse('success','loginUser','','business',user);
 				}
 				else {

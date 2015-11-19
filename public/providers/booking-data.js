@@ -35,7 +35,7 @@ angular.module('rsl')
 
     bookingData.getRooms = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
       var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'listRooms',
+      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'rooms',
           {params: oQueryParams})
           .then(function (res) {
             return res;
