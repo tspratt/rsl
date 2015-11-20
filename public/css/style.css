@@ -16,6 +16,12 @@ body {
 	background-color: papayawhip;
 }
 
+select {
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
 label {
 	font-weight: bold;
 	color: steelblue;
@@ -37,7 +43,7 @@ button:focus {
 
 input[type="text"], input[type="password"] {
 	display: block;
-	margin: 0.25em auto;
+	margin: 0.25em;
 }
 
 input.match-string {
@@ -158,9 +164,9 @@ button.log-in {
 
 .header-label {
 	font-family: "Bodoni MT Black";
-	position: absolute;
-	top: 1.75em;
-	left: 50px;
+	position: relative;
+	top: 1.0em;
+	left: 10px;
 }
 
 .description {
@@ -178,6 +184,9 @@ button.log-in {
 }
 .person-list-detail {
 	font-size: 12px;
+}
+.book-form {
+    font-size: 16px;
 }
 
 .form-label {
@@ -263,6 +272,17 @@ div.module-menu button.selected {
 	color: blue;
 	background-color: unset;
 	border: solid 1px slategrey;
+}
+
+button.label {
+    height: 2.5em;
+    min-width: 4.5em;
+    font-size: 16px;
+
+}
+
+button.quick-book {
+    font-size: 13px;
 }
 
 .system-alert {

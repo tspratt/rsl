@@ -1,7 +1,42 @@
-<div>
-  <div class="container">
+<div class="container">
 
-    Book Residence
-  </div>
 
+<form class="form-horizontal book-form">
+	<div class="form-group">
+
+		<label class="control-label col-xs-2" for="selectRoom">Room:</label>
+		<div class="col-xs-10">
+			<select id="selectRoom"
+					ng-model="selectedRoom"
+					ng-options="room as room.displayName + ': ' + room.description for room in rooms track by room._id"></select>
+		</div>
+
+		<label class="control-label col-xs-2">Next:</label>
+		<div class="col-xs-10">
+			<button class="quick-book" ng-click="bookNextFSS(selectedRoom)">Fri, Sat, Sun</button>
+			<button class="quick-book" ng-click="bookNextSS(selectedRoom)">Fri, Sat</button>
+			<button class="quick-book" ng-click="bookNextSS(selectedRoom)">Sat, Sun</button>
+			<button class="quick-book" ng-click="bookNextSat(selectedRoom)">Sat</button>
+			<button class="quick-book" ng-click="bookNextSun(selectedRoom)">Sun</button>
+		</div>
+
+		<div class="col-xs-12">
+			<button class="label" ng-click="arriveDetail=!arriveDetail">Arrive:</button>
+			<span>Friday, 12/15, evening.</span>
+		</div>
+
+		<div class="col-xs-12" ng-show="arriveDetail">
+			Arrival detail
+		</div>
+
+		<div class="col-xs-12">
+			<button class="label" ng-click="departDetail=!departDetail">Depart:</button>
+			<span>Sunday, 12/17, afternoon.</span>
+		</div>
+
+		<div class="col-xs-12" ng-show="departDetail">
+			Depart detail
+		</div>
+	</div>
+</form>
 </div>
