@@ -277,12 +277,13 @@ div.module-menu button.selected {
 button.label {
     height: 2.5em;
     min-width: 4.5em;
-    font-size: 16px;
+    font-size: 14px;
 
 }
 
 button.quick-book {
     font-size: 13px;
+    height: 3.0em;
 }
 
 .system-alert {
@@ -293,4 +294,9 @@ button.quick-book {
 	color: red;
 	width: 20em;
 	font-size: 1.2em;
+}
+
+.book-date {
+    font-size: 16px;
+    font-weight: normal;
 }

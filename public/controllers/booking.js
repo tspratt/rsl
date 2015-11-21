@@ -6,6 +6,9 @@ angular.module('rsl')
 
 			$scope.arriveDetail = false;	//controls visibility of detail section
 			$scope.departDetail = false;
+			$scope.whoDetail = false;
+
+			$scope.bookMember = appData.loggedInUser.person.member;
 
       function initModule(){
         //getBookings();
@@ -53,6 +56,21 @@ angular.module('rsl')
             });
       }
 
+			$scope.bookDays = function  (oMember, aDays, oRoom) {
+				console.log('bookDays');
+				if (aDays.length === 1) {
+					var dtArrive = Date.parse('next ' + getWeekday(aDays[0]));
+					console.log(dtArrive);
+				}
+				else {
+
+				}
+			};
+
+			function getWeekday(dayNum) {
+				var a = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+				return a[dayNum];
+			}
 
       initModule();
 
