@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-xs-2">Book Next:</label>
+			<label class="control-label col-xs-2">Quick Book:</label>
 
 			<div class="col-xs-10">
 				<button class="quick-book" ng-click="bookDays(bookMember,[5,0],selectedRoom)">Fri - Sun</button>
@@ -39,7 +39,16 @@
 		</div>
 		<div class="form-group">
 			<div class="col-xs-12" ng-show="arriveDetail">
-				Arrival detail
+				<div class="btn-group">
+					<label class="btn btn-primary" ng-model="arriveDaySection" uib-btn-radio="appConstants.MORNING">Morning</label>
+					<label class="btn btn-primary" ng-model="arriveDaySection" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
+					<label class="btn btn-primary" ng-model="arriveDaySection" uib-btn-radio="appConstants.EVENING">Evening</label>
+				</div>
+				<div style="display:inline-block; min-height:290px;">
+					<uib-datepicker ng-model="dtArrive" min-date="Date.today()" show-weeks="true" class="well well-sm"
+							></uib-datepicker>
+				</div>
+
 			</div>
 		</div>
 		<div class="form-group">

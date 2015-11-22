@@ -6,6 +6,11 @@ angular.module('rsl')
 
 			$scope.dtArrive;
 			$scope.dtDepart;
+			$scope.dtArriveTimeConfig;
+			$scope.dtDepartTimeConfig;
+			$scope.appConstants = appConstants;
+			$scope.arriveDaySection = '';
+			$scope.departDaySection = '';
 			$scope.dtArriveLabel = '';
 			$scope.dtDepartLabel = '';
 			$scope.arriveDetail = false;	//controls visibility of detail section
@@ -21,13 +26,15 @@ angular.module('rsl')
 
 			$scope.$watch('dtArrive', function (newValue) {
 				if (newValue) {
+					$scope.dtArrive.set($scope.dtArriveTimeConfig);
 					$scope.dtArriveLabel = getWeekday($scope.dtArrive.getDay()) + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtArrive.toString('M/d');
 				}
 			});
 
 			$scope.$watch('dtDepart', function (newValue) {
 				if (newValue) {
-					$scope.dtDepartLabel = getWeekday($scope.dtDepart.getDay()) + ' ' + getDaySection($scope.dtDepart) + ', ' + $scope.dtDepart.toString('M/d');
+					$scope.dtArrive.set($scope.dtDepartTimeConfig);
+					$scope.dtDepartLabel = getWeekday($scope.dtDepart.getDay()) + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtDepart.toString('M/d');
 				}
 			});
       function getBookings () {
@@ -80,42 +87,35 @@ angular.module('rsl')
 			$scope.bookDays = function  (oMember, aDays, oRoom) {
 				console.log('bookDays');
 
-				$scope.dtArrive = Date.parse('next ' + getWeekday(aDays[0]));
-				switch (aDays[0]) {
-					case 5:
-						$scope.dtArrive.set(appConstants.EVENING);
-						break;
-					case 6:
-					case 7:
-						$scope.dtArrive.set(appConstants.MORNING);
-						break;
-					default:
-						$scope.dtArrive.set(appConstants.AFTERNOON);
-						break;
-				}
-
-
-
 				if (aDays.length === 1) {
-					$scope.dtArrive.set(appConstants.MORNING);
+					$scope.dtArriveTimeConfig = appConstants.MORNING;
+					$scope.dtArrive = Date.parse('next ' + getWeekday(aDays[0]));
+					$scope.dtDepartTimeConfig = appConstants.EVENING;
 					$scope.dtDepart = $scope.dtArrive.clone();
-					$scope.dtDepart.set(appConstants.EVENING);
-
 				}
 				else {
-					$scope.dtDepart = Date.parse('next ' + getWeekday(aDays[1]));
-					switch (aDays[1]) {
-						case 5:
-							$scope.dtDepart.set(appConstants.EVENING);
+					switch (aDays[0]) {
+						case 5:	//arriving friday, default to evening
+							$scope.dtArriveTimeConfig = appConstants.EVENING;
 							break;
 						case 6:
-						case 7:
-							$scope.dtDepart.set(appConstants.EVENING);
+							$scope.dtArriveTimeConfig = appConstants.MORNING;
 							break;
 						default:
-							$scope.dtDepart.set(appConstants.AFTERNOON);
+							$scope.dtArriveTimeConfig = appConstants.AFTERNOON;
 							break;
 					}
+					$scope.dtArrive = Date.parse('next ' + getWeekday(aDays[0]));
+					switch (aDays[1]) {
+						case 5:	//departing sat
+						case 6:
+							$scope.dtDepartTimeConfig = appConstants.EVENING;
+							break;
+						default:
+							$scope.dtDepartTimeConfig = appConstants.AFTERNOON;
+							break;
+					}
+					$scope.dtDepart = Date.parse('next ' + getWeekday(aDays[1]));
 				}
 
 			};
@@ -128,10 +128,10 @@ angular.module('rsl')
 			function getDaySection(dt) {
 				var sReturn = 'evening';
 				var hour = dt.getHours();
-				if (hour <= appConstants.MORNING) {
+				if (hour <= appConstants.MORNING.hour) {
 					sReturn = 'morning';
 				}
-				else if (hour <= appConstants.AFTERNOON) {
+				else if (hour <= appConstants.AFTERNOON.hour) {
 					sReturn = 'afternoon';
 				}
 				return sReturn;
