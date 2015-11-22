@@ -1,6 +1,6 @@
 angular.module('rsl')
-		.controller('bookingCtrl', ['$scope', '$state', 'appConstants', 'appData', 'bookingData', 'PersonData',
-			function ($scope, $state, appConstants, appData, bookingData, PersonData) {
+		.controller('bookingCtrl', ['$scope', '$state','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
+			function ($scope, $state, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
 				$scope.selectedRoom = null;
 				$scope.dtArriveMin = Date.now();
@@ -18,12 +18,16 @@ angular.module('rsl')
 				$scope.arriveDetail = false;	//controls visibility of detail section
 				$scope.departDetail = false;
 				$scope.whoDetail = false;
+				$scope.whoCount = 0;
+				$scope.personsForMember = [];
+				$scope.bookingIncomplete = true;
 
 				$scope.bookMember = appData.loggedInUser.person.member;
 
 				function initModule() {
 					//getBookings();
 					getRooms();
+					getPersonsForMember();
 				}
 
 				$scope.$watch('dtArrive', function (newValue) {
@@ -31,6 +35,7 @@ angular.module('rsl')
 						$scope.departDisabled = false;
 						$scope.dtArrive.set($scope.dtArriveTimeConfig);
 						$scope.dtArriveLabel = getWeekday($scope.dtArrive.getDay()) + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtArrive.toString('M/d');
+						checkBooking();
 					}
 					else {
 						$scope.departDisabled = true;
@@ -41,8 +46,38 @@ angular.module('rsl')
 					if (newValue) {
 						$scope.dtArrive.set($scope.dtDepartTimeConfig);
 						$scope.dtDepartLabel = getWeekday($scope.dtDepart.getDay()) + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtDepart.toString('M/d');
+						checkBooking();
 					}
 				});
+
+				$scope.$watch('personsForMember', function (newValue) {
+					$scope.whoCount = 0;
+					for (var i = 0; i < $scope.personsForMember.length; i++) {
+						if ($scope.personsForMember[i].selected) {
+							$scope.whoCount ++;
+						}
+					}
+					checkBooking();
+				},true);
+
+				$scope.$watch('arriveDetail', function (newValue) {
+					if (newValue === true) {
+						$location.hash('arriveDetail');		// the element you wish to scroll to.
+						$anchorScroll();						// call $anchorScroll()
+					}
+				});
+
+				$scope.$watch('departDetail', function (newValue) {
+					if (newValue === true) {
+						$location.hash('departDetail');		// the element you wish to scroll to.
+						$anchorScroll();						// call $anchorScroll()
+					}
+				});
+
+				function checkBooking() {
+					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
+				}
+
 				function getBookings() {
 					$scope.booking = null;
 					$scope.selectedId = '';
@@ -76,6 +111,25 @@ angular.module('rsl')
 										}
 									}
 
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+
+							});
+				}
+
+				function getPersonsForMember() {
+					personData.getPersons(null, null, null, 'member', appData.loggedInUser.person.member._id, null)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+									$scope.personsForMember = res.data.data;
+									for (var i = 0; i < $scope.personsForMember.length; i++) {
+										if ($scope.personsForMember[i].member._id === appData.loggedInUser.person.member._id) {
+											$scope.personsForMember[i].selected = true;
+											break;
+										}
+									}
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);

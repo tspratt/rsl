@@ -67,19 +67,22 @@ function initMgModels() {
 
 }
 
-function listPersons(filterSpec, pageSpec, oFieldSpec, callback) {
+function listPersons(oQuery, filterSpec, pageSpec, oFieldSpec, callback) {
+	oQuery = oQuery || {};
+	oFieldSpec = oFieldSpec || {};
 	var iSkip = 0;
 	var iLimit = 0;
 	if (pageSpec) {
 		iSkip = pageSpec.pageNum * pageSpec.pageLength;
 		iLimit = pageSpec.pageLength;
 	}
-	var oQuery = {};
+
 	if (filterSpec) {
-		var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
-		oQuery = JSON.parse(sQuery);
+		//var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
+		oQuery[filterSpec.field] = filterSpec.value;
+		//oQuery = JSON.parse(sQuery);
 	}
-	mongoose.model('Person').find(oQuery, oFieldSpec)
+	mongoose.model('Person').find(oQuery, oFieldSpec, {memberrelationship: 1})
 			.skip(iSkip)
 			.limit(iLimit)
 			.deepPopulate('member.branch')

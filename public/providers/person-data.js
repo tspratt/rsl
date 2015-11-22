@@ -17,8 +17,8 @@ angular.module('rsl')
       return promise;
     };
 
-    PersonData.getPersons = function (iPageNum, iPageLen,sFilterFieldName, filterValue, bReducedPayload) {
-      var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, field:sFilterFieldName, value: filterValue};
+    PersonData.getPersons = function (iPageNum, iPageLen, oQuery, sFilterFieldName, filterValue, bReducedPayload) {
+      var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, query: oQuery, field:sFilterFieldName, value: filterValue};
       if (bReducedPayload) {
         oQueryParams.fieldSpec = '{"ssn": 0}';
       }

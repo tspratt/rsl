@@ -32,6 +32,15 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="control-label col-xs-2">Detail Book:</label>
+
+			<div class="col-xs-10">
+				<button class="label"
+						ng-disabled="bookingIncomplete"
+						ng-click="bookDetail()">Book Now</button>
+			</div>
+		</div>
+		<div id="arriveDetail" class="form-group">
 			<div class="col-xs-12">
 				<button class="label"
 						ng-click="arriveDetail=!arriveDetail">Arrive:</button>
@@ -45,6 +54,7 @@
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
 				</div>
+
 				<div style="display:inline-block; min-height:290px;">
 					<uib-datepicker ng-model="dtArrive" min-date="dtArriveMin" show-weeks="true" class="well well-sm"
 									ng-change="onSelectArriveDate()"></uib-datepicker>
@@ -52,7 +62,7 @@
 
 			</div>
 		</div>
-		<div class="form-group">
+		<div id="departDetail" class="form-group">
 			<div class="col-xs-12">
 				<button class="label"
 						ng-click="departDetail=!departDetail"
@@ -77,12 +87,14 @@
 		<div class="form-group">
 			<div class="col-xs-12">
 				<button class="label" ng-click="whoDetail=!whoDetail">Who:</button>
-				<span class="book-date">Tracy, Sharon</span>
+				<span class="book-who" ng-repeat="person in personsForMember | filter:{ selected: true }">{{person.firstname}}&nbsp;</span>
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="col-xs-12" ng-show="whoDetail">
-				Who detail
+		<div class="form-group" ng-show="whoDetail">
+			<div class="col-xs-12" >
+				<label class="btn btn-primary" style="margin:0.2em"
+					   ng-repeat="person in personsForMember"
+					   ng-model="person.selected" uib-btn-checkbox>{{person.firstname}}</label>
 			</div>
 		</div>
 	</form>

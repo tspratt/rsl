@@ -19,7 +19,7 @@ angular.module('rsl')
       function getPersons () {
         $scope.person = null;
         $scope.selectedId = '';
-        PersonData.getPersons($scope.pageNum,parseInt($scope.pageLen),null,null, false)
+        PersonData.getPersons($scope.pageNum,parseInt($scope.pageLen), null, null,null, false)
           .then(function (res) {
             if (res.status >= 200 && res.status < 300) {
               $scope.persons = res.data.data;

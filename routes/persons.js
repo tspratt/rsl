@@ -9,7 +9,9 @@ function isAlive(request, response){
 }
 
 function listPersons(req, res, next) {
-  var filterSpec = null;
+  var sQuery = req.query.query;
+	var oQuery = (sQuery)? JSON.parse(sQuery):{};
+	var filterSpec = null;
   var pageSpec = null;
   var field = req.query.field;
   var value = req.query.value;
@@ -41,11 +43,12 @@ function listPersons(req, res, next) {
     if (field && value) {
       filterSpec = {field: field, value: value};
     }
+
     if (pageNum && pageLength) {
       pageSpec = {pageLength: parseInt(pageLength), pageNum: parseInt(pageNum)};
     }
 
-    business.listPersons(filterSpec, pageSpec, oFieldSpec, function (err, statusResponse) {
+    business.listPersons(oQuery, filterSpec, pageSpec, oFieldSpec, function (err, statusResponse) {
       res.send(statusResponse);
     })
   }

@@ -38,10 +38,9 @@ function loginUser(userid, password, callback){
 	});
 }
 
-function listPersons(filterSpec,pageSpec, fieldSpec, callback){
-	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
+function listPersons(oQuery, filterSpec, pageSpec, fieldSpec, callback){
 	var statusResponse;
-	model.listPersons(filterSpec, pageSpec, fieldSpec, function(err, aPersons){
+	model.listPersons(oQuery, filterSpec, pageSpec, fieldSpec, function(err, aPersons){
 		if (err) {
 			statusResponse = new StatusResponse('error','listPersons','','business',err);
 		}
