@@ -33,33 +33,45 @@
 		</div>
 		<div class="form-group">
 			<div class="col-xs-12">
-				<button class="label" ng-click="arriveDetail=!arriveDetail">Arrive:</button>
+				<button class="label"
+						ng-click="arriveDetail=!arriveDetail">Arrive:</button>
 				<span class="book-date">{{dtArriveLabel}}</span>
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group" ng-show="arriveDetail">
 			<div class="col-xs-12" ng-show="arriveDetail">
 				<div class="btn-group">
-					<label class="btn btn-primary" ng-model="arriveDaySection" uib-btn-radio="appConstants.MORNING">Morning</label>
-					<label class="btn btn-primary" ng-model="arriveDaySection" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
-					<label class="btn btn-primary" ng-model="arriveDaySection" uib-btn-radio="appConstants.EVENING">Evening</label>
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
 				</div>
 				<div style="display:inline-block; min-height:290px;">
-					<uib-datepicker ng-model="dtArrive" min-date="Date.today()" show-weeks="true" class="well well-sm"
-							></uib-datepicker>
+					<uib-datepicker ng-model="dtArrive" min-date="dtArriveMin" show-weeks="true" class="well well-sm"
+									ng-change="onSelectArriveDate()"></uib-datepicker>
 				</div>
 
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-xs-12">
-				<button class="label" ng-click="departDetail=!departDetail">Depart:</button>
+				<button class="label"
+						ng-click="departDetail=!departDetail"
+						ng-disabled="departDisabled">Depart:</button>
 				<span class="book-date">{{dtDepartLabel}}</span>
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="col-xs-12" ng-show="whoDetail">
-				Depart detail
+		<div class="form-group" ng-show="departDetail">
+			<div class="col-xs-12">
+				<div class="btn-group">
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
+				</div>
+				<div style="display:inline-block; min-height:290px;">
+					<uib-datepicker ng-model="dtDepart" min-date="dtDepartMin" show-weeks="true" class="well well-sm"
+									ng-change="onSelectDepartDate()"
+							></uib-datepicker>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
