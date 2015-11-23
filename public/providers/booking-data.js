@@ -48,8 +48,8 @@ angular.module('rsl')
     };
 
     bookingData.bookRoom = function (oBooking) {
-      var oBody = oBooking;
-      var promise =  $http.post(appConstants.SERVICE_URL_BASE + 'book', oBody)
+      var oBody = {action: 'insert', booking: oBooking};
+      var promise =  $http.post(appConstants.SERVICE_URL_BASE + 'book-room', oBody)
           .then(function (res) {
             return res;
           })

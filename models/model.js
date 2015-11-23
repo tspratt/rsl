@@ -239,6 +239,15 @@ function listRooms(filterSpec, pageSpec, oFieldSpec, callback) {
 			});
 }
 
+function insertBooking (oBooking, callback) {
+	var Booking = mongoose.model('Booking');
+	var booking = new Booking(oBooking);
+	booking.save(function (err, result) {
+		callback(err, result);
+	})
+
+}
+
 /*
 function insertItem(callback) {
 	var ItemModel = mongoose.model('Unit');
@@ -319,5 +328,6 @@ exports.insertCollection = insertCollection;
 //exports.createUsers = createUsers;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
+exports.insertBooking = insertBooking;
 //exports.setProperty = setProperty;
 
