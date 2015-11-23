@@ -81,10 +81,11 @@ var mgSchema = {
 	Booking: new Schema({
 		member: Schema.ObjectId,
 		room: Schema.ObjectId,
-		residents: [{type: Schema.ObjectId, ref: 'Person'}],
-		residentCount: Number,
+		who: [{type: Schema.ObjectId, ref: 'Person'}],
+		whoCount: Number,
 		arrive: Date,
-		depart: Date
+		depart: Date,
+		note: String
 	},{collection: 'bookings'})
 			.plugin(deepPopulate, {})
 

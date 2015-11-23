@@ -2,11 +2,17 @@ angular.module('rsl')
 		.controller('bookingCtrl', ['$scope', '$state','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
 			function ($scope, $state, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
+				
+				$scope.booking = {};
+				$scope.bookMember = appData.loggedInUser.person.member;
 				$scope.selectedRoom = null;
-				$scope.dtArriveMin = Date.now();
-				$scope.dtDepartMin = Date.now();
 				$scope.dtArrive;
 				$scope.dtDepart;
+				$scope.booking.who = [];
+				$scope.note = '';
+
+				$scope.dtArriveMin = Date.now();
+				$scope.dtDepartMin = Date.now();
 				$scope.departDisabled = true;
 				$scope.dtArriveTimeConfig = appConstants.AFTERNOON;
 				$scope.dtDepartTimeConfig = appConstants.EVENING;
@@ -22,7 +28,7 @@ angular.module('rsl')
 				$scope.personsForMember = [];
 				$scope.bookingIncomplete = true;
 
-				$scope.bookMember = appData.loggedInUser.person.member;
+
 
 				function initModule() {
 					//getBookings();
@@ -180,6 +186,32 @@ angular.module('rsl')
 
 				};
 
+				$scope.bookRoom = function (){
+					$scope.booking = {};
+					$scope.booking.member = $scope.bookMember._id;
+					$scope.booking.room = $scope.selectedRoom._id;
+					$scope.booking.arrive = $scope.dtArrive;
+					$scope.booking.depart = $scope.dtDepart;
+					$scope.booking.note = $scope.note;
+					$scope.booking.who = [];
+					$scope.booking.whoCount = 0;
+					for (var i = 0; i < $scope.personsForMember.length; i++) {
+						if ($scope.personsForMember[i].selected) {
+							$scope.booking.who.push($scope.personsForMember[i]._id);
+							$scope.booking.whoCount ++;
+						}
+					}
+					bookingData.bookRoom($scope.booking)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+							});
+				};
+
 				$scope.onSelectArriveDate = function () {
 					$scope.dtDepartMin = $scope.dtArrive;
 					$scope.arriveDetail = false;
@@ -189,6 +221,10 @@ angular.module('rsl')
 				$scope.onSelectDepartDate = function () {
 					$scope.departDetail = false;
 					$scope.whoDetail = true;
+				};
+
+				$scope.addPerson = function () {
+
 				};
 
 

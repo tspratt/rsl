@@ -47,6 +47,19 @@ angular.module('rsl')
       return promise;
     };
 
+    bookingData.bookRoom = function (oBooking) {
+      var oBody = {action: 'insert', booking: oBooking};
+      var promise =  $http.post(appConstants.SERVICE_URL_BASE + 'book-room', oBody)
+          .then(function (res) {
+            return res;
+          })
+          .catch(function(res) {
+            console.error('loginUser', res.status, res.data);
+            return res;
+          });
+      return promise;
+    };
+
 
     return bookingData;
   }]);

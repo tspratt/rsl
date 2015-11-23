@@ -111,6 +111,26 @@ function listRooms(filterSpec,pageSpec, fieldSpec, callback){
 	});
 }
 
+function bookRoom(sAction, oBooking, callback){
+	var statusResponse;
+	if (sAction === 'insert') {
+		model.insertBooking(oBooking,function(err, result){
+			if (err) {
+				statusResponse = new StatusResponse('error','bookRoom','','business',err);
+			}
+			else {
+				statusResponse = new StatusResponse('success','bookRoom','','business',result);
+			}
+			callback(err,statusResponse);
+		});
+	}
+	else if (sAction === 'update') {
+		statusResponse = new StatusResponse('error','bookRoom','','business','not implemented');
+		callback(err,statusResponse);
+	}
+
+}
+
 function insertPersons(callback){
 	model.insertPersons(callback);
 
@@ -127,4 +147,5 @@ exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
+exports.bookRoom = bookRoom;
 //exports.insertCollection = insertCollection;

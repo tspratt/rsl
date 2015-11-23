@@ -42,5 +42,12 @@ router.get('/rooms', function (req, res, next) {
 
 });
 
+router.post('/book-room', function (req, res, next) {
+	var sAction = req.body.action || 'insert';
+	var oBooking = req.body.booking;
+	business.bookRoom(sAction, oBooking, function(err, statusResponse) {
+		res.send(statusResponse);
+	})
+});
 
 module.exports = router;
