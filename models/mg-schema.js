@@ -84,7 +84,8 @@ var mgSchema = {
 		who: [{type: Schema.ObjectId, ref: 'Person'}],
 		whoCount: Number,
 		arrive: Date,
-		depart: Date
+		depart: Date,
+		note: String
 	},{collection: 'bookings'})
 			.plugin(deepPopulate, {})
 

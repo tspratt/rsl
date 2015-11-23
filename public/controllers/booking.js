@@ -9,7 +9,7 @@ angular.module('rsl')
 				$scope.dtArrive;
 				$scope.dtDepart;
 				$scope.booking.who = [];
-				$scope.notes = '';
+				$scope.note = '';
 
 				$scope.dtArriveMin = Date.now();
 				$scope.dtDepartMin = Date.now();
@@ -192,6 +192,7 @@ angular.module('rsl')
 					$scope.booking.room = $scope.selectedRoom._id;
 					$scope.booking.arrive = $scope.dtArrive;
 					$scope.booking.depart = $scope.dtDepart;
+					$scope.booking.note = $scope.note;
 					$scope.booking.who = [];
 					$scope.booking.whoCount = 0;
 					for (var i = 0; i < $scope.personsForMember.length; i++) {
@@ -220,6 +221,10 @@ angular.module('rsl')
 				$scope.onSelectDepartDate = function () {
 					$scope.departDetail = false;
 					$scope.whoDetail = true;
+				};
+
+				$scope.addPerson = function () {
+
 				};
 
 
