@@ -27,7 +27,7 @@ angular.module('rsl')
 						personData.savePerson($scope.person)
 								.then(function (res) {
 									if (res.status >= 200 && res.status < 300) {
-
+										$scope.callback({person: res.data});
 									}
 									else {
 										console.log('HTTP Error: ' + res.statusText);
@@ -38,7 +38,10 @@ angular.module('rsl')
 				}];
 			return {
 				restrict    : 'E',
-				scope       : {memberid: '='},
+				scope       : {
+					memberid: '=',
+					callback: '&onSuccess'
+				},
 				templateUrl : 'partials/add-person-tmpl.html',
 				controller	: ctrl
 

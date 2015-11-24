@@ -224,8 +224,9 @@ angular.module('rsl')
 					$scope.whoDetail = true;
 				};
 
-				$scope.addPerson = function () {
-
+				$scope.onSuccessAddPerson = function (person) {
+					getPersonsForMember();
+					$scope.addingPerson = false;
 				};
 
 

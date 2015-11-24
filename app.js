@@ -28,11 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(users);     //returns router to handle user requests
 app.use(booking);     //returns router to handle user requests
-
-//app.get('/', persons.isAlive);
-app.get('/isAlive', persons.isAlive);
-app.get('/persons', persons.listPersons);
-app.get('/persons/:oid', persons.getPerson);
+app.use(persons);
 
 /*
 // catch 404 and forward to error handler

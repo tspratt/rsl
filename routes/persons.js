@@ -1,14 +1,16 @@
 "use strict";
+var express = require('express');
+var router = express.Router();
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 var business = require('../business');
 
-function isAlive(request, response){
+router.get('/isAlive', function (req, res, next) {
   business.isAlive(function(err, statusResponse) {
     response.json(statusResponse);
   });
-}
+});
 
-function listPersons(req, res, next) {
+router.get('/persons', function (req, res, next) {
   var sQuery = req.query.query;
 	var oQuery = (sQuery)? JSON.parse(sQuery):{};
 	var filterSpec = null;
@@ -52,15 +54,21 @@ function listPersons(req, res, next) {
       res.send(statusResponse);
     })
   }
-}
+});
 
-function getPerson(request, response) {
-  var sOId = request.params.oid || '';
+router.get('/persons/:oid', function (req, res, next) {
+  var sOId = req.params.oid || '';
   business.getPerson(sOId, function(err, statusResponse) {
-    response.send(statusResponse);
+    res.send(statusResponse);
   });
-}
+});
 
-exports.getPerson = getPerson;
-exports.isAlive = isAlive;
-exports.listPersons = listPersons;
+router.put('/person', function (req, res, next) {
+  var oPerson = req.body.person;
+  business.insertPerson(oPerson, function(err, statusResponse) {
+    res.send(statusResponse);
+  });
+});
+
+
+module.exports = router;

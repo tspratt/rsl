@@ -131,8 +131,17 @@ function bookRoom(sAction, oBooking, callback){
 
 }
 
-function insertPersons(callback){
-	model.insertPersons(callback);
+function insertPerson(oPerson, callback){
+	var statusResponse;
+	model.insertPerson(oPerson, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error','insertPerson','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','insertPerson','','business',result);
+		}
+		callback(err,statusResponse);
+	});
 
 }
 
@@ -148,4 +157,5 @@ exports.listPersons = listPersons;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.bookRoom = bookRoom;
+exports.insertPerson = insertPerson;
 //exports.insertCollection = insertCollection;

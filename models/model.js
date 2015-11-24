@@ -248,6 +248,15 @@ function insertBooking (oBooking, callback) {
 
 }
 
+function insertPerson (oPerson, callback) {
+	var Person = mongoose.model('Person');
+	var person = new Person(oPerson);
+	person.save(function (err, result) {
+		callback(err, result);
+	})
+
+}
+
 /*
 function insertItem(callback) {
 	var ItemModel = mongoose.model('Unit');
@@ -329,5 +338,6 @@ exports.insertCollection = insertCollection;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.insertBooking = insertBooking;
+exports.insertPerson = insertPerson;
 //exports.setProperty = setProperty;
 
