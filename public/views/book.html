@@ -47,7 +47,7 @@
 			</div>
 		</div>
 		<div class="form-group" ng-show="arriveDetail">
-			<div class="col-xs-12" ng-show="arriveDetail">
+			<div class="col-xs-12 expander">
 				<div class="btn-group">
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="form-group" ng-show="departDetail">
-			<div class="col-xs-12">
+			<div class="col-xs-12 expander" >
 				<div class="btn-group">
 					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
 					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
@@ -89,13 +89,16 @@
 				<span class="book-who" ng-repeat="person in personsForMember | filter:{ selected: true }">{{person.firstname}}&nbsp;</span>
 			</div>
 		</div>
-		<div class="form-group" ng-show="whoDetail">
+		<div class="form-group expander" ng-show="whoDetail">
 			<div class="col-xs-12" >
 				<label class="btn btn-primary" style="margin:0.2em"
 					   ng-repeat="person in personsForMember"
 					   ng-model="person.selected" uib-btn-checkbox>{{person.firstname}}</label>
-				<button class="button"
-								ng-click="addPerson()">+</button>
+				<button class="plus"
+								ng-click="addingPerson=true"><span class="glyphicon glyphicon-plus"></span> </button>
+			</div>
+			<div class="col-xs-12" ng-show="addingPerson" >
+				<add-person memberid="bookMember._id"></add-person>
 			</div>
 		</div>
 		<div class="form-group">

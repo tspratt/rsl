@@ -9,7 +9,6 @@ var mgSchema = {
 	Person: new Schema({
 		firstname: String,
 		lastname: String,
-		memberid: Schema.ObjectId,
 		member: {
 			type: Schema.ObjectId,
 			ref: 'Member'

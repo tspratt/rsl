@@ -63,6 +63,17 @@ angular.module('rsl')
       return promise;
     };
 
-
+			PersonData.savePerson = function (oPerson) {
+				var oBody = { person: oPerson};
+				var promise =  $http.put(appConstants.SERVICE_URL_BASE + 'person', oBody)
+						.then(function (res) {
+							return res;
+						})
+						.catch(function(res) {
+							console.error('savePerson', res.status, res.data);
+							return res;
+						});
+				return promise;
+			};
     return PersonData;
   }]);

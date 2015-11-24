@@ -7,6 +7,22 @@
 	font-weight:  normal;
 }
 
+.form-horizontal .form-group {
+    margin-right: 0;
+    margin-left :0;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+label[class*="col-"] {
+    padding-right: 0.3em;
+    padding-left: 0.3em;
+}
+div[class*="col-"] {
+    padding-right: 0.3em;
+    padding-left: 0.3em;
+}
+
 body {
 	padding: 0;
 	margin: 0;
@@ -26,6 +42,14 @@ label {
 	font-weight: bold;
 	color: steelblue;
 }
+label.nested {
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.label-radio {
+    margin: 0.25em;
+}
 
 button, button.label {
 	/*margin: 12px;*/
@@ -37,8 +61,22 @@ button, button.label {
 	/*border: 1px solid;*/
 }
 
+button.main-action {
+    width: 100%;
+}
+
 button:focus {
 	outline: 0;
+}
+
+.btn {
+    padding: 3px 6px;
+}
+
+.btn-primary.active, .btn-primary:active, .btn-primary:hover, .btn-primary.active:hover {
+    background-color: transparent;
+    border: solid 1px #245580;
+    color: #245580;
 }
 
 input[type="text"], input[type="password"] {
@@ -286,6 +324,11 @@ button.quick-book {
     height: 3.0em;
 }
 
+button.plus {
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .system-alert {
 	position: absolute;
 	top: 15em;
@@ -313,4 +356,14 @@ button.quick-book {
 	height: 60px;
 	font-size: 14px;
 	font-weight: normal;
+}
+.expander {
+    margin-right: 0.3em;
+    margin-left: 0.3em;
+    padding: 0.3em;
+    border: solid 1px #337ab7;
+    border-radius: 10px;
+}
+.expander.nested {
+    margin: 0;
 }

@@ -2,7 +2,7 @@ angular.module('rsl')
 		.controller('bookingCtrl', ['$scope', '$state','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
 			function ($scope, $state, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
-				
+
 				$scope.booking = {};
 				$scope.bookMember = appData.loggedInUser.person.member;
 				$scope.selectedRoom = null;
@@ -26,6 +26,7 @@ angular.module('rsl')
 				$scope.whoDetail = false;
 				$scope.whoCount = 0;
 				$scope.personsForMember = [];
+				$scope.addingPerson = false;
 				$scope.bookingIncomplete = true;
 
 

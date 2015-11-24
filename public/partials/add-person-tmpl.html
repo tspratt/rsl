@@ -1,0 +1,72 @@
+<form name="addPersonForm" class="form-horizontal person-list-detail" novalidate>
+	<div class="expander nested">
+		<div class="form-group">
+			<div class="col-xs-8 col-xs-offset-2">
+				<button class="main-action"
+						ng-click="savePerson()">Save</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-3 nested" for="memberrelationship">Member Relationship:</label>
+			<div class="col-xs-9">
+				<div id="memberrelationship">
+					<label class="btn btn-primary label-radio"
+						   ng-model="person.memberrelationship"
+						   uib-btn-radio="appConstants.PARTNER">{{appConstants.PARTNER}}</label>
+					<label class="btn btn-primary label-radio"
+						   ng-model="person.memberrelationship"
+						   uib-btn-radio="appConstants.CHILD">{{appConstants.CHILD}}</label>
+					<label class="btn btn-primary label-radio"
+						   ng-model="person.memberrelationship"
+						   uib-btn-radio="appConstants.FRIEND">{{appConstants.FRIEND}}</label>
+					<label class="btn btn-primary label-radio"
+						   ng-model="person.memberrelationship"
+						   uib-btn-radio="appConstants.OTHER">{{appConstants.OTHER}}</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3 nested" for="firstname">First Name:</label>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="firstname" placeholder="first name"
+					   ng-model="person.firstname"
+					   required>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3 nested" for="lastname">Last Name:</label>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="lastname" placeholder="last name"
+					   ng-model="person.lastname">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3 nested" for="address">Address:</label>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="address" placeholder="address"
+					   ng-model="person.address">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3 nested" for="phone">Phone:</label>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="phone" placeholder="phone"
+					   ng-model="person.phone">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3 nested" for="email">Email:</label>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" id="email" placeholder="email"
+					   ng-model="person.email">
+			</div>
+		</div>
+	</div>
+
+
+</form>
