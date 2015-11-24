@@ -5,10 +5,10 @@
 angular.module('rsl')
 		.directive('addPerson', function () {
 			var ctrl = ['$scope', 'appConstants', 'PersonData',
-				function($scope, appConstants, personData) {
+				function ($scope, appConstants, personData) {
 					$scope.person;
 					$scope.appConstants = appConstants;
-					function init () {
+					function init() {
 
 						$scope.person = {
 							member: $scope.memberid,
@@ -23,27 +23,31 @@ angular.module('rsl')
 
 					init();
 
-					$scope.savePerson = function () {
-						personData.savePerson($scope.person)
-								.then(function (res) {
-									if (res.status >= 200 && res.status < 300) {
-										$scope.callback({person: res.data});
-									}
-									else {
-										console.log('HTTP Error: ' + res.statusText);
-									}
-								});
+					$scope.savePerson = function (bSave) {
+						if (bSave) {
+							personData.savePerson($scope.person)
+									.then(function (res) {
+										if (res.status >= 200 && res.status < 300) {
+											$scope.callback({status: 'saved', person: res.data});
+										}
+										else {
+											console.log('HTTP Error: ' + res.statusText);
+										}
+									});
+						}
+						else {
+							$scope.callback({status: 'canceled', person: null});
+						}
 					}
-
 				}];
 			return {
-				restrict    : 'E',
-				scope       : {
+				restrict: 'E',
+				scope: {
 					memberid: '=',
 					callback: '&onSuccess'
 				},
-				templateUrl : 'partials/add-person-tmpl.html',
-				controller	: ctrl
+				templateUrl: 'partials/add-person-tmpl.html',
+				controller: ctrl
 
 			};
 		});

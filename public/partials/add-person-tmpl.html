@@ -1,9 +1,13 @@
 <form name="addPersonForm" class="form-horizontal person-list-detail" novalidate>
 	<div class="expander nested">
 		<div class="form-group">
-			<div class="col-xs-8 col-xs-offset-2">
+			<div class="col-xs-8 col-xs-offset-1">
 				<button class="main-action"
-						ng-click="savePerson()">Save</button>
+						ng-click="savePerson(true)">Save</button>
+			</div>
+			<div class="col-xs-3 ">
+				<button class="main-action"
+								ng-click="savePerson(false)">CANCEL</button>
 			</div>
 		</div>
 		<div class="form-group">

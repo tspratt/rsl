@@ -4,23 +4,24 @@
 
 .form-control {
 	font-size: 12px;
-	font-weight:  normal;
+	font-weight: normal;
 }
 
 .form-horizontal .form-group {
-    margin-right: 0;
-    margin-left :0;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
 }
 
 label[class*="col-"] {
-    padding-right: 0.3em;
-    padding-left: 0.3em;
+	padding-right: 0.3em;
+	padding-left: 0.3em;
 }
+
 div[class*="col-"] {
-    padding-right: 0.3em;
-    padding-left: 0.3em;
+	padding-right: 0.3em;
+	padding-left: 0.3em;
 }
 
 body {
@@ -33,22 +34,23 @@ body {
 }
 
 select {
-    border: 1px solid black;
-    border-radius: 5px;
-    font-size: 16px;
+	border: 1px solid black;
+	border-radius: 5px;
+	font-size: 16px;
 }
 
 label {
 	font-weight: bold;
 	color: steelblue;
 }
+
 label.nested {
-    font-weight: normal;
-    font-size: 14px;
+	font-weight: normal;
+	font-size: 14px;
 }
 
 .label-radio {
-    margin: 0.25em;
+	margin: 0.25em;
 }
 
 button, button.label {
@@ -62,7 +64,10 @@ button, button.label {
 }
 
 button.main-action {
-    width: 100%;
+	width: 100%;
+	height: 2.5em;
+	min-width: 4.5em;
+	font-size: 14px;
 }
 
 button:focus {
@@ -70,13 +75,13 @@ button:focus {
 }
 
 .btn {
-    padding: 3px 6px;
+	padding: 3px 6px;
 }
 
 .btn-primary.active, .btn-primary:active, .btn-primary:hover, .btn-primary.active:hover {
-    background-color: transparent;
-    border: solid 1px #245580;
-    color: #245580;
+	background-color: transparent;
+	border: solid 1px #245580;
+	color: #245580;
 }
 
 input[type="text"], input[type="password"] {
@@ -217,14 +222,17 @@ button.log-in {
 	padding-right: 0.2em;
 	padding-left: 0.2em;
 }
+
 .person-list-heading {
 	font-size: 16px;
 }
+
 .person-list-detail {
 	font-size: 12px;
 }
+
 .book-form {
-    font-size: 16px;
+	font-size: 16px;
 }
 
 .form-label {
@@ -305,7 +313,6 @@ button[disabled] {
 	color: lightgray;
 }
 
-
 div.module-menu button.selected {
 	color: blue;
 	background-color: unset;
@@ -313,20 +320,20 @@ div.module-menu button.selected {
 }
 
 button.label {
-    height: 2.5em;
-    min-width: 4.5em;
-    font-size: 14px;
+	height: 2.5em;
+	min-width: 4.5em;
+	font-size: 14px;
 
 }
 
 button.quick-book {
-    font-size: 13px;
-    height: 3.0em;
+	font-size: 13px;
+	height: 3.0em;
 }
 
 button.plus {
-    font-size: 18px;
-    font-weight: bold;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 .system-alert {
@@ -340,8 +347,8 @@ button.plus {
 }
 
 .book-date {
-    font-size: 16px;
-    font-weight: normal;
+	font-size: 16px;
+	font-weight: normal;
 }
 
 .blink {
@@ -349,21 +356,26 @@ button.plus {
 }
 
 @keyframes blinker {
-	50% { opacity: 0.0; }
+	50% {
+		opacity: 0.0;
+	}
 }
+
 #taNotes {
 	width: 100%;
 	height: 60px;
 	font-size: 14px;
 	font-weight: normal;
 }
+
 .expander {
-    margin-right: 0.3em;
-    margin-left: 0.3em;
-    padding: 0.3em;
-    border: solid 1px #337ab7;
-    border-radius: 10px;
+	margin-right: 0.3em;
+	margin-left: 0.3em;
+	padding: 0.3em;
+	border: solid 1px #337ab7;
+	border-radius: 10px;
 }
+
 .expander.nested {
-    margin: 0;
+	margin: 0;
 }

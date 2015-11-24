@@ -24,6 +24,7 @@ angular.module('rsl')
 				$scope.arriveDetail = false;	//controls visibility of detail section
 				$scope.departDetail = false;
 				$scope.whoDetail = false;
+				var aExpanders = ['arriveDetail', 'departDetail', 'whoDetail'];
 				$scope.whoCount = 0;
 				$scope.personsForMember = [];
 				$scope.addingPerson = false;
@@ -71,6 +72,7 @@ angular.module('rsl')
 					if (newValue === true) {
 						$location.hash('arriveDetail');		// the element you wish to scroll to.
 						$anchorScroll();						// call $anchorScroll()
+						collapseOthers('arriveDetail');
 					}
 				});
 
@@ -78,8 +80,26 @@ angular.module('rsl')
 					if (newValue === true) {
 						$location.hash('departDetail');		// the element you wish to scroll to.
 						$anchorScroll();						// call $anchorScroll()
+						collapseOthers('departDetail');
 					}
 				});
+
+				$scope.$watch('whoDetail', function (newValue) {
+					if (newValue === true) {
+						$location.hash('whoDetail');		// the element you wish to scroll to.
+						$anchorScroll();						// call $anchorScroll()
+						collapseOthers('whoDetail');
+					}
+				});
+
+				function collapseOthers (sExpCur) {
+					for (var i = 0; i < aExpanders.length; i++) {
+						var sName = aExpanders[i];
+						if (sName !== sExpCur) {
+							$scope[sName] = false;
+						}
+					}
+				}
 
 				function checkBooking() {
 					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
