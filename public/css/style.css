@@ -130,6 +130,12 @@ hr.paginator {
 	margin-bottom: 0.2em;
 }
 
+.header-link-bar {
+	position: absolute;
+	top: 0;
+	right: 20px;
+}
+
 .header-link {
 	float: right;
 	cursor: pointer;
