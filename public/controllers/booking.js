@@ -4,7 +4,7 @@ angular.module('rsl')
 				$scope.rooms = [];
 
 				$scope.booking = {};
-				$scope.bookMember = appData.loggedInUser.person.member;
+				$scope.bookMember = null;
 				$scope.selectedRoom = null;
 				$scope.dtArrive;
 				$scope.dtDepart;
@@ -27,6 +27,7 @@ angular.module('rsl')
 				var aExpanders = ['arriveDetail', 'departDetail', 'whoDetail'];
 				$scope.whoCount = 0;
 				$scope.personsForMember = [];
+				$scope.members = [];
 				$scope.addingPerson = false;
 				$scope.bookingIncomplete = true;
 
@@ -34,9 +35,16 @@ angular.module('rsl')
 
 				function initModule() {
 					//getBookings();
+					getMembers()
 					getRooms();
-					getPersonsForMember();
+
 				}
+
+				$scope.$watch('bookMember', function (member) {
+					if (member) {
+						getPersonsForMember(member._id);
+					}
+				});
 
 				$scope.$watch('dtArrive', function (newValue) {
 					if (newValue) {
@@ -146,13 +154,37 @@ angular.module('rsl')
 							});
 				}
 
-				function getPersonsForMember() {
-					personData.getPersons(null, null, null, 'member', appData.loggedInUser.person.member._id, null)
+				function getMembers() {
+					personData.getPersons(null, null, null, 'memberrelationship', 'self', null)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+									var aTmp = res.data.data.map(function(person){
+										return person.member;
+									});
+
+									$scope.members = aTmp;
+									for (var i = 0; i < $scope.members.length; i++) {
+										if ($scope.members[i]._id === appData.loggedInUser.person.member._id) {
+											$scope.members[i].selected = true;
+											$scope.bookMember = $scope.members[i];
+											break;
+										}
+									}
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+
+							});
+				}
+
+				function getPersonsForMember(memberid) {
+					personData.getPersons(null, null, null, 'member', memberid, null)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.personsForMember = res.data.data;
 									for (var i = 0; i < $scope.personsForMember.length; i++) {
-										if ($scope.personsForMember[i].member._id === appData.loggedInUser.person.member._id) {
+										if ($scope.personsForMember[i].member._id === memberid) {
 											$scope.personsForMember[i].selected = true;
 											break;
 										}
@@ -225,7 +257,7 @@ angular.module('rsl')
 					bookingData.bookRoom($scope.booking)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-
+									$state.go('booking-schedule');
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -245,7 +277,7 @@ angular.module('rsl')
 				};
 
 				$scope.onSuccessAddPerson = function (person) {
-					getPersonsForMember();
+					getPersonsForMember($scope.bookMember._id);
 					$scope.addingPerson = false;
 				};
 
