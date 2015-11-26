@@ -145,6 +145,21 @@ function insertPerson(oPerson, callback){
 
 }
 
+function listBookings(filterSpec,dateSpec, fieldSpec, callback){
+	var statusResponse;
+	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
+	model.listBookings(filterSpec, dateSpec, fieldSpec, function(err, aBookings){
+		if (err) {
+			statusResponse = new StatusResponse('error','listBookings','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','listBookings','','business',aBookings);
+		}
+
+		callback(err,statusResponse);
+	});
+}
+
 function insertCollection(sCollection, callback) {
 	model.insertCollection(sCollection, callback)
 }
@@ -158,4 +173,5 @@ exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.bookRoom = bookRoom;
 exports.insertPerson = insertPerson;
+exports.listBookings = listBookings;
 //exports.insertCollection = insertCollection;

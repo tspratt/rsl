@@ -124,6 +124,7 @@ function filterPersonsByName(matchString, oFieldSpec, callback) {
 }
 
 
+
 /**
  * run only once for a new collection!
  */
@@ -248,6 +249,35 @@ function insertBooking (oBooking, callback) {
 
 }
 
+function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
+	var iSkip = 0;
+	var iLimit = 0;
+	var oQuery = {};
+
+	if (filterSpec) {
+		//var sQuery = '{"' + filterSpec.field + '":"' + filterSpec.value + '"}';
+		oQuery[filterSpec.field] = filterSpec.value;
+	}
+	if (dateSpec) {
+		//iSkip = pageSpec.pageNum * pageSpec.pageLength;
+		//iLimit = pageSpec.pageLength;
+	}
+	mongoose.model('Booking').find(oQuery, oFieldSpec)
+			.skip(iSkip)
+			.limit(iLimit)
+			.populate('who')
+			.deepPopulate('member.branch')
+			.populate('room')
+			.lean()
+			.exec(function (err, bookings) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, bookings);
+				}
+			});
+}
+
 function insertPerson (oPerson, callback) {
 	var Person = mongoose.model('Person');
 	var person = new Person(oPerson);
@@ -339,5 +369,6 @@ exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.insertBooking = insertBooking;
 exports.insertPerson = insertPerson;
+exports.listBookings = listBookings;
 //exports.setProperty = setProperty;
 

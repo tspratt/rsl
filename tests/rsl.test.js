@@ -234,6 +234,51 @@ describe('Setup tests', function () {
 			}
 	);
 
+	describe.only('Test Booking endpoints (business)',
+			function () {
+				it('should return an array of all bookings', function (done) {
+					business.listBookings(null, null, null,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+									prevValue = statusResponse.data.length;
+									console.log(JSON.stringify(statusResponse.data, null, 2))
+								});
+							}
+					);
+				});
+				it('should return an array of bookings for a single member', function (done) {
+					business.listBookings({field: 'member', value: '563c2368bad73ad4191aed11'}, null, null,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.lessThan(prevValue);
+									console.log(JSON.stringify(statusResponse.data, null, 2))
+								});
+							}
+					);
+				});
+				it('should return an array of bookings for a date range', function (done) {
+					business.listBookings(null, {from: '2015-11-29T22:59:00.000Z', to: '2015-11-30T22:59:00.000Z'}, null,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.lessThan(prevValue);
+									console.log(JSON.stringify(statusResponse.data, null, 2))
+								});
+							}
+					);
+				});
+			}
+	);
+
 	/*
 	 describe.skip('insert item data',
 	 function () {
