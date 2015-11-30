@@ -34,8 +34,8 @@ angular.module('rsl')
 
 
 				function initModule() {
-					//getBookings();
-					getMembers()
+					getBookings();
+					getMembers();
 					getRooms();
 
 				}
@@ -113,16 +113,13 @@ angular.module('rsl')
 					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
 				}
 
-				function getBookings() {
+				function getBookings(oQuerySpec, oDateSpec, oFieldSpec) {
 					$scope.booking = null;
 					$scope.selectedId = '';
-					bookingData.getBookings()
+					bookingData.getBookings(oQuerySpec, oDateSpec, oFieldSpec)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.bookings = res.data.data;
-									if ($scope.bookings.length === 1) {
-										$scope.booking = $scope.bookings[0];
-									}
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -280,6 +277,13 @@ angular.module('rsl')
 					getPersonsForMember($scope.bookMember._id);
 					$scope.addingPerson = false;
 				};
+
+				/**
+				 * Requires booking data
+				 */
+				function buildInResidence () {
+
+				}
 
 
 				function getWeekday(dayNum) {

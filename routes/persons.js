@@ -64,10 +64,18 @@ router.get('/persons/:oid', function (req, res, next) {
 });
 
 router.put('/person', function (req, res, next) {
-  var oPerson = req.body.person;
-  business.insertPerson(oPerson, function(err, statusResponse) {
+  var oUpdate = req.body.update;
+	var sId = req.body.sId;
+  business.updatePerson(oPerson, function(err, statusResponse) {
     res.send(statusResponse);
   });
+});
+
+router.post('/person', function (req, res, next) {
+	var oPerson = req.body.person;
+	business.insertPerson(oPerson, function(err, statusResponse) {
+		res.send(statusResponse);
+	});
 });
 
 

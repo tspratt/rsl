@@ -218,6 +218,36 @@ describe('Setup tests', function () {
 					);
 				});
 
+				it('should updte a single person document by Id', function (done) {
+					var id = '563c1e35ef69c27818dd916d';
+					var sUpdateData = 'email-' + Date.now();
+					business.updatePerson(id, {email: sUpdateData},
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+
+				it('should updte a single Member document by Id', function (done) {
+					var id = '563c2368bad73ad4191aed11';
+					var sUpdateData = 999;
+					business.updateMember(id, {order: sUpdateData},
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+
 				it('should return a list of Rooms for Unit "A"', function (done) {
 					business.listRooms({"field" : "unit", "value" : "A"}, null, null,
 							function (err, statusResponse) {
@@ -236,6 +266,8 @@ describe('Setup tests', function () {
 
 	describe.only('Test Booking endpoints (business)',
 			function () {
+				var aBookings;
+				var booking;
 				it('should return an array of all bookings', function (done) {
 					business.listBookings(null, null, null,
 							function (err, statusResponse) {
@@ -245,13 +277,18 @@ describe('Setup tests', function () {
 									expect(statusResponse.data).to.be.an.array;
 									expect(statusResponse.data.length).to.be.greaterThan(0);
 									prevValue = statusResponse.data.length;
+									aBookings = statusResponse.data;
+									booking = aBookings[0];
 									console.log(JSON.stringify(statusResponse.data, null, 2))
 								});
 							}
 					);
 				});
 				it('should return an array of bookings for a single member', function (done) {
-					business.listBookings({field: 'member', value: '563c2368bad73ad4191aed11'}, null, null,
+					business.listBookings({
+								field : 'member',
+								value : '563c2368bad73ad4191aed11'
+							}, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
@@ -264,7 +301,10 @@ describe('Setup tests', function () {
 					);
 				});
 				it('should return an array of bookings for a date range', function (done) {
-					business.listBookings(null, {from: '2015-11-29T22:59:00.000Z', to: '2015-11-30T22:59:00.000Z'}, null,
+					business.listBookings(null, {
+								from : '2015-11-29T22:59:00.000Z',
+								to   : '2015-11-30T22:59:00.000Z'
+							}, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
@@ -272,6 +312,20 @@ describe('Setup tests', function () {
 									expect(statusResponse.data).to.be.an.array;
 									expect(statusResponse.data.length).to.be.lessThan(prevValue);
 									console.log(JSON.stringify(statusResponse.data, null, 2))
+								});
+							}
+					);
+				});
+				it('should update a single booking document by Id', function (done) {
+					var id = booking._id;
+					var sUpdateData = booking.note + 'test data: ' + Date.now();
+					business.updateBooking(id, {note: sUpdateData},
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.status).to.equal('success');
 								});
 							}
 					);
@@ -297,23 +351,24 @@ describe('Setup tests', function () {
 	 );
 	 */
 
-	/*	describe.skip('set a property',
-	 function () {
-	 it('should return an schema object', function (done) {
-	 model.setProperty(
-	 function (err, sItemJson) {
-	 asyncAssertionCheck(done, function () {
-	 expect(err).to.not.exist;
-	 expect(sItemJson).to.exist;
-	 console.log(sItemJson);
-	 });
-	 }
-	 );
-	 });
-	 }
-	 );
-	 */
+	/*
+	describe.only('set a property',
+			function () {
+				it('should return an schema object', function (done) {
+					model.setProperty(
+							function (err, sItemJson) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(sItemJson).to.exist;
+									console.log(sItemJson);
+								});
+							}
+					);
+				});
+			}
+	);
 
+*/
 	/*
 	 describe.skip('insert item data',
 	 function () {

@@ -246,7 +246,12 @@ function insertBooking (oBooking, callback) {
 	booking.save(function (err, result) {
 		callback(err, result);
 	})
+}
 
+function updateBooking (sId, oUpdate, callback) {
+	mongoose.model('Booking').update({ _id: ObjectId(sId) }, oUpdate, { multi: false }, function (err, result) {
+		callback(err, result);
+	});
 }
 
 function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
@@ -259,6 +264,10 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 		oQuery[filterSpec.field] = filterSpec.value;
 	}
 	if (dateSpec) {
+		var dtFrom = new Date(dateSpec.from);
+		var dtTo = new Date(dateSpec.to);
+		oQuery.dtArrive = {$gte:dtFrom};
+		oQuery.dtDepart = {$lte:dtTo};
 		//iSkip = pageSpec.pageNum * pageSpec.pageLength;
 		//iLimit = pageSpec.pageLength;
 	}
@@ -287,6 +296,18 @@ function insertPerson (oPerson, callback) {
 
 }
 
+function updatePerson (sId, oUpdate, callback) {
+	mongoose.model('Person').update({ _id: ObjectId(sId) }, oUpdate, { multi: false }, function (err, result) {
+		callback(err, result);
+	});
+}
+
+function updateMember (sId, oUpdate, callback) {
+	mongoose.model('Member').update({ _id: ObjectId(sId) }, oUpdate, { multi: false }, function (err, result) {
+		callback(err, result);
+	});
+}
+
 /*
 function insertItem(callback) {
 	var ItemModel = mongoose.model('Unit');
@@ -305,16 +326,17 @@ function insertItem(callback) {
 }
 */
 
-/*
+
 function setProperty(callback) {
 	try {
-		_db.collection('rooms', {safe: true},
+		_db.collection('members', {safe: true},
 				function (err, collection) {
 					collection.update({}, {
 								$set: {
-									"property": 'Lakemont'
+									"defaultroom": ObjectId("564b61fd040132ec46e5cf79")
 								}
 							},
+							{multi: true},
 							function (err, data) {
 								if (err) {
 									callback(err, null);
@@ -328,33 +350,8 @@ function setProperty(callback) {
 		callback(err, undefined);
 	}
 }
-*/
 
-/*
-function createUsers(callback) {
-	var salt = utils.generateSalt();
-	var password = 'gabboob';
 
-	listPersons(null, null, null,
-			function (err, persons) {
-				var aUsers = [];
-				var doc;
-				var User = mongoose.model('User');
-				for (var i = 1; i < persons.length; i++) {
-					var person = persons[i];
-					doc = new User({
-						personid: person._id,
-						userid: person.firstname,
-						passwordHash: utils.buildHash(password, salt),
-						salt: salt
-					});
-					doc.save();
-				}
-
-			}
-	);
-}
-*/
 exports.getUser = getUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
@@ -364,11 +361,13 @@ exports.mgDb = mgDb;
 exports.initDb = initDb;
 exports.initMgDb = initMgDb;
 exports.insertCollection = insertCollection;
-//exports.createUsers = createUsers;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.insertBooking = insertBooking;
 exports.insertPerson = insertPerson;
+exports.updatePerson = updatePerson;
+exports.updateMember = updateMember;
+exports.updateBooking = updateBooking;
 exports.listBookings = listBookings;
-//exports.setProperty = setProperty;
+exports.setProperty = setProperty;
 

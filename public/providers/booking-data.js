@@ -3,8 +3,8 @@ angular.module('rsl')
   .factory('bookingData', ['$http', 'appConstants', 'appData', function ($http, appConstants, appData) {
     var bookingData = {};
 
-    bookingData.getBookings = function (dateEarliest, dateLatest) {
-      var oQueryParams = {dateEarliest: dateEarliest, dateLatest: dateLatest};
+    bookingData.getBookings = function (dtFrom, dtTo, sFilterFieldName, filterValue) {
+      var oQueryParams = {from: dtFrom, to: dtTo};
 
       var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'bookings',
         {params: oQueryParams})

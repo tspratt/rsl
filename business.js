@@ -131,6 +131,21 @@ function bookRoom(sAction, oBooking, callback){
 
 }
 
+
+function updateBooking(sId, oUpdate, callback){
+	var statusResponse;
+	model.updateBooking(sId, oUpdate, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error','updateBooking','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','updateBooking','','business',result);
+		}
+		callback(err,statusResponse);
+	});
+
+}
+
 function insertPerson(oPerson, callback){
 	var statusResponse;
 	model.insertPerson(oPerson, function (err, result) {
@@ -139,6 +154,35 @@ function insertPerson(oPerson, callback){
 		}
 		else {
 			statusResponse = new StatusResponse('success','insertPerson','','business',result);
+		}
+		callback(err,statusResponse);
+	});
+
+}
+
+function updatePerson(sId, oUpdate, callback){
+	var statusResponse;
+	model.updatePerson(sId, oUpdate, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error','updatePerson','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','updatePerson','','business',result);
+		}
+		callback(err,statusResponse);
+	});
+
+}
+
+
+function updateMember(sId, oUpdate, callback){
+	var statusResponse;
+	model.updateMember(sId, oUpdate, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error','updateMember','','business',err);
+		}
+		else {
+			statusResponse = new StatusResponse('success','updateMember','','business',result);
 		}
 		callback(err,statusResponse);
 	});
@@ -173,5 +217,8 @@ exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.bookRoom = bookRoom;
 exports.insertPerson = insertPerson;
+exports.updatePerson = updatePerson;
+exports.updateMember = updateMember;
+exports.updateBooking = updateBooking;
 exports.listBookings = listBookings;
 //exports.insertCollection = insertCollection;
