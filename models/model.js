@@ -266,12 +266,11 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 	if (dateSpec) {
 		var dtFrom = new Date(dateSpec.from);
 		var dtTo = new Date(dateSpec.to);
-		oQuery.dtArrive = {$gte:dtFrom};
-		oQuery.dtDepart = {$lte:dtTo};
-		//iSkip = pageSpec.pageNum * pageSpec.pageLength;
-		//iLimit = pageSpec.pageLength;
+		oQuery.arrive = {$gte:dtFrom};
+		oQuery.depart = {$lte:dtTo};
 	}
 	mongoose.model('Booking').find(oQuery, oFieldSpec)
+			.sort({arrive: 1})
 			.skip(iSkip)
 			.limit(iLimit)
 			.populate('who')

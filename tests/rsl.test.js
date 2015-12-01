@@ -264,7 +264,7 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe.only('Test Booking endpoints (business)',
+	describe('Test Booking endpoints (business)',
 			function () {
 				var aBookings;
 				var booking;
@@ -326,6 +326,30 @@ describe('Setup tests', function () {
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.object;
 									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+				it.only('should return an array of residence records', function (done) {
+					business.getResidenceSchedule(null, null, null,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									var aRes = statusResponse.data;
+									var oRes;
+									var memb1;
+									var memb2;
+									var dtLabel;
+									for (var i = 0; i < aRes.length; i++) {
+										oRes = aRes[i];
+										memb1 = oRes.members[1].member || {};
+										memb2 = oRes.members[3].member || {};
+										var mbmb1label = (memb1.llcname || '') + ':' + (oRes.members[1].residenceType || '');
+										var mbmb2label = (memb2.llcname || '') + ':' + (oRes.members[3].residenceType || '');
+										console.log(i, oRes.dt, oRes.daySection.lclabel, mbmb1label + ' | ' + mbmb2label  )
+									}
 								});
 							}
 					);
