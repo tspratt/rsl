@@ -232,7 +232,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 			statusResponse = new StatusResponse('error', 'listBookings', '', 'business', err);
 		}
 		else {
-			for (var i = 0; i < 3; i++) {
+			for (var i = 0; i < aBookings.length; i++) {
 				idxDaySection = 0;
 				oBooking = aBookings[i];
 				dtArrive = oBooking.arrive;
@@ -251,7 +251,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 					dCur.setMinutes(0);
 					firstDaySec = utils.getDaySection(dtArrive);
 					while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
-						oResidence = new DaySectionResidence(dCur, aSections[idxDaySection]);
+						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 						oResidence.members = new EmptyMembersArray();
 						aResidenceSchedule.push(oResidence);
 						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
@@ -268,7 +268,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 							sResidenceType = 'resident';
 						}
 						memberCur = new ResidentMember(oBooking, sResidenceType);
-						oResidence = new DaySectionResidence(dCur, aSections[idxDaySection]);
+						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 						oResidence.members = new EmptyMembersArray();
 						oResidence.members[oBooking.member.order] = memberCur;
 						aResidenceSchedule.push(oResidence);
@@ -288,7 +288,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 					idxResidenceElement = aResidenceSchedule.length;
 					for (j = 0; j < aResidenceSchedule.length; j++) {														//find the first overlapping residence record index
 						if (aResidenceSchedule[j].dt.equals(dCur)
-								&& aResidenceSchedule[i].daySection.index === idxDaySection) {
+								&& aResidenceSchedule[j].daySection.index === idxDaySection) {
 							idxResidenceElement = j;
 							oResidenceElement = aResidenceSchedule[idxResidenceElement];
 							dCur = oResidenceElement.dt.clone();
@@ -310,20 +310,29 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 
 						if (idxResidenceElement < aResidenceSchedule.length) {
 							oResidenceElement.members[oBooking.member.order] = memberCur;
-							dCur = oResidenceElement.dt;
+							idxResidenceElement++;
+							if (aResidenceSchedule[idxResidenceElement]) {
+								idxDaySection = aResidenceSchedule[idxResidenceElement].daySection.index;
+								oResidenceElement = aResidenceSchedule[idxResidenceElement];
+								dCur = oResidenceElement.dt;
+							}
+							else {
+								idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+								if (idxDaySection === 0) {																		//change days, reset vars
+									dCur = dCur.add(1).days();
+								}
+							}
 						}
 						else {																																	//need to start adding new residence elements
-							oResidence = new DaySectionResidence(dCur, aSections[idxDaySection]);
+							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 							oResidence.members = new EmptyMembersArray();
 							oResidence.members[oBooking.member.order] = memberCur;
 							aResidenceSchedule.push(oResidence);
+							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+							if (idxDaySection === 0) {																		//change days, reset vars
+								dCur = dCur.add(1).days();
+							}
 						}
-						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-						if (idxDaySection === 0) {																		//change days, reset vars
-							dCur = dCur.add(1).days();
-						}
-						idxResidenceElement++;
-
 					}
 				}
 
@@ -336,11 +345,11 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	});
 }
 
-var DaySectionResidence = function (dt, daySection) {
+var DaySectionResidence = function (index, dt, daySection) {
 	var dCur = new Date(dt.getTime());
 	dCur.setHours(0);
 	dCur.setMinutes(0);
-
+	this.index = index;
 	this.dt = dCur;
 	this.daySection = daySection;
 	this.members = [];
@@ -348,8 +357,49 @@ var DaySectionResidence = function (dt, daySection) {
 
 var EmptyMembersArray = function () {
 	var aMembers = [];
-	for (var i = 0; i < 10; i++) {
-		aMembers.push(new ResidentMember());
+	var aMemberData = [
+		{member: {
+			"_id": "563c2368bad73ad4191aed0b",
+			"llcname": "Gertrude S. Richards"
+		}},
+		{member:{
+			"_id": "563c2368bad73ad4191aed0a",
+			"llcname": "Charles P. Richards, Jr."
+		}},
+		{member: {
+			"_id": "563c2368bad73ad4191aed08",
+			"llcname": "Alice E. Richards"
+		}},
+		{member: {
+			"_id": "563c2368bad73ad4191aed0c",
+			"llcname": "Martha C. Richards"
+		}},
+		{member:{
+			"_id": "563c2368bad73ad4191aed09",
+			"llcname": "Amy Ethridge"
+		}},
+		{member:{
+			"_id": "563c2368bad73ad4191aed11",
+			"llcname": "Nelson T. Spratt, III"
+		}},
+		{member:{
+			"_id": "563c2368bad73ad4191aed0e",
+			"llcname": "Jacquelita J. Spratt"
+		}},
+		{member:{
+			"_id": "563c2368bad73ad4191aed0d",
+			"llcname": "Gwendolyn Spratt"
+		}},
+		{member: {
+			"_id": "563c2368bad73ad4191aed10",
+			"llcname": "Melinda S. McKinnon"
+		}},
+		{member: {
+			"_id": "563c2368bad73ad4191aed0f",
+			"llcname": "Jorgine S. Gentry" }}
+	];
+	for (var i = 0; i < aMemberData.length; i++) {
+		aMembers.push(new ResidentMember(aMemberData[i]));
 	}
 	return aMembers;
 };

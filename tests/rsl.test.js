@@ -330,7 +330,7 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-				it.only('should return an array of residence records', function (done) {
+				it('should return an array of residence records', function (done) {
 					business.getResidenceSchedule(null, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -341,14 +341,17 @@ describe('Setup tests', function () {
 									var oRes;
 									var memb1;
 									var memb2;
+									var memb3;
 									var dtLabel;
 									for (var i = 0; i < aRes.length; i++) {
 										oRes = aRes[i];
 										memb1 = oRes.members[1].member || {};
-										memb2 = oRes.members[3].member || {};
+										memb2 = oRes.members[2].member || {};
+										memb3 = oRes.members[3].member || {};
 										var mbmb1label = (memb1.llcname || '') + ':' + (oRes.members[1].residenceType || '');
-										var mbmb2label = (memb2.llcname || '') + ':' + (oRes.members[3].residenceType || '');
-										console.log(i, oRes.dt, oRes.daySection.lclabel, mbmb1label + ' | ' + mbmb2label  )
+										var mbmb2label = (memb2.llcname || '') + ':' + (oRes.members[2].residenceType || '');
+										var mbmb3label = (memb3.llcname || '') + ':' + (oRes.members[3].residenceType || '');
+										console.log(i, oRes.dt, oRes.daySection.lclabel, mbmb1label + ' | ' + mbmb2label + '|' +  mbmb3label)
 									}
 								});
 							}

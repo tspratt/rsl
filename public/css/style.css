@@ -385,3 +385,24 @@ button.plus {
 .expander.nested {
 	margin: 0;
 }
+
+.res-sched-day:nth-child(3n+0) {
+    color: red;
+}
+.residence-day-section {
+    display: block;
+    float: left;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+}
+.arrive {
+    background-color: green;
+
+ }
+.resident {
+    background-color: lightgrey;
+}
+.depart {
+    background-color: firebrick;
+}

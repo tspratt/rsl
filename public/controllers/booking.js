@@ -2,12 +2,13 @@ angular.module('rsl')
 		.controller('bookingCtrl', ['$scope', '$state','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
 			function ($scope, $state, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
-
+				$scope.bookings = [];
+				$scope.residenceSchedule = [];
 				$scope.booking = {};
 				$scope.bookMember = null;
 				$scope.selectedRoom = null;
-				$scope.dtArrive;
-				$scope.dtDepart;
+				$scope.dtArrive = null;
+				$scope.dtDepart = null;
 				$scope.booking.who = [];
 				$scope.note = '';
 
@@ -35,6 +36,7 @@ angular.module('rsl')
 
 				function initModule() {
 					getBookings();
+					getResidenceSchedule();
 					getMembers();
 					getRooms();
 
@@ -120,6 +122,21 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.bookings = res.data.data;
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+
+							});
+				}
+
+				function getResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec) {
+					$scope.residenceSchedule = null;
+					$scope.selectedId = '';
+					bookingData.getResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+									$scope.residenceSchedule = res.data.data;
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);

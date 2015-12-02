@@ -1,7 +1,17 @@
 <div>
-  <div class="container">
+	<div class="container">
 
-    Booking Schedule
-  </div>
+		<div class="row" ng-repeat="residence in residenceSchedule track by residence.index">
+			<div class="col-xs-3"><span
+					ng-show="residence.daySection.index%4===0">{{residence.dt | date:'EEE MMM-d'}}</span></div>
+			<div class="col-xs-2"><span>{{residence.daySection.lclabel}}</span></div>
+			<div class="col-xs-7">
+				<div class="residence-day-section"
+					 ng-repeat="resMember in residence.members track by resMember.member._id"
+					 ng-class="resMember.residenceType"
+						>{{resMember.member.llcname.substring(0,1)}}</div>
+			</div>
+		</div>
+	</div>
 
 </div>
