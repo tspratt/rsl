@@ -235,8 +235,8 @@ describe('Setup tests', function () {
 
 				it('should updte a single Member document by Id', function (done) {
 					var id = '563c2368bad73ad4191aed11';
-					var sUpdateData = 999;
-					business.updateMember(id, {order: sUpdateData},
+					var sUpdateData = 'ns3';
+					business.updateMember(id, {abr3: sUpdateData},
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;

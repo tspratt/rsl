@@ -5,6 +5,7 @@ angular.module('rsl')
 				$scope.bookings = [];
 				$scope.residenceSchedule = [];
 				$scope.booking = {};
+				$scope.canBook = (appData.loggedInUser.person.memberrelationship === 'self');
 				$scope.bookMember = null;
 				$scope.selectedRoom = null;
 				$scope.dtArrive = null;
@@ -137,6 +138,7 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.residenceSchedule = res.data.data;
+									//console.log(JSON.stringify(res.data.data,null,2));
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);

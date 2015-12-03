@@ -54,8 +54,8 @@ angular
     $rootScope.$state = $state;
 
     $rootScope.$on("$locationChangeStart",function(event, next, current){
-      console.log(JSON.stringify(next,null,2));
-      if ($rootScope.isLoggedIn) {
+			console.log('location cur: ', current, 'next:', next);
+			if ($rootScope.isLoggedIn) {
         if (next.indexOf('log-in') > -1) {
           event.preventDefault();
         }

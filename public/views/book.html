@@ -39,7 +39,7 @@
 
 			<div class="col-xs-10">
 				<button class="label"
-						ng-disabled="bookingIncomplete"
+						ng-disabled="bookingIncomplete || !canBook"
 						ng-click="bookRoom()"><span ng-class="{blink: !bookingIncomplete}">Click when ready to book</span></button>
 			</div>
 		</div>
