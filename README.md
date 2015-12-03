@@ -1,7 +1,8 @@
 #Richards-Spratt Lakemont LLC
-##A primarily mobile application for family members to notify each other of their plans to be at the lake
+##A mobile-first application for family members to notify each other of their plans to be at the lake
 
 ##Under Development!
+
 ###Primary Technologies:
 ####Back-end:
 * Mongo Db
@@ -12,7 +13,7 @@
 * Angular JS
 
 
-###Demo
+###Demo (best viewed on a phone)
 The demo login is a real user identity, but cannot save a booking or otherwise update any data.
 
 * The "Book" view allows input of arrival, departure and "who". Note the "Quick Book" feature
@@ -23,4 +24,4 @@ User Id: Tracy
 
 Password: demo
 
-[Demo App](https://rslllc.herokuapp.com/)
+[Demo App: https://rslllc.herokuapp.com/](https://rslllc.herokuapp.com/)
