@@ -1,17 +1,35 @@
 <div>
-	<div class="container">
-
-		<div class="row" ng-repeat="residence in residenceSchedule track by residence.index">
-			<div class="col-xs-3"><span
-					ng-show="residence.daySection.index%4===0">{{residence.dt | date:'EEE MMM-d'}}</span></div>
-			<div class="col-xs-2"><span>{{residence.daySection.lclabel}}</span></div>
-			<div class="col-xs-7">
-				<div class="residence-day-section"
-					 ng-repeat="resMember in residence.members track by resMember.member._id"
-					 ng-class="resMember.residenceType"
-						>{{resMember.member.llcname.substring(0,1)}}</div>
+	<div class="row res-sched-section">
+		<div class="col-xs-2">
+		</div>
+		<div class="col-xs-5">Unit A (Richards)</div>
+		<div class="col-xs-5">Unit B (Spratt)</div>
+	</div>
+	<div class="row res-sched-section">
+		<div class="col-xs-2">
+		</div>
+		<div class="col-xs-10">
+			<div class="residence-day-section header"
+				 ng-repeat="resMember in residenceSchedule[0].members track by resMember.member._id"
+					<span class="res-day-section-content">{{resMember.member.abr2}}</span>
 			</div>
 		</div>
 	</div>
-
+	<div class="view-content double-header">
+		<div class="container">
+			<div class="row res-sched-section" ng-class="residence.daySection.lclabel" ng-repeat="residence in residenceSchedule track by residence.index">
+				<div class="col-xs-2">
+					<span class="day-label" ng-show="residence.daySection.index%4===0">{{residence.dt | date:'EEEE'}}</span>
+					<span class="daypart-label" ng-show="residence.daySection.index%4===1">{{residence.dt | date:'MMM-d'}}</span>
+				</div>
+				<div class="col-xs-10">
+					<div class="residence-day-section"
+						 ng-repeat="resMember in residence.members track by resMember.member._id"
+						 ng-class="resMember.residenceType">
+					<span class="res-day-section-content"
+						  ng-if="resMember.residenceType.length>0"></span> </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

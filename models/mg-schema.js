@@ -31,7 +31,9 @@ var mgSchema = {
 		},
 		share: Number,
 		defaultroom: Schema.ObjectId,
-		order: Number
+		order: Number,
+		abr2: String,
+		abr3: String
 	},{collection: 'members'})
 			.plugin(deepPopulate, {}),
 	User: new Schema ({

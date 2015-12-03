@@ -360,43 +360,64 @@ var EmptyMembersArray = function () {
 	var aMemberData = [
 		{member: {
 			"_id": "563c2368bad73ad4191aed0b",
-			"llcname": "Gertrude S. Richards"
+			"llcname": "Gertrude S. Richards",
+			"abr2": "TR",
+			"abr3": "GSR"
 		}},
 		{member:{
 			"_id": "563c2368bad73ad4191aed0a",
-			"llcname": "Charles P. Richards, Jr."
+			"llcname": "Charles P. Richards, Jr.",
+			"abr2": "CR",
+			"abr3": "CPR"
 		}},
 		{member: {
 			"_id": "563c2368bad73ad4191aed08",
-			"llcname": "Alice E. Richards"
+			"llcname": "Alice E. Richards",
+			"abr2": "AR",
+			"abr3": "AE"
 		}},
 		{member: {
 			"_id": "563c2368bad73ad4191aed0c",
-			"llcname": "Martha C. Richards"
+			"llcname": "Martha C. Richards",
+			"abr2": "MR",
+			"abr3": "MCR"
 		}},
 		{member:{
 			"_id": "563c2368bad73ad4191aed09",
-			"llcname": "Amy Ethridge"
+			"llcname": "Amy Ethridge",
+			"abr2": "AE",
+			"abr3": "AE"
 		}},
 		{member:{
 			"_id": "563c2368bad73ad4191aed11",
-			"llcname": "Nelson T. Spratt, III"
+			"llcname": "Nelson T. Spratt, III",
+			"abr2": "TS",
+			"abr3": "NTS"
 		}},
 		{member:{
 			"_id": "563c2368bad73ad4191aed0e",
-			"llcname": "Jacquelita J. Spratt"
+			"llcname": "Jacquelita J. Spratt",
+			"abr2": "LS",
+			"abr3": "JJS"
 		}},
 		{member:{
 			"_id": "563c2368bad73ad4191aed0d",
-			"llcname": "Gwendolyn Spratt"
+			"llcname": "Gwendolyn Spratt",
+			"abr2": "GS",
+			"abr3": "GDS"
 		}},
 		{member: {
 			"_id": "563c2368bad73ad4191aed10",
-			"llcname": "Melinda S. McKinnon"
+			"llcname": "Melinda S. McKinnon",
+			"abr2": "MS",
+			"abr3": "MSM"
 		}},
 		{member: {
 			"_id": "563c2368bad73ad4191aed0f",
-			"llcname": "Jorgine S. Gentry" }}
+			"llcname": "Jorgine S. Gentry",
+			"abr2": "JG",
+			"abr3": "JSG"
+		}}
 	];
 	for (var i = 0; i < aMemberData.length; i++) {
 		aMembers.push(new ResidentMember(aMemberData[i]));
