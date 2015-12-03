@@ -5,7 +5,7 @@ angular.module('rsl')
 				$scope.bookings = [];
 				$scope.residenceSchedule = [];
 				$scope.booking = {};
-				$scope.canBook = (appData.loggedInUser.person.memberrelationship === 'self');
+				$scope.canBook = (appData.loggedInUser.role !== 'demo');
 				$scope.bookMember = null;
 				$scope.selectedRoom = null;
 				$scope.dtArrive = null;
