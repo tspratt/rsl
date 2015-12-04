@@ -264,11 +264,89 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe('Test Booking endpoints (business)',
+	describe.only('Test Booking endpoints (business)',
 			function () {
 				var aBookings;
 				var booking;
-				it('should return an array of all bookings', function (done) {
+				it('should NOT return a booking overlap id', function (done) {
+					var memberId = '563c2368bad73ad4191aed11';
+					var dtArrive = new Date(2015,10,1); //11-1
+					var dtDepart = new Date(2015,10,6);	//11-6
+					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.have.length(0);
+								});
+							}
+					);
+				});
+				it('should return a booking overlap id surrounded', function (done) {
+					var memberId = '563c2368bad73ad4191aed11';
+					var dtArrive = new Date(2015,10,1); //11-1
+					var dtDepart = new Date(2016,0,1);	//1/1
+					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.data).to.have.property('_id');
+									expect(statusResponse.data._id).to.be.not.null
+								});
+							}
+					);
+				});
+				it('should return a booking overlap id on the front', function (done) {
+					var memberId = '563c2368bad73ad4191aed11';
+					var dtArrive = new Date(2015,10,1);//11-1
+					var dtDepart = new Date(2015,11,1);	//12-1
+					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.data).to.have.property('_id');
+									expect(statusResponse.data._id).to.be.not.null
+								});
+							}
+					);
+				});
+				it('should return a booking overlap id on the back', function (done) {
+					var memberId = '563c2368bad73ad4191aed11';
+					var dtArrive = new Date(2015,11,1);		//12-1
+					var dtDepart = new Date(2015,11,10);	//12-10
+					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.data).to.have.property('_id');
+									expect(statusResponse.data._id).to.be.not.null
+								});
+							}
+					);
+				});
+				it('should return a booking overlap id enclosed', function (done) {
+					var memberId = '563c2368bad73ad4191aed11';
+					var dtArrive = new Date(2015,10,30);		//11-30
+					var dtDepart = new Date(2015,11,4);			//12-4
+					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.data).to.have.property('_id');
+									expect(statusResponse.data._id).to.be.not.null
+								});
+							}
+					);
+				});
+				it('should return an array of all bookings ', function (done) {
 					business.listBookings(null, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -279,7 +357,6 @@ describe('Setup tests', function () {
 									prevValue = statusResponse.data.length;
 									aBookings = statusResponse.data;
 									booking = aBookings[0];
-									console.log(JSON.stringify(statusResponse.data, null, 2))
 								});
 							}
 					);

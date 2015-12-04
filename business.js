@@ -191,6 +191,21 @@ function updateMember(sId, oUpdate, callback) {
 
 }
 
+
+function checkBookingOverlap(memberId, dtArrive, dtDepart, callback) {
+	var statusResponse;
+	model.checkBookingOverlap(memberId, dtArrive, dtDepart, function (err, data) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'checkBookingOverlap', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'checkBookingOverlap', '', 'business', data);
+		}
+		callback(err, statusResponse);
+	});
+
+}
+
 function listBookings(filterSpec, dateSpec, fieldSpec, callback) {
 	var statusResponse;
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
@@ -449,3 +464,5 @@ exports.updateBooking = updateBooking;
 exports.listBookings = listBookings;
 exports.getResidenceSchedule = getResidenceSchedule;
 //exports.insertCollection = insertCollection;
+exports.checkBookingOverlap = checkBookingOverlap;
+

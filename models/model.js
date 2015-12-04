@@ -6,8 +6,8 @@
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 var winston = require('winston');
 var logger = new (winston.Logger)({
-	transports: [
-		new (winston.transports.Console)({'timestamp': true, level: 'info'})
+	transports : [
+		new (winston.transports.Console)({'timestamp' : true, level : 'info'})
 	]
 });
 var utils = require('../lib/utils');
@@ -33,12 +33,12 @@ function initDb(uri, callback) {
 		if (err) {
 			statusResponse = new StatusResponse('error', "System Error, please try again", '', null, err);
 			logger.error(JSON.stringify(statusResponse));
-			callback(err, {modelName: 'mgoModel', dbName: 'shades'});
+			callback(err, {modelName : 'mgoModel', dbName : 'shades'});
 		}
 		else {
 			logger.info('mongodb connected');
 			_db = db;
-			callback(err, {modelName: 'model', dbName: ''});
+			callback(err, {modelName : 'model', dbName : ''});
 		}
 	});
 }//
@@ -51,7 +51,7 @@ function initMgDb(uri, callback) {
 	mgDb.on('error', function (err) {
 		statusResponse = new StatusResponse('error', "System Error, please try again", '', null, err);
 		logger.error(JSON.stringify(statusResponse));
-		callback(err, {modelName: 'mgoModel', dbName: 'shades'});
+		callback(err, {modelName : 'mgoModel', dbName : 'shades'});
 	});
 	mgDb.once('open', function () {
 		logger.info('Mongoose connected');
@@ -82,7 +82,7 @@ function listPersons(oQuery, filterSpec, pageSpec, oFieldSpec, callback) {
 		oQuery[filterSpec.field] = filterSpec.value;
 		//oQuery = JSON.parse(sQuery);
 	}
-	mongoose.model('Person').find(oQuery, oFieldSpec, {memberrelationship: 1})
+	mongoose.model('Person').find(oQuery, oFieldSpec, {memberrelationship : 1})
 			.skip(iSkip)
 			.limit(iLimit)
 			.deepPopulate('member.branch')
@@ -98,9 +98,9 @@ function listPersons(oQuery, filterSpec, pageSpec, oFieldSpec, callback) {
 
 function filterPersonsByName(matchString, oFieldSpec, callback) {
 	var oQuery = {
-		$or: [
-			{"firstname": new RegExp(matchString, 'i')},
-			{"lastname": new RegExp(matchString, 'i')}
+		$or : [
+			{"firstname" : new RegExp(matchString, 'i')},
+			{"lastname" : new RegExp(matchString, 'i')}
 		]
 	};
 	mongoose.model('Person').find(oQuery, oFieldSpec)
@@ -108,8 +108,8 @@ function filterPersonsByName(matchString, oFieldSpec, callback) {
 			.lean()
 			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
-							path: 'member.branch',
-							model: 'Branch'
+							path  : 'member.branch',
+							model : 'Branch'
 						},
 						function (err, persons) {
 							if (err) {
@@ -122,7 +122,6 @@ function filterPersonsByName(matchString, oFieldSpec, callback) {
 			});
 
 }
-
 
 
 /**
@@ -138,7 +137,7 @@ function insertCollection(sCollection, callback) {
 		//  omember.personid = ObjectId(sId);
 		//}
 
-		_db.collection(sCollection, {safe: true},
+		_db.collection(sCollection, {safe : true},
 				function (err, collection) {
 					collection.insert(jsonArray, function (err, data) {
 						if (err) {
@@ -157,23 +156,23 @@ function getUser(oQuery, callback) {
 			.deepPopulate('person.member.branch')
 			.lean()
 			.exec(function (err, persons) {
-					if (err) {
-						callback(err, null);
-					} else {
-						callback(null, persons);
-					}
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, persons);
+				}
 			});
 }
 
 function getPerson(id, callback) {
 	var oId = new ObjectId(id);
-	mongoose.model('Person').findOne({_id: oId})
+	mongoose.model('Person').findOne({_id : oId})
 			.deepPopulate('member.branch')
 			.lean()
 			.exec(function (err, persons) {
 				mongoose.model('Person').populate(persons, {
-							path: 'member.branch',
-							model: 'Branch'
+							path  : 'member.branch',
+							model : 'Branch'
 						},
 						function (err, persons) {
 							if (err) {
@@ -240,7 +239,7 @@ function listRooms(filterSpec, pageSpec, oFieldSpec, callback) {
 			});
 }
 
-function insertBooking (oBooking, callback) {
+function insertBooking(oBooking, callback) {
 	var Booking = mongoose.model('Booking');
 	var booking = new Booking(oBooking);
 	booking.save(function (err, result) {
@@ -248,8 +247,8 @@ function insertBooking (oBooking, callback) {
 	})
 }
 
-function updateBooking (sId, oUpdate, callback) {
-	mongoose.model('Booking').update({ _id: ObjectId(sId) }, oUpdate, { multi: false }, function (err, result) {
+function updateBooking(sId, oUpdate, callback) {
+	mongoose.model('Booking').update({_id : ObjectId(sId)}, oUpdate, {multi : false}, function (err, result) {
 		callback(err, result);
 	});
 }
@@ -266,11 +265,11 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 	if (dateSpec) {
 		var dtFrom = new Date(dateSpec.from);
 		var dtTo = new Date(dateSpec.to);
-		oQuery.arrive = {$gte:dtFrom};
-		oQuery.depart = {$lte:dtTo};
+		oQuery.arrive = {$gte : dtFrom};
+		oQuery.depart = {$lte : dtTo};
 	}
 	mongoose.model('Booking').find(oQuery, oFieldSpec)
-			.sort({arrive: 1})
+			.sort({arrive : 1})
 			.skip(iSkip)
 			.limit(iLimit)
 			.populate('who')
@@ -286,7 +285,41 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 			});
 }
 
-function insertPerson (oPerson, callback) {
+/**
+ * checks for overlapping dates for a booking.
+ * If found, returns the overlapped booking id for display and update.
+ * If not, returned data is null
+ * @param memberId
+ * @param dtArrive
+ * @param dtDepart
+ * @param callback
+ */
+function checkBookingOverlap(memberId, dtArrive, dtDepart, callback) {
+	//var oQuery = {"member._id": memberId, $or:[{arrive: {$gte:dtArrive,$lte:dtDepart}},{depart: {$gte:dtArrive,$lte:dtDepart}}]};
+	var oQuery = {
+		"member" : ObjectId(memberId),
+		$or      : [
+			{"arrive" : {$gte : dtArrive, $lte : dtDepart}},
+			{"depart" : {$gte : dtArrive, $lte : dtDepart}},
+			{"arrive" : {$lte : dtArrive}, "depart" : {$gte : dtDepart}}
+		]
+	};
+
+	mongoose.model('Booking').findOne(oQuery)
+			.populate('who')
+			.deepPopulate('member.branch')
+			.populate('room')
+			.lean()
+			.exec(function (err, booking) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, booking);
+				}
+			});
+}
+
+function insertPerson(oPerson, callback) {
 	var Person = mongoose.model('Person');
 	var person = new Person(oPerson);
 	person.save(function (err, result) {
@@ -295,47 +328,47 @@ function insertPerson (oPerson, callback) {
 
 }
 
-function updatePerson (sId, oUpdate, callback) {
-	mongoose.model('Person').update({ _id: ObjectId(sId) }, oUpdate, { multi: false }, function (err, result) {
+function updatePerson(sId, oUpdate, callback) {
+	mongoose.model('Person').update({_id : ObjectId(sId)}, oUpdate, {multi : false}, function (err, result) {
 		callback(err, result);
 	});
 }
 
-function updateMember (sId, oUpdate, callback) {
-	mongoose.model('Member').update({ _id: ObjectId(sId) }, oUpdate, { multi: false }, function (err, result) {
+function updateMember(sId, oUpdate, callback) {
+	mongoose.model('Member').update({_id : ObjectId(sId)}, oUpdate, {multi : false}, function (err, result) {
 		callback(err, result);
 	});
 }
 
 /*
-function insertItem(callback) {
-	var ItemModel = mongoose.model('Unit');
-	var item = new ItemModel({
-		property: 'Lakemont',
-		number: 'B',
-		description: 'East wing',
-		capacity: '14',
-		expandable: '5',
-		branchid: ObjectId('563c2429404d259013af4a8b'),
-		images: ['images/units/lakemontb-1.jpg']
-	});
-	item.save(function (err) {
-		callback(err, JSON.stringify(item, null, 2));
-	})
-}
-*/
+ function insertItem(callback) {
+ var ItemModel = mongoose.model('Unit');
+ var item = new ItemModel({
+ property: 'Lakemont',
+ number: 'B',
+ description: 'East wing',
+ capacity: '14',
+ expandable: '5',
+ branchid: ObjectId('563c2429404d259013af4a8b'),
+ images: ['images/units/lakemontb-1.jpg']
+ });
+ item.save(function (err) {
+ callback(err, JSON.stringify(item, null, 2));
+ })
+ }
+ */
 
 
 function setProperty(callback) {
 	try {
-		_db.collection('members', {safe: true},
+		_db.collection('members', {safe : true},
 				function (err, collection) {
 					collection.update({}, {
-								$set: {
-									"defaultroom": ObjectId("564b61fd040132ec46e5cf79")
+								$set : {
+									"defaultroom" : ObjectId("564b61fd040132ec46e5cf79")
 								}
 							},
-							{multi: true},
+							{multi : true},
 							function (err, data) {
 								if (err) {
 									callback(err, null);
@@ -369,4 +402,4 @@ exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.listBookings = listBookings;
 exports.setProperty = setProperty;
-
+exports.checkBookingOverlap = checkBookingOverlap;
