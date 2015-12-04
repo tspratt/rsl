@@ -33,6 +33,20 @@ angular.module('rsl')
 				return promise;
 			};
 
+			bookingData.checkBookingOverlap = function (memberid, dtArrive, dtDepart) {
+				var oQueryParams = {memberid: memberid, arrive:dtArrive, depart:dtDepart};
+				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'check-booking-overlap/',
+						{params : oQueryParams})
+						.then(function (res) {
+							return res;
+						})
+						.catch(function (res) {
+							console.error('checkBookingOverlap', resp.status, res.data);
+							return res;
+						});
+				return promise;
+			};
+
 			bookingData.getBooking = function (sOid) {
 				var oQueryParams = {oid : sOid};
 				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'bookings/' + sOid,

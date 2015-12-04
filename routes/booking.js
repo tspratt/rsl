@@ -125,7 +125,7 @@ router.get('/check-booking-overlap', function (req, res, next) {
 	var memberid = req.query.memberid;
 	var dtArrive = req.query.arrive;
 	var dtDepart = req.query.depart;
-	business.checkBookingOverlap(memberId, dtArrive, dtDepart, function (err, statusResponse) {
+	business.checkBookingOverlap(memberid, dtArrive, dtDepart, function (err, statusResponse) {
 		res.send(statusResponse);
 	})
 });

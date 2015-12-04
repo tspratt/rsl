@@ -114,6 +114,23 @@ angular.module('rsl')
 
 				function checkBooking() {
 					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
+					if ($scope.dtArrive && $scope.dtDepart) {
+						bookingData.checkBookingOverlap(appData.loggedInUser.person.member._id, $scope.dtArrive, $scope.dtDepart)
+								.then(function (res) {
+									if (res.status >= 200 && res.status < 300) {
+										if (res.data.data.hasOwnProperty('_id')) {
+											console.log('Booking dates overlap: ' + res.data.data.arrive);
+										}
+										else {
+											//do nothing
+										}
+									}
+									else {
+										console.log('HTTP Error: ' + res.statusText);
+									}
+
+								});
+					}
 				}
 
 				function getBookings(oQuerySpec, oDateSpec, oFieldSpec) {
