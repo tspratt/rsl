@@ -63,6 +63,12 @@ button, button.label {
 	/*border: 1px solid;*/
 }
 
+button.close {
+	align: right;
+	color: black;
+	font-size: 14px;
+}
+
 button.main-action {
 	width: 100%;
 	height: 2.5em;
@@ -463,4 +469,27 @@ button.plus {
 }
 .res-day-section-content {
 
+}
+
+.popup-large {
+	position: fixed;
+	top:50%;
+	left: 50%;
+	margin-top: -15em;
+	margin-left: -12em;
+	width: 24em; height:30em;
+	background: linear-gradient(to right, lightgray, white, lightgray);
+	color: black;
+	padding: 1em;
+}
+.popup-large.booking {
+	background: linear-gradient(to right, steelblue, lightgray, steelblue);
+}
+.popup-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.popup-label {
+	font-size: 14px;
+	font-weight: normal;
 }

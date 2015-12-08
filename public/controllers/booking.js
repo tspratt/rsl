@@ -1,12 +1,13 @@
 angular.module('rsl')
-		.controller('bookingCtrl', ['$scope', '$state','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
-			function ($scope, $state, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
+		.controller('bookingCtrl', ['$scope', '$state', '$stateParams','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
+			function ($scope, $state, $stateParams, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
 				$scope.bookings = [];
 				$scope.residenceSchedule = [];
 				$scope.booking = {};
 				$scope.canBook = (appData.loggedInUser.role !== 'demo');
-				$scope.bookMember = null;
+				$scope.bookMember = appData.loggedInUser.person.member;
+				$scope.bookMemberId = appData.loggedInUser.person.member._id;
 				$scope.selectedRoom = null;
 				$scope.dtArrive = null;
 				$scope.dtDepart = null;
@@ -32,20 +33,35 @@ angular.module('rsl')
 				$scope.members = [];
 				$scope.addingPerson = false;
 				$scope.bookingIncomplete = true;
-
+				$scope.bookingSelected = {};
+				$scope.bookingDetailShow = false;
+				$scope.initialMode = 'new';
+				$scope.initialData;
+				$scope.activestate = $state.$current.name;
 
 
 				function initModule() {
-					getBookings();
-					getResidenceSchedule();
-					getMembers();
-					getRooms();
+					console.log('stateparams:', $stateParams.data);
+					$scope.initialData = $stateParams.data;
+					if ($scope.initialData) {
+						$scope.bookMemberId = $scope.initialData.memberid;			//there will always be a memberid if we are launched from the booking schedule
 
+					}
+
+					if ($state.$current.name === 'book') {
+						getRooms();
+						getMembers();
+					}
+					else if ($state.$current.name === 'booking-schedule') {
+						getBookings();
+						getResidenceSchedule();
+					}
 				}
 
 				$scope.$watch('bookMember', function (member) {
 					if (member) {
 						getPersonsForMember(member._id);
+						setDefaultRoom();
 					}
 				});
 
@@ -148,26 +164,29 @@ angular.module('rsl')
 				}
 
 				function getRooms() {
-					bookingData.getRooms(null, null, 'unit', appData.loggedInUser.person.member.branch.unit, null)
+					bookingData.getRooms(null, null, 'unit', $scope.bookMember.branch.unit, null)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.rooms = res.data.data;
-									var defaultRoomId = appData.loggedInUser.person.member.defaultroom;
-									if (defaultRoomId) {
-										for (var i = 0; i < $scope.rooms.length; i++) {
-											if ($scope.rooms[i]._id === defaultRoomId) {
-												$scope.selectedRoom = $scope.rooms[i];
-												break;
-											}
-										}
-									}
-
+									setDefaultRoom();
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
 								}
 
 							});
+				}
+
+				function setDefaultRoom() {
+					var defaultRoomId = $scope.bookMember.defaultroom;
+					if (defaultRoomId) {
+						for (var i = 0; i < $scope.rooms.length; i++) {
+							if ($scope.rooms[i]._id === defaultRoomId) {
+								$scope.selectedRoom = $scope.rooms[i];
+								break;
+							}
+						}
+					}
 				}
 
 				function getMembers() {
@@ -179,13 +198,15 @@ angular.module('rsl')
 									});
 
 									$scope.members = aTmp;
+
 									for (var i = 0; i < $scope.members.length; i++) {
-										if ($scope.members[i]._id === appData.loggedInUser.person.member._id) {
+										if ($scope.members[i]._id === $scope.bookMemberId) {
 											$scope.members[i].selected = true;
 											$scope.bookMember = $scope.members[i];
 											break;
 										}
 									}
+
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -297,13 +318,32 @@ angular.module('rsl')
 					$scope.addingPerson = false;
 				};
 
-				/**
-				 * Requires booking data
-				 */
-				function buildInResidence () {
+				//$scope.popoverTemplate = '';
 
-				}
+				$scope.showBookingDetail = function (residence, resMember) {
+					console.log(resMember.bookingid);
+					var booking;
+					if (resMember.bookingid && resMember.bookingid.length > 0) {
+						$scope.bookingSelected = null;
+						for (var i = 0; i < $scope.bookings.length; i++) {
+							booking = $scope.bookings[i];
+							if (booking._id === resMember.bookingid) {
+								$scope.bookingSelected = booking;
+								break;
+							}
+						}
+						$scope.bookingDetailShow = ($scope.bookingSelected);
+					}
+					else {
+						$state.go('book',{data: {mode: 'new', memberid: resMember.member._id, arrive: residence.dt}});
+					}
 
+				};
+
+				$scope.bookingDetailClose = function (sMode, data) {
+					console.log('mode:', sMode);
+					$scope.bookingDetailShow = false;
+				};
 
 				function getWeekday(dayNum) {
 					var a = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

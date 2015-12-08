@@ -28,7 +28,7 @@ angular.module('rsl')
             $scope.addAlert('warning', 'Demo users cannot book, showing schedule');
             sState = 'booking-schedule';
           }
-          $scope.goView(sState);
+          $scope.goView(sState, null);
         }
         else {
           PersonData.loginUser(this.username, this.password)
@@ -43,7 +43,7 @@ angular.module('rsl')
                       $scope.addAlert('warning', 'Only members can book, showing schedule');
                       sState = 'booking-schedule'
                     }
-                    $scope.goView(sState);
+                    $scope.goView(sState, {booking: null});
                   }
                   else {
                     $scope.addAlert('danger', 'Login Failed: ' + res.data.data.message);
@@ -64,8 +64,8 @@ angular.module('rsl')
           $scope.activeState = toState.name;
         });
 
-      $scope.goView = function (state) {
-        $state.go(state)
+      $scope.goView = function (state, oParams) {
+        $state.go(state, oParams);
       };
 
       $scope.alerts = [];

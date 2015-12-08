@@ -235,6 +235,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 			for (var i = 0; i < aBookings.length; i++) {
 				idxDaySection = 0;
 				oBooking = aBookings[i];
+				oBooking.index = i;
 				dtArrive = oBooking.arrive;
 				dtDepart = oBooking.depart;
 				dArrive = dtArrive.clone();
@@ -426,6 +427,7 @@ var EmptyMembersArray = function () {
 };
 
 var ResidentMember = function (oBooking, residenceType) {
+	this.bookingid = oBooking._id;
 	this.member = (oBooking) ? oBooking.member : null;
 	this.residenceType = residenceType || '';
 };

@@ -10,26 +10,55 @@
 		</div>
 		<div class="col-xs-10">
 			<div class="residence-day-section header"
-				 ng-repeat="resMember in residenceSchedule[0].members track by resMember.member._id"
-					<span class="res-day-section-content">{{resMember.member.abr2}}</span>
+					 ng-repeat="resMember in residenceSchedule[0].members track by resMember.member._id">
+				<span class="res-day-section-content">{{resMember.member.abr2}}</span>
 			</div>
 		</div>
 	</div>
 	<div class="view-content double-header">
 		<div class="container">
-			<div class="row res-sched-section" ng-class="residence.daySection.lclabel" ng-repeat="residence in residenceSchedule track by residence.index">
+			<div class="row res-sched-section"
+					 ng-class="residence.daySection.lclabel"
+					 ng-repeat="residence in residenceSchedule track by residence.index">
 				<div class="col-xs-2">
 					<span class="day-label" ng-show="residence.daySection.index%4===0">{{residence.dt | date:'EEEE'}}</span>
 					<span class="daypart-label" ng-show="residence.daySection.index%4===1">{{residence.dt | date:'MMM-d'}}</span>
 				</div>
 				<div class="col-xs-10">
 					<div class="residence-day-section"
-						 ng-repeat="resMember in residence.members track by resMember.member._id"
-						 ng-class="resMember.residenceType">
+							 ng-repeat="resMember in residence.members track by resMember.member._id"
+							 ng-class="resMember.residenceType"
+							 ng-click="showBookingDetail(residence, resMember)" ng-attribute="">
 					<span class="res-day-section-content"
-						  ng-if="resMember.residenceType.length>0"></span> </div>
+								ng-if="resMember.residenceType.length>0"></span></div>
 				</div>
 			</div>
 		</div>
 	</div>
+ <div class="center-content">
+	 <div id="booking-detail" class="popup-large booking" ng-show="bookingDetailShow">
+		 <form class="form-horizontal book-form">
+			 <div class="popup-title">Booking detail</div>
+			 <div class="form-group">
+				 <div class="col-xs-10">
+					 <button class="label button" ng-click="bookingDetailClose('edit', bookingSelected)">Change</button>
+					 <button class="label button" ng-click="bookingDetailClose('replace', bookingSelected)">Replace</button>
+					 <button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
+
+				 </div>
+				 <div class="col-xs-1">
+					 <button class="button close" ng-click="bookingDetailClose('close', bookingSelected)">Close</button>
+				 </div>
+				 <div class="col-xs-1">
+
+				 </div>
+			 </div>
+			 <hr class="header">
+		 </form>
+
+		 {{bookingSelected.member.llcname}}
+	 </div>
+ </div>
+
+
 </div>
