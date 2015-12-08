@@ -42,7 +42,7 @@
 			 <div class="form-group">
 				 <div class="col-xs-10">
 					 <button class="label button" ng-click="bookingDetailClose('edit', bookingSelected)">Change</button>
-					 <button class="label button" ng-click="bookingDetailClose('replace', bookingSelected)">Replace</button>
+					 <button class="label button" ng-click="bookingDetailClose('delete', bookingSelected)">Delete</button>
 					 <button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
 
 				 </div>
@@ -54,9 +54,38 @@
 				 </div>
 			 </div>
 			 <hr class="header">
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Member:</span>
+				 <span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Room:</span>
+				 <span class="col-xs-9 popup-value">{{bookingSelected.room.displayName}}: {{bookingSelected.room.description}}</span>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Arrive:</span>
+				 <span class="col-xs-9 popup-value">{{bookingSelected.arrive | date:'EEEE MMM-d'}}</span>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Depart:</span>
+				 <span class="col-xs-9 popup-value">{{bookingSelected.depart | date:'EEEE MMM-d'}}</span>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Who</span>
+				 <span class="book-who" ng-repeat="person in bookingSelected.who">{{person.firstname}}&nbsp;</span>
+			 </div>
+
+			 <div class="form-group">
+				 <div class="col-xs-2">
+					 <label class="control-label col-xs-2" for="taNotes">Notes:</label>
+				 </div>
+				 <div class="col-xs-10">
+					 <textarea id="taNotes" ng-value="note" readonly></textarea>
+				 </div>
+			 </div>
 		 </form>
 
-		 {{bookingSelected.member.llcname}}
+
 	 </div>
  </div>
 

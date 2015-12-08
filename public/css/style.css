@@ -493,3 +493,8 @@ button.plus {
 	font-size: 14px;
 	font-weight: normal;
 }
+.popup-value {
+	font-size: 14px;
+	font-weight: normal;
+	text-decoration: underline;
+}
