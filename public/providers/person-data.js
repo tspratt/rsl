@@ -1,12 +1,12 @@
 'use strict';
 angular.module('rsl')
-  .factory('PersonData', ['$http', 'appConstants', function ($http, appConstants) {
+  .factory('PersonData', ['$http', 'envConfig', function ($http, envConfig) {
     var PersonData = {};
 
     PersonData.loginUser = function (userid, password) {
       var oBody = {userid: userid, password: password};
 
-      var promise =  $http.post(appConstants.SERVICE_URL_BASE + 'loginUser', oBody)
+      var promise =  $http.post(envConfig.SERVICE_URL_BASE + 'loginUser', oBody)
           .then(function (res) {
             return res;
           })
@@ -22,7 +22,7 @@ angular.module('rsl')
       if (bReducedPayload) {
         oQueryParams.fieldSpec = '{"ssn": 0}';
       }
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'persons',
+      var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'persons',
         {params: oQueryParams})
         .then(function (res) {
           return res;
@@ -37,7 +37,7 @@ angular.module('rsl')
 
     PersonData.getPersonsByNameMatch = function (sMatchString) {
       var oQueryParams = {matchstring: sMatchString};
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'persons',
+      var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'persons',
         {params: oQueryParams})
         .then(function (res) {
           return res;
@@ -51,7 +51,7 @@ angular.module('rsl')
 
     PersonData.getPerson = function (sOid) {
       var oQueryParams = {oid: sOid};
-      var promise =  $http.get(appConstants.SERVICE_URL_BASE + 'persons/' + sOid,
+      var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'persons/' + sOid,
         {params: oQueryParams})
         .then(function (res) {
           return res;
@@ -65,7 +65,7 @@ angular.module('rsl')
 
 			PersonData.savePerson = function (oPerson) {
 				var oBody = { person: oPerson};
-				var promise =  $http.put(appConstants.SERVICE_URL_BASE + 'person', oBody)
+				var promise =  $http.put(envConfig.SERVICE_URL_BASE + 'person', oBody)
 						.then(function (res) {
 							return res;
 						})

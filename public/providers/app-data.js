@@ -1,6 +1,6 @@
 'use strict';
 angular.module('rsl')
-  .factory('appData', ['$http', 'appConstants', function ($http, appConstants) {
+  .factory('appData', ['$http', 'envConfig', function ($http, envConfig) {
     var appData = {};
 
     appData.loggedInUser = {};
