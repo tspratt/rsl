@@ -37,7 +37,8 @@ angular
       .state('book', {
         url: '/book',
         templateUrl: '/views/book.html',
-        controller: 'bookingCtrl'
+        controller: 'bookingCtrl',
+        params: {data: null}
       })
       .state('booking-schedule', {
         url: '/booking-schedule',

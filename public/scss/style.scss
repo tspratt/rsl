@@ -1,0 +1,500 @@
+.nav, .pagination, .carousel, .panel-title a { /*for bootstrap*/
+	cursor: pointer;
+}
+
+.form-control {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.form-horizontal .form-group {
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+
+label[class*="col-"] {
+	padding-right: 0.3em;
+	padding-left: 0.3em;
+}
+
+div[class*="col-"] {
+	padding-right: 0.3em;
+	padding-left: 0.3em;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	font: 14px "Oswald";
+	font-weight: bold;
+	color: steelblue;
+	background-color: papayawhip;
+}
+
+select {
+	border: 1px solid black;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+label {
+	font-weight: bold;
+	color: steelblue;
+}
+
+label.nested {
+	font-weight: normal;
+	font-size: 14px;
+}
+
+.label-radio {
+	margin: 0.25em;
+}
+
+button, button.label {
+	/*margin: 12px;*/
+	font: 12px "Oswald";
+	font-weight: bold;
+	color: #ffffff;
+	background-color: slategrey;
+	border-radius: 25px;
+	/*border: 1px solid;*/
+}
+
+button.close {
+	align: right;
+	color: black;
+	font-size: 14px;
+}
+
+button.main-action {
+	width: 100%;
+	height: 2.5em;
+	min-width: 4.5em;
+	font-size: 14px;
+}
+
+button:focus {
+	outline: 0;
+}
+
+.btn {
+	padding: 3px 6px;
+}
+
+.btn-primary.active, .btn-primary:active, .btn-primary:hover, .btn-primary.active:hover {
+	background-color: transparent;
+	border: solid 1px #245580;
+	color: #245580;
+}
+
+input[type="text"], input[type="password"] {
+	display: block;
+	margin: 0.25em;
+}
+
+input.match-string {
+	display: inline;
+	width: 350px;
+	font-weight: bold;
+}
+
+input.filter-value {
+	margin-left: 1em;
+	max-width: 100px;
+}
+
+button:hover:enabled {
+	color: rgba(0, 0, 0, 0.75);
+}
+
+button:active {
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+}
+
+a {
+	color: #00B7FF;
+}
+
+hr.header {
+	width: 100%;
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+	border: 2px solid darkslateblue;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+
+hr.paginator {
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+	border: 3px solid darkslateblue;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+
+.header-link-bar {
+	position: absolute;
+	top: 0;
+	right: 20px;
+}
+
+.header-link {
+	float: right;
+	cursor: pointer;
+	padding-left: 5px;
+	text-decoration: underline;
+}
+
+.header-link:hover {
+	color: rgba(0, 0, 0, 0.75);
+}
+
+button.log-in {
+	float: left;
+	height: 3.0em;
+	min-width: 4.0em;
+	font-size: 1.2em;
+	margin: 0.2em;
+}
+
+.login-input {
+
+	border: solid 1px;
+}
+
+.login-input input {
+	font-size: 2em;
+	width: 12em;
+}
+
+.content {
+	padding: 0.2em;
+}
+
+.view-content {
+	position: absolute;
+	top: 105px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	overflow-y: scroll;
+}
+.view-content.single-header {
+	top: 125px;
+}
+.view-content.double-header {
+	top: 145px;
+}
+
+.horiz-menu {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.horiz-menu li {
+	float: left;
+}
+
+.horiz-menu a {
+	padding-right: 20px;
+	width: 100px;
+	color: darkslateblue;
+	text-decoration: none;
+}
+
+.horiz-menu li.selected {
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+	text-decoration: underline;
+}
+
+.horiz-menu li:hover {
+	color: rgba(0, 0, 0, 0.75);
+	opacity: 0.60;
+}
+
+.header {
+	font-size: large;
+}
+
+.header-label {
+	font-family: "Bodoni MT Black";
+	position: relative;
+	top: 1.0em;
+	left: 10px;
+}
+
+.description {
+	font-size: small;
+	font-weight: normal;
+}
+
+.container {
+	clear: both; /*we never want this element to float*/
+	padding-right: 0.2em;
+	padding-left: 0.2em;
+}
+
+.person-list-heading {
+	font-size: 16px;
+}
+
+.person-list-detail {
+	font-size: 12px;
+}
+
+.book-form {
+	font-size: 16px;
+}
+
+.form-label {
+	float: left;
+	/*width:50px;*/
+	color: steelblue;
+	text-align: right;
+	margin-right: 0.5em;
+}
+
+.form-value {
+	color: #000000;
+}
+
+button.paginator {
+	padding: 0;
+	margin: 0;
+	width: 30px;
+}
+
+select.paginator {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+button.paginator:focus {
+	outline: 0;
+}
+
+.paginator-label {
+	float: left;
+	width: 30px;
+	font-weight: normal;
+	color: steelblue;
+	margin-left: 5px;
+}
+
+.paginator-value {
+	color: #000000;
+	float: left;
+	width: 1em;
+}
+
+.paginator-label.page-num {
+	width: 70px;
+}
+
+.logo {
+	width: 100%;
+	height: 200px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url("../images/rsl-logo-2.png");
+}
+
+.view-header {
+
+	width: 100%;
+}
+
+.logo-small {
+	width: 40px;
+}
+
+div.module-menu {
+
+}
+
+button.module-menu-item {
+	float: left;
+	height: 3.0em;
+	min-width: 4.0em;
+	font-size: 1.2em;
+	margin: 0.2em;
+}
+
+button[disabled] {
+	color: lightgray;
+}
+
+div.module-menu button.selected {
+	color: blue;
+	background-color: unset;
+	border: solid 1px slategrey;
+}
+
+button.label {
+	height: 2.5em;
+	min-width: 4.5em;
+	font-size: 14px;
+
+}
+
+button.quick-book {
+	font-size: 13px;
+	height: 3.0em;
+}
+
+button.plus {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.system-alert {
+	position: absolute;
+	top: 15em;
+	left: 1em;
+	background-color: white;
+	color: red;
+	width: 20em;
+	font-size: 1.2em;
+}
+
+.book-date {
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.blink {
+	animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0.0;
+	}
+}
+
+#taNotes {
+	width: 100%;
+	height: 60px;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.expander {
+	margin-right: 0.3em;
+	margin-left: 0.3em;
+	padding: 0.3em;
+	border: solid 1px #337ab7;
+	border-radius: 10px;
+}
+
+.expander.nested {
+	margin: 0;
+}
+
+.day-label {
+	color: white;
+}
+.daypart-label {
+	float: right;
+	color: white;
+	font-style: italic;
+}
+
+.residence-day-section {
+	display: block;
+	float: left;
+	height: 24px;
+	width: 26px;
+	margin-left: 2px;
+	background-color: white;
+	opacity: 0.2;
+	overflow:hidden;
+	text-align: center;
+}
+.residence-day-section.header {
+	border: none;
+	background-color: unset;
+	opacity: 1;
+	font-size: 12px;
+	font-weight: bold;
+}
+.arrive {
+	border-top: solid 2px black;
+	border-left: solid 1px black;
+	border-right: solid 1px black;
+	background: linear-gradient(to right, steelblue, lightgray, steelblue);
+	opacity: 1;
+}
+.resident {
+	border-top: none;
+	border-left: solid 1px black;
+	border-right: solid 1px black;
+	background: linear-gradient(to right, steelblue, lightgray, steelblue);
+	opacity: 1;
+}
+.depart {
+	border-top: none;
+	border-bottom: solid 2px black;
+	border-left: solid 1px black;
+	border-right: solid 1px black;
+	background: linear-gradient(to right, steelblue, lightgray, steelblue);
+	opacity: 1;
+}
+.row.res-sched-section {
+	margin-left: 3px;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	font-size: 12px;
+}
+.row.res-sched-section.night {
+	background: linear-gradient(black, grey);
+}
+.row.res-sched-section.morning {
+	background: linear-gradient(gray, yellow);
+}
+.row.res-sched-section.afternoon {
+	background: linear-gradient(yellow, orange);
+}
+.row.res-sched-section.evening {
+	background: linear-gradient(orange, black);
+}
+.res-day-section-content {
+
+}
+
+.popup-large {
+	position: fixed;
+	top:50%;
+	left: 50%;
+	margin-top: -15em;
+	margin-left: -12em;
+	width: 24em; height:30em;
+	background: linear-gradient(to right, lightgray, white, lightgray);
+	color: black;
+	padding: 1em;
+}
+.popup-large.booking {
+	background: linear-gradient(to right, steelblue, lightgray, steelblue);
+}
+.popup-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.popup-label {
+	font-size: 14px;
+	font-weight: normal;
+}
+.popup-value {
+	font-size: 14px;
+	font-weight: normal;
+	text-decoration: underline;
+}

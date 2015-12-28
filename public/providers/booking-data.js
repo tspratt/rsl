@@ -1,12 +1,12 @@
 'use strict';
 angular.module('rsl')
-		.factory('bookingData', ['$http', 'appConstants', 'appData', function ($http, appConstants, appData) {
+		.factory('bookingData', ['$http', 'envConfig', 'appData', function ($http, envConfig, appData) {
 			var bookingData = {};
 
 			bookingData.getBookings = function (dtFrom, dtTo, sFilterFieldName, filterValue) {
 				var oQueryParams = {from : dtFrom, to : dtTo};
 
-				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'bookings',
+				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'bookings',
 						{params : oQueryParams})
 						.then(function (res) {
 							return res;
@@ -21,7 +21,7 @@ angular.module('rsl')
 			bookingData.getResidenceSchedule = function (dtFrom, dtTo, sFilterFieldName, filterValue) {
 				var oQueryParams = {from : dtFrom, to : dtTo};
 
-				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'residence-schedule',
+				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'residence-schedule',
 						{params : oQueryParams})
 						.then(function (res) {
 							return res;
@@ -49,7 +49,7 @@ angular.module('rsl')
 
 			bookingData.getBooking = function (sOid) {
 				var oQueryParams = {oid : sOid};
-				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'bookings/' + sOid,
+				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'bookings/' + sOid,
 						{params : oQueryParams})
 						.then(function (res) {
 							return res;
@@ -68,7 +68,7 @@ angular.module('rsl')
 					field      : sFilterFieldName,
 					value      : filterValue
 				};
-				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'rooms',
+				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'rooms',
 						{params : oQueryParams})
 						.then(function (res) {
 							return res;
@@ -82,7 +82,7 @@ angular.module('rsl')
 
 			bookingData.bookRoom = function (oBooking) {
 				var oBody = {action : 'insert', booking : oBooking};
-				var promise = $http.post(appConstants.SERVICE_URL_BASE + 'book-room', oBody)
+				var promise = $http.post(envConfig.SERVICE_URL_BASE + 'book-room', oBody)
 						.then(function (res) {
 							return res;
 						})
