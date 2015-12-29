@@ -53,7 +53,7 @@ angular.module('rsl')
 							}
 							else if ($scope.initialData.mode === 'change') {
 								$scope.booking = $scope.initialData.booking;
-								$scope.bookMember._id = $scope.initialData.booking.member._id;
+								$scope.bookMember = $scope.initialData.booking.member;
 								$scope.dtArrive = new Date($scope.initialData.booking.arrive);
 								$scope.dtDepart = new Date($scope.initialData.booking.depart);
 								$scope.note = $scope.initialData.booking.note;

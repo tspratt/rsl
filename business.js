@@ -310,7 +310,6 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						aResidenceSchedule.push(oResidence);
 
 						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-
 						if (idxDaySection === 0) {																		//change days, reset vars
 							dCur = dCur.add(1).days();
 						}
@@ -331,6 +330,28 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 							break;
 						}
 					}
+
+					//If thereis no overlap, then create empty elements until we reach this booking's first residence element
+					if (!oResidenceElement) {
+						oResidenceElement = aResidenceSchedule[aResidenceSchedule.length - 1];	//get the last element in the schedule
+						dCur = oResidenceElement.dt.clone();
+						idxDaySection = oResidenceElement.daySection.index;
+						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;					//increment daysection
+						if (idxDaySection === 0) {																							//if morning, increment day
+							dCur = dCur.add(1).days();
+						}
+
+						while (dCur.isBefore(dArrive) || (dCur.equals(dArrive) && idxDaySection < utils.getDaySection(dtArrive).index)) {
+							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+							oResidence.members = new EmptyMembersArray();
+							aResidenceSchedule.push(oResidence);
+							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+							if (idxDaySection === 0) {																							//if morning, increment day
+								dCur = dCur.add(1).days();
+							}
+						}
+						idxResidenceElement = aResidenceSchedule.length;
+					}
 					sResidenceType = '';
 					while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
 						if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
@@ -344,7 +365,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						}
 						memberCur = new ResidentMember(oBooking, sResidenceType);
 
-						if (idxResidenceElement < aResidenceSchedule.length) {
+						if (idxResidenceElement < aResidenceSchedule.length) {													//find an existing element
 							oResidenceElement.members[oBooking.member.order] = memberCur;
 							idxResidenceElement++;
 							if (aResidenceSchedule[idxResidenceElement]) {
@@ -364,6 +385,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 							oResidence.members = new EmptyMembersArray();
 							oResidence.members[oBooking.member.order] = memberCur;
 							aResidenceSchedule.push(oResidence);
+							idxResidenceElement++;
 							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 							if (idxDaySection === 0) {																		//change days, reset vars
 								dCur = dCur.add(1).days();
