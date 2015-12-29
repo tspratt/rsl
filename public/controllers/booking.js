@@ -1,5 +1,5 @@
 angular.module('rsl')
-		.controller('bookingCtrl', ['$scope', '$state', '$stateParams','$location', '$anchorScroll','appConstants', 'appData', 'bookingData', 'PersonData',
+		.controller('bookingCtrl', ['$scope', '$state', '$stateParams', '$location', '$anchorScroll', 'appConstants', 'appData', 'bookingData', 'PersonData',
 			function ($scope, $state, $stateParams, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
 				$scope.bookings = [];
@@ -35,20 +35,32 @@ angular.module('rsl')
 				$scope.bookingIncomplete = true;
 				$scope.bookingSelected = {};
 				$scope.bookingDetailShow = false;
-				$scope.initialMode = 'new';
+				$scope.bookingMode = 'new';
 				$scope.initialData;
 				$scope.activestate = $state.$current.name;
 
 
 				function initModule() {
-					console.log('stateparams:', $stateParams.data);
-					$scope.initialData = $stateParams.data;
-					if ($scope.initialData) {
-						$scope.bookMemberId = $scope.initialData.memberid;			//there will always be a memberid if we are launched from the booking schedule
-
-					}
-
+					console.log('stateparams:', $stateParams.booking);
+					var sTmp = '';
 					if ($state.$current.name === 'book') {
+						$scope.initialData = $stateParams.data;
+						if ($scope.initialData) {
+							$scope.bookingMode = $scope.initialData.mode;
+							if ($scope.initialData.mode === 'new') {
+								$scope.bookMemberId = $scope.initialData.memberid;			//there will always be a memberid if we are launched from the booking schedule
+								$scope.dtArrive = new Date($scope.initialData.arrive);
+							}
+							else if ($scope.initialData.mode === 'change') {
+								$scope.booking = $scope.initialData.booking;
+								$scope.bookMember._id = $scope.initialData.booking.member._id;
+								$scope.dtArrive = new Date($scope.initialData.booking.arrive);
+								$scope.dtDepart = new Date($scope.initialData.booking.depart);
+								$scope.note = $scope.initialData.booking.note;
+								$scope.bookMemberId = $scope.initialData.booking.member._id;			//there will always be a memberid if we are launched from the booking schedule
+							}
+
+						}
 						getRooms();
 						getMembers();
 					}
@@ -89,11 +101,11 @@ angular.module('rsl')
 					$scope.whoCount = 0;
 					for (var i = 0; i < $scope.personsForMember.length; i++) {
 						if ($scope.personsForMember[i].selected) {
-							$scope.whoCount ++;
+							$scope.whoCount++;
 						}
 					}
 					checkBooking();
-				},true);
+				}, true);
 
 				$scope.$watch('arriveDetail', function (newValue) {
 					if (newValue === true) {
@@ -119,7 +131,7 @@ angular.module('rsl')
 					}
 				});
 
-				function collapseOthers (sExpCur) {
+				function collapseOthers(sExpCur) {
 					for (var i = 0; i < aExpanders.length; i++) {
 						var sName = aExpanders[i];
 						if (sName !== sExpCur) {
@@ -210,7 +222,7 @@ angular.module('rsl')
 					personData.getPersons(null, null, null, 'memberrelationship', 'self', null)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-									var aTmp = res.data.data.map(function(person){
+									var aTmp = res.data.data.map(function (person) {
 										return person.member;
 									});
 
@@ -293,8 +305,11 @@ angular.module('rsl')
 
 				};
 
-				$scope.bookRoom = function (){
+				$scope.bookRoom = function () {
 					$scope.booking = {};
+					if ($scope.bookingMode === 'change') {
+						$scope.booking._id = $scope.initialData.booking._id;
+					}
 					$scope.booking.member = $scope.bookMember._id;
 					$scope.booking.room = $scope.selectedRoom._id;
 					$scope.booking.arrive = $scope.dtArrive;
@@ -305,10 +320,10 @@ angular.module('rsl')
 					for (var i = 0; i < $scope.personsForMember.length; i++) {
 						if ($scope.personsForMember[i].selected) {
 							$scope.booking.who.push($scope.personsForMember[i]._id);
-							$scope.booking.whoCount ++;
+							$scope.booking.whoCount++;
 						}
 					}
-					bookingData.bookRoom($scope.booking)
+					bookingData.bookRoom($scope.bookingMode, $scope.booking)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$state.go('booking-schedule');
@@ -352,15 +367,48 @@ angular.module('rsl')
 						$scope.bookingDetailShow = ($scope.bookingSelected);
 					}
 					else {
-						$state.go('book',{data: {mode: 'new', memberid: resMember.member._id, arrive: residence.dt}});
+						$state.go('book', {data: {mode: 'new', memberid: resMember.member._id, arrive: residence.dt}});
 					}
 
 				};
 
-				$scope.bookingDetailClose = function (sMode, data) {
+				$scope.bookingDetailClose = function (sMode, oBooking) {
 					console.log('mode:', sMode);
 					$scope.bookingDetailShow = false;
+					switch (sMode) {
+						case 'new':
+							newBooking(oBooking);
+							break;
+						case 'delete':
+							deleteBooking(oBooking);
+							break;
+						case 'change':
+							changeBooking(oBooking);
+							break;
+					}
 				};
+
+				function deleteBooking(oBooking) {
+					bookingData.deleteBooking(oBooking._id)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+									getResidenceSchedule();
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+
+							});
+				}
+
+				function changeBooking(oBooking) {
+					$state.go('book', {data: {mode: 'change', booking: oBooking}});
+				}
+
+
+				function newBooking(oBooking) {
+					$state.go('book', {data: {mode: 'new', memberid: oBooking.member._id}});
+				}
 
 				function getWeekday(dayNum) {
 					var a = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

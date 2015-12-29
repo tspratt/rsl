@@ -253,6 +253,13 @@ function updateBooking(sId, oUpdate, callback) {
 	});
 }
 
+
+function deleteBooking(sId, callback) {
+	mongoose.model('Booking').findOneAndRemove({_id : ObjectId(sId)}, function (err, result) {
+		callback(err, result);
+	});
+}
+
 function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 	var iSkip = 0;
 	var iLimit = 0;
@@ -400,6 +407,7 @@ exports.insertPerson = insertPerson;
 exports.updatePerson = updatePerson;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
+exports.deleteBooking = deleteBooking;
 exports.listBookings = listBookings;
 exports.setProperty = setProperty;
 exports.checkBookingOverlap = checkBookingOverlap;

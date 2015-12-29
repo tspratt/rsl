@@ -104,6 +104,13 @@ module.exports = function (grunt) {
 		'replace:dev'
 	]);
 
+
+	//included to demonstrate pattern
+	grunt.registerTask('build_local', [
+		'sass:dev',
+		'replace:local'
+	]);
+
 	//included to demonstrate pattern
 	grunt.registerTask('build_qa', [
 		'sass:qa',

@@ -130,4 +130,11 @@ router.get('/check-booking-overlap', function (req, res, next) {
 	})
 });
 
+router.delete('/bookings/:oid', function (req, res, next) {
+	var sOId = req.params.oid || '';
+	business.deleteBooking(sOId, function(err, statusResponse) {
+		res.send(statusResponse);
+	});
+});
+
 module.exports = router;

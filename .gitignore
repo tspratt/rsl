@@ -1,4 +1,6 @@
 node_modules
 .idea
 .env
+.sass-cache
 npm-debug.log
+dist/

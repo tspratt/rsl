@@ -1,6 +1,6 @@
 'use strict';
 angular.module('rsl')
-		.factory('bookingData', ['$http', 'envConfig', 'appData', function ($http, envConfig, appData) {
+		.factory('bookingData', ['$http', 'envConfig', 'appConstants', 'appData', function ($http, envConfig, appConstants, appData) {
 			var bookingData = {};
 
 			bookingData.getBookings = function (dtFrom, dtTo, sFilterFieldName, filterValue) {
@@ -35,13 +35,13 @@ angular.module('rsl')
 
 			bookingData.checkBookingOverlap = function (memberid, dtArrive, dtDepart) {
 				var oQueryParams = {memberid: memberid, arrive:dtArrive, depart:dtDepart};
-				var promise = $http.get(appConstants.SERVICE_URL_BASE + 'check-booking-overlap/',
+				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'check-booking-overlap/',
 						{params : oQueryParams})
 						.then(function (res) {
 							return res;
 						})
 						.catch(function (res) {
-							console.error('checkBookingOverlap', resp.status, res.data);
+							console.error('checkBookingOverlap', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -55,7 +55,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('getBooking', resp.status, res.data);
+							console.error('getBooking', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -80,14 +80,28 @@ angular.module('rsl')
 				return promise;
 			};
 
-			bookingData.bookRoom = function (oBooking) {
-				var oBody = {action : 'insert', booking : oBooking};
+			bookingData.bookRoom = function (mode, oBooking) {
+				var oBody = {action : (mode === 'new')? 'insert':'update', booking : oBooking};
 				var promise = $http.post(envConfig.SERVICE_URL_BASE + 'book-room', oBody)
 						.then(function (res) {
 							return res;
 						})
 						.catch(function (res) {
 							console.error('loginUser', res.status, res.data);
+							return res;
+						});
+				return promise;
+			};
+
+			bookingData.deleteBooking = function (sOid) {
+				var oQueryParams = {oid : sOid};
+				var promise = $http.delete(envConfig.SERVICE_URL_BASE + 'bookings/' + sOid,
+						{params : oQueryParams})
+						.then(function (res) {
+							return res;
+						})
+						.catch(function (res) {
+							console.error('deleteBooking', res.status, res.data);
 							return res;
 						});
 				return promise;

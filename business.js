@@ -82,7 +82,6 @@ function getPerson(id, callback) {
 	});
 }
 
-
 function listMembers(filterSpec, pageSpec, fieldSpec, callback) {
 	var statusResponse;
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
@@ -127,8 +126,17 @@ function bookRoom(sAction, oBooking, callback) {
 		});
 	}
 	else if (sAction === 'update') {
-		statusResponse = new StatusResponse('error', 'bookRoom', '', 'business', 'not implemented');
-		callback(err, statusResponse);
+		var bookingId = oBooking._id;
+		model.updateBooking(bookingId, oBooking, function (err, result) {
+			if (err) {
+				statusResponse = new StatusResponse('error', 'bookRoom', '', 'business', err);
+			}
+			else {
+				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
+			}
+			callback(err, statusResponse);
+		});
+
 	}
 
 }
@@ -142,6 +150,20 @@ function updateBooking(sId, oUpdate, callback) {
 		}
 		else {
 			statusResponse = new StatusResponse('success', 'updateBooking', '', 'business', result);
+		}
+		callback(err, statusResponse);
+	});
+
+}
+
+function deleteBooking(sId, callback) {
+	var statusResponse;
+	model.deleteBooking(sId, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'deleteBooking', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'deleteBooking', '', 'business', result);
 		}
 		callback(err, statusResponse);
 	});
@@ -176,7 +198,6 @@ function updatePerson(sId, oUpdate, callback) {
 
 }
 
-
 function updateMember(sId, oUpdate, callback) {
 	var statusResponse;
 	model.updateMember(sId, oUpdate, function (err, result) {
@@ -190,7 +211,6 @@ function updateMember(sId, oUpdate, callback) {
 	});
 
 }
-
 
 function checkBookingOverlap(memberId, dtArrive, dtDepart, callback) {
 	var statusResponse;
@@ -463,6 +483,7 @@ exports.insertPerson = insertPerson;
 exports.updatePerson = updatePerson;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
+exports.deleteBooking = deleteBooking;
 exports.listBookings = listBookings;
 exports.getResidenceSchedule = getResidenceSchedule;
 //exports.insertCollection = insertCollection;
