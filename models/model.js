@@ -271,9 +271,11 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 	}
 	if (dateSpec) {
 		var dtFrom = new Date(dateSpec.from);
-		var dtTo = new Date(dateSpec.to);
 		oQuery.arrive = {$gte : dtFrom};
-		oQuery.depart = {$lte : dtTo};
+		if (dateSpec.hasOwnProperty('to')) {
+		var dtTo = new Date(dateSpec.to);
+			oQuery.depart = {$lte : dtTo};
+		}
 	}
 	mongoose.model('Booking').find(oQuery, oFieldSpec)
 			.sort({arrive : 1})

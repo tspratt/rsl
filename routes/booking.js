@@ -91,8 +91,16 @@ router.get('/residence-schedule', function (req, res, next) {
 	var dateSpec = null;
 	var field = req.query.field;
 	var value = req.query.value;
-	var dtFrom = req.query.from;
-	var dtTo = req.query.to;
+	var sDateSpec = req.query.dateSpec;
+	var oDateSpec = null;
+	if (sDateSpec && sDateSpec.length > 0) {
+		try {
+			oDateSpec = JSON.parse(sDateSpec);
+		}
+		catch (error) {
+			console.log ('get/residence-schedule, error parsing dateSpec')
+		}
+	}
 	var sFieldSpec = req.query.fieldSpec;						//string representation
 	var oFieldSpec = {};																//parsed object
 	if (sFieldSpec) {
@@ -112,11 +120,8 @@ router.get('/residence-schedule', function (req, res, next) {
 	if (field && value) {
 		filterSpec = {field: field, value: value};
 	}
-	if (dtFrom && dtTo) {
-		dateSpec = {from: dtFrom, to: dtTo};
-	}
 
-	business.getResidenceSchedule(filterSpec, dateSpec, oFieldSpec, function (err, statusResponse) {
+	business.getResidenceSchedule(filterSpec, oDateSpec, oFieldSpec, function (err, statusResponse) {
 		res.send(statusResponse);
 	})
 });

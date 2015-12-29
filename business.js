@@ -321,6 +321,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 					dCur.setMinutes(0);
 					idxDaySection = utils.getDaySection(dtArrive).index;
 					idxResidenceElement = aResidenceSchedule.length;
+					oResidenceElement = null;
 					for (j = 0; j < aResidenceSchedule.length; j++) {														//find the first overlapping residence record index
 						if (aResidenceSchedule[j].dt.equals(dCur)
 								&& aResidenceSchedule[j].daySection.index === idxDaySection) {

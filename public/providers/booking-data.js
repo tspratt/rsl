@@ -18,8 +18,8 @@ angular.module('rsl')
 				return promise;
 			};
 
-			bookingData.getResidenceSchedule = function (dtFrom, dtTo, sFilterFieldName, filterValue) {
-				var oQueryParams = {from : dtFrom, to : dtTo};
+			bookingData.getResidenceSchedule = function (oQuerySpec, oDateSpec, oFieldspec) {
+				var oQueryParams = {querySpec: oQuerySpec, dateSpec: oDateSpec, fieldSpec: null};
 
 				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'residence-schedule',
 						{params : oQueryParams})

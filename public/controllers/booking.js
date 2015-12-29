@@ -66,7 +66,7 @@ angular.module('rsl')
 					}
 					else if ($state.$current.name === 'booking-schedule') {
 						getBookings();
-						getResidenceSchedule();
+						getResidenceSchedule(null, {from: Date.parse('yesterday').toISOString()});
 					}
 				}
 
@@ -176,6 +176,12 @@ angular.module('rsl')
 							});
 				}
 
+				/**
+				 *
+				 * @param oQuerySpec
+				 * @param oDateSpec : {from: 'isostring', to:isostring}}
+				 * @param oFieldSpec
+				 */
 				function getResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec) {
 					$scope.residenceSchedule = null;
 					$scope.selectedId = '';
@@ -392,7 +398,7 @@ angular.module('rsl')
 					bookingData.deleteBooking(oBooking._id)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-									getResidenceSchedule();
+									getResidenceSchedule(null, {from: Date.parse('yesterday').toISOString()});
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
