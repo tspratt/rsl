@@ -28,8 +28,12 @@ Password: demo
 [Demo App: https://rslllc.herokuapp.com/](https://rslllc.herokuapp.com/)
 
 ##Proposed Enhancements:
-* Expose entity (person, member, room, etc) update functionality via REST interface
-* Implement entity update functionality in the UI
+* Limit depart date selection to only allowdates after the arrive date. (bug)
+* Implement "Remember Me" functionality
+  * Use localStorage to save Username and password.
+  * On startup, pre-fill the login view fields, but do not automaticaly log-in.
+* Expose entity (person, member, room, etc) update functionality via REST interface. Very low priority because this data changes very rarely.
+* Implement entity update functionality in the UI. Low priority
 * Implement "Guest Request" and Accept functionality. 
   * Invoke from "Book" view
   * Display a guest book view that includes:
@@ -42,3 +46,5 @@ Password: demo
       * Booking room will be the default room of the accepting member
       * The "Who" array will be a single element "Guests"
       * The booking notes will be the notes entered in the guest request form.
+* Display member contribution
+  * Will require admin functionality to download and parse bank transactions.
