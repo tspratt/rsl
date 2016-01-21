@@ -29,6 +29,7 @@ Password: demo
 
 ##Proposed Enhancements:
 * Limit depart date selection to only allowdates after the arrive date. (bug)
+* Clean up "back key" behavior. Tab should close when user hits "back" from login screen. Currently attempts to load local history.
 * Implement "Remember Me" functionality
   * Use localStorage to save Username and password.
   * On startup, pre-fill the login view fields, but do not automaticaly log-in.
@@ -48,3 +49,7 @@ Password: demo
       * The booking notes will be the notes entered in the guest request form.
 * Display member contribution
   * Will require admin functionality to download and parse bank transactions.
+* Admin only: download and parse bank transaction data.
+* Implement Admin role/permissions.
+* Implement OAuth service with access tokens and protect back-end methods.
+* Apply client side unit tests.
