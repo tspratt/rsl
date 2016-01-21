@@ -31,14 +31,14 @@ Password: demo
 * Expose entity (person, member, room, etc) update functionality via REST interface
 * Implement entity update functionality in the UI
 * Implement "Guest Request" and Accept functionality. 
- * Invoke from "Book" view
- * Display a guest book view that includes:
-  * Arrive and depart selection controls
-  * Text box for notes, like who the guests are and any other info or requests.
-  * Send email to all members who are not currently booked for the selected dates
-  * Email to provide single "Request Granted" button.
-  * Button sends http request to RSL app, which Books the room of the responder.
-   * Booking member will be the requesting member
-   * Booking room will be the default room of the accepting member
-   * The "Who" array will be a single element "Guests"
-   * The booking notes will be the notes entered in the guest request form.
+  * Invoke from "Book" view
+  * Display a guest book view that includes:
+    * Arrive and depart selection controls
+    * Text box for notes, like who the guests are and any other info or requests.
+    * Send email to all members who are not currently booked for the selected dates
+    * Email to provide single "Request Granted" button.
+    * Button sends http request to RSL app, which Books the room of the responder.
+      * Booking member will be the requesting member
+      * Booking room will be the default room of the accepting member
+      * The "Who" array will be a single element "Guests"
+      * The booking notes will be the notes entered in the guest request form.
