@@ -38,6 +38,7 @@ Password: demo
 * Expose entity (person, member, room, etc) update functionality via REST interface. Very low priority because this data changes very rarely.
 * Implement entity update functionality in the UI. Low priority
 * Provide update to member default room. This value will change yearly for many.
+  * Add dropdown to Member Detail.
 * Implement "Guest Request" and Accept functionality. 
   * Invoke from "Book" view
   * Display a guest book view that includes:
@@ -54,6 +55,7 @@ Password: demo
   * Will require admin functionality to download and parse bank transactions.
 * Admin only: download and parse bank transaction data.
 * Implement Admin role/permissions.
+* Implement Admin view, perhaps under "Other".
 * Implement OAuth service with access tokens and protect back-end methods.
 * Apply client side unit tests.
 * Implement sub-view/controller routing on Other View for future use.
