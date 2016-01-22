@@ -72,8 +72,10 @@ angular.module('rsl')
 
 				$scope.$watch('bookMember', function (member) {
 					if (member) {
+						$scope.selectedRoom = null;				//set these so they blank out immediately on member change
+						$scope.personsForMember = [];
 						getPersonsForMember(member._id);
-						setDefaultRoom();
+						getRooms();
 					}
 				});
 

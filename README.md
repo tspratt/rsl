@@ -28,13 +28,15 @@ Password: demo
 [Demo App: https://rslllc.herokuapp.com/](https://rslllc.herokuapp.com/)
 
 ##Proposed Enhancements:
-* Limit depart date selection to only allowdates after the arrive date. (bug)
+* Limit depart date selection to only allow dates after the arrive date. (bug)
+* Fix overlap issues. Overlaps corrupt the Bookings display (bug)
 * Clean up "back key" behavior. Tab should close when user hits "back" from login screen. Currently attempts to load local history.
 * Implement "Remember Me" functionality
   * Use localStorage to save Username and password.
   * On startup, pre-fill the login view fields, but do not automaticaly log-in.
 * Expose entity (person, member, room, etc) update functionality via REST interface. Very low priority because this data changes very rarely.
 * Implement entity update functionality in the UI. Low priority
+* Provide update to member default room. this will change yearly for many.
 * Implement "Guest Request" and Accept functionality. 
   * Invoke from "Book" view
   * Display a guest book view that includes:
@@ -53,3 +55,8 @@ Password: demo
 * Implement Admin role/permissions.
 * Implement OAuth service with access tokens and protect back-end methods.
 * Apply client side unit tests.
+* Implement sub-view/controller routing on Other View for future use.
+* Implement "Add User". Any member should be able to add a user. 
+* Provide tabular booking display
+* On graphical bookings display, show columns and headers even if no data. Currently is empty screen
+* Show week and month dividers on Bookings
