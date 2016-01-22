@@ -29,7 +29,7 @@ Password: demo
 
 [Demo App: https://rslllc.herokuapp.com/](https://rslllc.herokuapp.com/)
 
-##Proposed Enhancements:
+##Proposed Enhancements (no particular order):
 * Fix overlap issues. Overlaps corrupt the Bookings display (bug)
 * Clean up "back key" behavior. Tab should close when user hits "back" from login screen. Currently attempts to load local history.
 * Implement "Remember Me" functionality
@@ -37,7 +37,7 @@ Password: demo
   * On startup, pre-fill the login view fields, but do not automatically log-in.
 * Expose entity (person, member, room, etc) update functionality via REST interface. Very low priority because this data changes very rarely.
 * Implement entity update functionality in the UI. Low priority
-* Provide update to member default room. this will change yearly for many.
+* Provide update to member default room. This value will change yearly for many.
 * Implement "Guest Request" and Accept functionality. 
   * Invoke from "Book" view
   * Display a guest book view that includes:
@@ -65,3 +65,7 @@ Password: demo
 * Improve display performance
   * Benchmark to determine bottlenecks.
   * Pre-generate residence schedule on any change to Bookings collection
+* Minimize "flash" on calendar refresh. 
+  * Perhaps a static background image of the color bands
+  * Or a static collection of data elements that produce it.
+  * Or separate the background from the dynamic overlay data
