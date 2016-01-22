@@ -12,6 +12,8 @@ And additional functionality as identified!
 
 ####Front-end:
 * Angular JS
+* Bootstrap
+* Angular-Bootstrap component directives
 
 
 ###Demo (best viewed on a phone)
@@ -28,12 +30,11 @@ Password: demo
 [Demo App: https://rslllc.herokuapp.com/](https://rslllc.herokuapp.com/)
 
 ##Proposed Enhancements:
-* Limit depart date selection to only allow dates after the arrive date. (bug)
 * Fix overlap issues. Overlaps corrupt the Bookings display (bug)
 * Clean up "back key" behavior. Tab should close when user hits "back" from login screen. Currently attempts to load local history.
 * Implement "Remember Me" functionality
   * Use localStorage to save Username and password.
-  * On startup, pre-fill the login view fields, but do not automaticaly log-in.
+  * On startup, pre-fill the login view fields, but do not automatically log-in.
 * Expose entity (person, member, room, etc) update functionality via REST interface. Very low priority because this data changes very rarely.
 * Implement entity update functionality in the UI. Low priority
 * Provide update to member default room. this will change yearly for many.
@@ -42,12 +43,12 @@ Password: demo
   * Display a guest book view that includes:
     * Arrive and depart selection controls
     * Text box for notes, like who the guests are and any other info or requests.
-    * Send email to all members who are not currently booked for the selected dates
+    * Send email to all members who are not currently booked for the selected dates.
     * Email to provide single "Request Granted" button.
     * Button sends http request to RSL app, which Books the room of the responder.
-      * Booking member will be the requesting member
-      * Booking room will be the default room of the accepting member
-      * The "Who" array will be a single element "Guests"
+      * Booking member will be the requesting member.
+      * Booking room will be the default room of the accepting member.
+      * The "Who" array will be a single element "Guests".
       * The booking notes will be the notes entered in the guest request form.
 * Display member contribution
   * Will require admin functionality to download and parse bank transactions.
@@ -60,3 +61,7 @@ Password: demo
 * Provide tabular booking display
 * On graphical bookings display, show columns and headers even if no data. Currently is empty screen
 * Show week and month dividers on Bookings
+* Persons List: scroll into view on opening accordion section
+* Improve display performance
+  * Benchmark to determine bottlenecks.
+  * Pre-generate residence schedule on any change to Bookings collection
