@@ -1,10 +1,9 @@
 "use strict";
 var chai = require("chai");
 var expect = chai.expect;
-var packageJson = require('../package.json');
-var model = require('../models/model');
+var request = require('request');
+var port = 5000;
 var ObjectId = require('mongodb').ObjectID;
-var business = require('../business');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 var prevValue = '';
 
@@ -17,48 +16,19 @@ function asyncAssertionCheck(done, f) {
 	}
 }
 
-describe('Setup tests', function () {
+describe('REST http tests', function () {
 	this.timeout(0);
-	before(function (done) {
-		var uri = process.env.MONGOLAB_URI;
-		model.initDb(uri,
-				function (err) {
-					if (err) {
-						var statusResponse = new StatusResponse('error', 'System Error. Please try again', '', 'initDb', err);
-						console.log(JSON.stringify(statusResponse));
-						done(err);
-					}
-					else {
-						console.log('initDb SUCCESS');
-						model.initMgDb(uri,
-								function (err) {
-									if (err) {
-										var statusResponse = new StatusResponse('error', 'System Error. Please try again', '', 'initDb', err);
-										console.log(JSON.stringify(statusResponse));
-									}
-									else {
-										console.log('initMgDb success')
-									}
-									done();
-								});
-					}
-				}
-		);
-	});//before
 
-	/*
-
-	 */
-
-	describe('Test isAlive (business)',
+	describe('Test isAlive (routes)',
 			function () {
-				it('should return a success status response', function (done) {
-					business.isAlive(
-							function (err, statusResponse) {
+				it('should return success status response', function (done) {
+					request.get('http://localhost:' + port + '/isAlive',
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
-									expect(statusResponse.data).to.exist;
-									expect(statusResponse.status).to.equal('success');
+									expect(body).to.exist;
+									var oBody = JSON.parse(body);
+									expect(oBody.status).to.equal('success');
 								});
 							}
 					);
@@ -66,28 +36,31 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe('Test Users endpoints (business)',
+	describe('Test Users endpoints (routes)',
 			function () {
 				it('should return a person from login with good credentials', function (done) {
-					business.loginUser('Tracy', 'gabboob',
-							function (err, statusResponse) {
+					var doc = {"userid": "Tracy", "password": "gabboob"};
+					request({url: 'http://localhost:' + port + '/loginUser/', method: 'POST', json: doc},
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(statusResponse.data).to.exist;
+									expect(body).to.exist;
+									var statusResponse = body;
 									expect(statusResponse.status).to.equal('success');
-									expect(statusResponse.data.person.member.unit).to.exist;
-									console.log(statusResponse.data);
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data.person).to.exist;
 								});
 							}
 					);
 				});
 				it('should fail login with bad credentials', function (done) {
-					business.loginUser('Tracy', 'xxxxx',
-							function (err, statusResponse) {
+					var doc = {"userid": "Tracy", "password": "xxxxx"};
+					request({url: 'http://localhost:' + port + '/loginUser/', method: 'POST', json: doc},
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(statusResponse.data).to.exist;
+									expect(body).to.exist;
+									var statusResponse = body;
 									expect(statusResponse.status).to.equal('fail');
+									expect(statusResponse.data.person).to.not.exist;
 								});
 							}
 					);
@@ -95,42 +68,16 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe('Test Data Access (business)',
+	describe('Test Data Access (routes)',
 			function () {
-				it('should return a list of all members', function (done) {
-					business.listMembers(null, null, null,
-							function (err, statusResponse) {
-								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(statusResponse.data).to.exist;
-									expect(statusResponse.data).to.be.an.array;
-									expect(statusResponse.data.length).to.be.greaterThan(0);
-									console.log(JSON.stringify(statusResponse.data, null, 2))
-								});
-							}
-					);
-				});
-				it('should return a list of members by branch id', function (done) {
-					business.listMembers({
-								field : "branch",
-								value : new ObjectId("563c2429404d259013af4a8a")
-							}, null, null,
-							function (err, statusResponse) {
-								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(statusResponse.data).to.exist;
-									expect(statusResponse.data).to.be.an.array;
-									expect(statusResponse.data.length).to.be.greaterThan(0);
-									console.log(JSON.stringify(statusResponse.data, null, 2))
-								});
-							}
-					);
-				});
 				it('should return a list of all persons', function (done) {
-					business.listPersons(null, null, null, null,
-							function (err, statusResponse) {
+					request.get('http://localhost:' + port + '/persons',
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
+									expect(body).to.exist;
+									if (typeof body === 'string') {body = JSON.parse(body)}	//why is body sometimes object, sometimes string?
+									var statusResponse = body;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.array;
 									expect(statusResponse.data.length).to.be.greaterThan(0);
@@ -138,88 +85,113 @@ describe('Setup tests', function () {
 								});
 							}
 					);
+
 				});
 
+
 				it('should return a list persons for member', function (done) {
-					business.listPersons({memberrelationship : {$ne : "self"}}, {
-								field : 'member',
-								value : "563c2368bad73ad4191aed11"
-							}, null, null,
-							function (err, statusResponse) {
+					var sQuerystring = '?query={"memberrelationship": {"$ne": "self"}}&field=member&value=563c2368bad73ad4191aed11';
+					request.get('http://localhost:' + port + '/persons' + sQuerystring,
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
+									expect(body).to.exist;
+									if (typeof body === 'string') {body = JSON.parse(body)}	//why is body sometimes object, sometimes string?
+									var statusResponse = body;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.array;
 									expect(statusResponse.data.length).to.be.greaterThan(0);
-									console.log(JSON.stringify(statusResponse.data, null, 2))
+									//console.log(JSON.stringify(statusResponse.data, null, 2))
 								});
 							}
 					);
 				});
 
 				it.skip('should return a page of persons, filtered by branch=Spratt', function (done) {
-					var filterSpec = {field : 'branchid', value : 'Spratt'};
-					var pageSpec = {pageLength : 50, pageNum : 0};
-					business.listPersons(null, filterSpec, pageSpec, null,
-							function (err, statusResponse) {
+					var sQuerystring = '?field=branchid&value=Spratt&pageNum=0&pageLength=50';
+					request.get('http://localhost:' + port + '/persons' + sQuerystring,
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
+									expect(body).to.exist;
+									if (typeof body === 'string') {body = JSON.parse(body)}	//why is body sometimes object, sometimes string?
+									var statusResponse = body;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.array;
-									expect(statusResponse.data.length).to.be.greaterThan(2);
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+									//console.log(JSON.stringify(statusResponse.data, null, 2))
 								});
 							}
 					);
 				});
 				it('should return filtered list on firstname', function (done) {
 					var matchString = 'Trud';
-					business.filterPersonsByName(matchString, {},
-							function (err, statusResponse) {
+					var sQuerystring = '?matchstring=' + matchString;
+					request.get('http://localhost:' + port + '/persons' + sQuerystring,
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
+									expect(body).to.exist;
+									if (typeof body === 'string') {body = JSON.parse(body)}	//why is body sometimes object, sometimes string?
+									var statusResponse = body;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.greaterThan(0);
 									var elem0 = statusResponse.data[0];
-									//var _id= elem0._id.toString();
 									var sTmp = elem0.firstname;
 									expect(sTmp.indexOf(matchString)).to.be.greaterThan(-1);  //make sure our match string is in our result somewhere
-									console.log(statusResponse.data);
 								});
 							}
 					);
 				});
 				it('should return filtered list with reduced payload', function (done) {
 					var matchString = 'Trud';
-					business.filterPersonsByName(matchString, {llcname : 1},
-							function (err, statusResponse) {
+					var sQuerystring = '?matchstring=' + matchString + '&fieldSpec={"llcname": 1}';
+					request.get('http://localhost:' + port + '/persons' + sQuerystring,
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
+									expect(body).to.exist;
+									if (typeof body === 'string') {body = JSON.parse(body)}	//why is body sometimes object, sometimes string?
+									var statusResponse = body;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.array;
-									expect(statusResponse.data[0].ssn).to.not.exist;
-									console.log(statusResponse.data);
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+									var elem0 = statusResponse.data[0];
+									expect(elem0.firstname).to.not.exist;
+									var sTmp = elem0.firstname;
 								});
 							}
 					);
 				});
 				it('should return a single document by Id', function (done) {
 					var id = '563c1e35ef69c27818dd9167';
-					business.getPerson(id,
-							function (err, statusResponse) {
+					request.get('http://localhost:' + port + '/persons/' + id,
+							function (err, response, body) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
+									expect(body).to.exist;
+									if (typeof body === 'string') {body = JSON.parse(body)}	//why is body sometimes object, sometimes string?
+									var statusResponse = body;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data).to.be.an.object;
-									expect(statusResponse.data._id.toString()).to.equal(id);  //make sure our match string is in our result somewhere
-									console.log(statusResponse.data);
+									expect(statusResponse.data._id.toString()).to.equal(id);
 								});
 							}
 					);
 				});
 
-				it('should updte a single person document by Id', function (done) {
+
+
+			}
+	);
+
+	describe.skip('Test Data Update REST ENDPOINTS NOT IMPLEMENTED YET (routes)',
+			function () {
+				it('should update a single person document by Id', function (done) {
 					var id = '563c1e35ef69c27818dd916d';
 					var sUpdateData = 'email-' + Date.now();
+					/*
 					business.updatePerson(id, {email: sUpdateData},
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -230,11 +202,13 @@ describe('Setup tests', function () {
 								});
 							}
 					);
+					*/
 				});
 
-				it('should updte a single Member document by Id', function (done) {
+				it('should update a single Member document by Id', function (done) {
 					var id = '563c2368bad73ad4191aed11';
 					var sUpdateData = 'ns3';
+					/*
 					business.updateMember(id, {abr3: sUpdateData},
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -245,7 +219,14 @@ describe('Setup tests', function () {
 								});
 							}
 					);
+					*/
 				});
+			});
+
+	describe.skip('Test Booking endpoints (routes)',
+			function () {
+				var aBookings;
+				var booking;
 
 				it('should return a list of Rooms for Unit "A"', function (done) {
 					business.listRooms({"field" : "unit", "value" : "A"}, null, null,
@@ -260,13 +241,6 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-			}
-	);
-
-	describe('Test Booking endpoints (business)',
-			function () {
-				var aBookings;
-				var booking;
 				it('should NOT return a booking overlap id', function (done) {
 					var memberId = '563c2368bad73ad4191aed11';
 					var dtArrive = new Date(2015,10,1); //11-1
@@ -436,57 +410,5 @@ describe('Setup tests', function () {
 			}
 	);
 
-	/*
-	 describe.skip('insert item data',
-	 function () {
-	 it('should return an schema object', function (done) {
-	 model.insertItem(
-	 function (err, sItemJson) {
-	 asyncAssertionCheck(done, function () {
-	 expect(err).to.not.exist;
-	 expect(sItemJson).to.exist;
-	 console.log(sItemJson);
-	 });
-	 }
-	 );
-	 });
-	 }
-	 );
-	 */
 
-	/*
-	describe.only('set a property',
-			function () {
-				it('should return an schema object', function (done) {
-					model.setProperty(
-							function (err, sItemJson) {
-								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(sItemJson).to.exist;
-									console.log(sItemJson);
-								});
-							}
-					);
-				});
-			}
-	);
-
-*/
-	/*
-	 describe.skip('insert item data',
-	 function () {
-	 it('should return an schema object', function (done) {
-	 model.createUsers(
-	 function (err, sItemJson) {
-	 asyncAssertionCheck(done, function () {
-	 expect(err).to.not.exist;
-	 expect(sItemJson).to.exist;
-	 console.log(sItemJson);
-	 });
-	 }
-	 );
-	 });
-	 }
-	 );
-	 */
 });

@@ -5,8 +5,8 @@ var StatusResponse = require('../lib/statusResponse').StatusResponse;
 var business = require('../business');
 
 router.get('/isAlive', function (req, res, next) {
-  business.isAlive(function(err, statusResponse) {
-    response.json(statusResponse);
+	business.isAlive(function(err, statusResponse) {
+    res.send(statusResponse);
   });
 });
 
