@@ -73,7 +73,7 @@ angular.module('rsl')
 				$scope.$watch('bookMember', function (member) {
 					if (member) {
 						getPersonsForMember(member._id);
-						setDefaultRoom();
+						getRooms();
 					}
 				});
 

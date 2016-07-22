@@ -121,6 +121,7 @@ function bookRoom(sAction, oBooking, callback) {
 			}
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
+				updateResidenceSchedule(result._doc);
 			}
 			callback(err, statusResponse);
 		});
@@ -239,6 +240,10 @@ function listBookings(filterSpec, dateSpec, fieldSpec, callback) {
 
 		callback(err, statusResponse);
 	});
+}
+
+function updateResidenceSchedule (booking) {
+
 }
 
 function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
