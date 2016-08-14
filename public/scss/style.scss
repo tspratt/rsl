@@ -1,4 +1,5 @@
-.nav, .pagination, .carousel, .panel-title a { /*for bootstrap*/
+.nav, .pagination, .carousel, .panel-title a {
+	/*for bootstrap*/
 	cursor: pointer;
 }
 
@@ -162,13 +163,19 @@ button.log-in {
 }
 
 .login-input {
-
 	border: solid 1px;
+	padding-bottom: 5px;
 }
 
 .login-input input {
 	font-size: 2em;
 	width: 12em;
+}
+
+.login-input input[type=checkbox]  {
+	font-size: 2em;
+	width: unset;
+	margin-left: 0.2em;
 }
 
 .content {
@@ -183,9 +190,11 @@ button.log-in {
 	bottom: 0px;
 	overflow-y: scroll;
 }
+
 .view-content.single-header {
 	top: 125px;
 }
+
 .view-content.double-header {
 	top: 145px;
 }
@@ -236,7 +245,8 @@ button.log-in {
 }
 
 .container {
-	clear: both; /*we never want this element to float*/
+	clear: both;
+	/*we never want this element to float*/
 	padding-right: 0.2em;
 	padding-left: 0.2em;
 }
@@ -307,7 +317,6 @@ button.paginator:focus {
 }
 
 .view-header {
-
 	width: 100%;
 }
 
@@ -316,12 +325,36 @@ button.paginator:focus {
 }
 
 div.module-menu {
+	overflow: hidden;
+	height: 4.0em;
+	width: 100%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
 
+button.menu-nav {
+	width: 20px;
+	height: 100%;
+	border-radius: 0;
+	margin: 0 3px 0 3px
+}
+
+div.menu-buttons {
+	overflow: hidden;
+	height:100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 button.module-menu-item {
-	float: left;
 	height: 3.0em;
+	width: 50px;
 	min-width: 4.0em;
 	font-size: 1.2em;
 	margin: 0.2em;
@@ -341,7 +374,6 @@ button.label {
 	height: 2.5em;
 	min-width: 4.5em;
 	font-size: 14px;
-
 }
 
 button.quick-book {
@@ -378,7 +410,6 @@ button.plus {
 		opacity: 0.0;
 	}
 }
-
 #taNotes {
 	width: 100%;
 	height: 60px;
@@ -401,6 +432,7 @@ button.plus {
 .day-label {
 	color: white;
 }
+
 .daypart-label {
 	float: right;
 	color: white;
@@ -415,9 +447,10 @@ button.plus {
 	margin-left: 2px;
 	background-color: white;
 	opacity: 0.2;
-	overflow:hidden;
+	overflow: hidden;
 	text-align: center;
 }
+
 .residence-day-section.header {
 	border: none;
 	background-color: unset;
@@ -425,6 +458,7 @@ button.plus {
 	font-size: 12px;
 	font-weight: bold;
 }
+
 .arrive {
 	border-top: solid 2px black;
 	border-left: solid 1px black;
@@ -432,6 +466,7 @@ button.plus {
 	background: linear-gradient(to right, steelblue, lightgray, steelblue);
 	opacity: 1;
 }
+
 .resident {
 	border-top: none;
 	border-left: solid 1px black;
@@ -439,6 +474,7 @@ button.plus {
 	background: linear-gradient(to right, steelblue, lightgray, steelblue);
 	opacity: 1;
 }
+
 .depart {
 	border-top: none;
 	border-bottom: solid 2px black;
@@ -447,6 +483,7 @@ button.plus {
 	background: linear-gradient(to right, steelblue, lightgray, steelblue);
 	opacity: 1;
 }
+
 .row.res-sched-section {
 	margin-left: 3px;
 	margin-right: 0;
@@ -455,46 +492,111 @@ button.plus {
 	padding: 0;
 	font-size: 12px;
 }
+
 .row.res-sched-section.night {
 	background: linear-gradient(black, grey);
 }
+
 .row.res-sched-section.morning {
 	background: linear-gradient(gray, yellow);
 }
+
 .row.res-sched-section.afternoon {
 	background: linear-gradient(yellow, orange);
 }
+
 .row.res-sched-section.evening {
 	background: linear-gradient(orange, black);
-}
-.res-day-section-content {
-
 }
 
 .popup-large {
 	position: fixed;
-	top:50%;
+	top: 50%;
 	left: 50%;
 	margin-top: -15em;
 	margin-left: -12em;
-	width: 24em; height:30em;
+	width: 24em;
+	height: 30em;
 	background: linear-gradient(to right, lightgray, white, lightgray);
 	color: black;
 	padding: 1em;
 }
+
 .popup-large.booking {
 	background: linear-gradient(to right, steelblue, lightgray, steelblue);
 }
+
 .popup-title {
 	font-size: 16px;
 	font-weight: bold;
 }
+
 .popup-label {
 	font-size: 14px;
 	font-weight: normal;
 }
+
 .popup-value {
 	font-size: 14px;
 	font-weight: normal;
 	text-decoration: underline;
 }
+
+.booking-grid {
+	width: 380px;
+	height: 400px
+}
+.booking-list-item {
+	width: 100%;
+	height: 20px;
+}
+
+.booking-list {
+	height: 100%;
+	width: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.booking-list-item .member {
+	width: 35%;
+	text-overflow: ellipsis;
+}
+.booking-list-item .room {
+	width: 25%;
+	text-overflow: ellipsis;
+}
+.booking-list-item .date {
+	width: 20%;
+}
+
+.system-message {
+	width: 300px;
+	height: 100px;
+	border: 2px solid red;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	background-color: black;
+	color: white;
+	font-size: 16px;
+	padding: 5px;
+	z-index: 100;
+}
+
+.system-message button {
+	position: absolute;
+	top: 5px;
+	right:5px;
+	height: 30px;
+	width: 30px;
+}
+
+.system-message div {
+	padding: 10px;
+	margin-right: 30px;
+}
+
+/*# sourceMappingURL=style.css.map */

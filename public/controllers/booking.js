@@ -1,6 +1,6 @@
 angular.module('rsl')
-		.controller('bookingCtrl', ['$scope', '$state', '$stateParams', '$location', '$anchorScroll', 'appConstants', 'appData', 'bookingData', 'PersonData',
-			function ($scope, $state, $stateParams, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
+		.controller('bookingCtrl', ['$rootScope','$scope', '$state', '$stateParams', '$location', '$anchorScroll', 'appConstants', 'appData', 'bookingData', 'PersonData',
+			function ($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
 				$scope.rooms = [];
 				$scope.bookings = [];
 				$scope.residenceSchedule = [];
@@ -61,12 +61,16 @@ angular.module('rsl')
 							}
 
 						}
+						getBookings();    //necessary for lookups
 						getRooms();
 						getMembers();
 					}
 					else if ($state.$current.name === 'booking-schedule') {
+						getBookings();    //necessary for lookups
+						getResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
+					}
+					else if ($state.$current.name === 'booking-list') {
 						getBookings();
-						getResidenceSchedule(null, {from: Date.parse('yesterday').toISOString()});
 					}
 				}
 
@@ -79,23 +83,38 @@ angular.module('rsl')
 					}
 				});
 
-				$scope.$watch('dtArrive', function (newValue) {
+				$scope.$watch('dtArrive', function (newValue, oldValue) {
 					if (newValue) {
 						$scope.departDisabled = false;
+						if (!newValue._isAMomentObject) {
+							$scope.dtArrive = moment(newValue);
+						}
 						$scope.dtArrive.set($scope.dtArriveTimeConfig);
-						$scope.dtArriveLabel = getWeekday($scope.dtArrive.getDay()) + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtArrive.toString('M/d');
+						$scope.dtArriveLabel = $scope.dtArrive.format('dddd') + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtArrive.format('M/D');
+						if ($scope.dtDepart.isBefore($scope.dtArrive)) {
+							$scope.dtDepart = null;
+						}
 						checkBooking();
 					}
 					else {
 						$scope.departDisabled = true;
+						$scope.dtArriveLabel = '';
+						$scope.bookingIncomplete = true;
 					}
 				});
 
-				$scope.$watch('dtDepart', function (newValue) {
+				$scope.$watch('dtDepart', function (newValue, oldValue) {
 					if (newValue) {
-						$scope.dtArrive.set($scope.dtDepartTimeConfig);
-						$scope.dtDepartLabel = getWeekday($scope.dtDepart.getDay()) + ' ' + getDaySection($scope.dtArrive) + ', ' + $scope.dtDepart.toString('M/d');
+						if (!newValue._isAMomentObject) {
+							$scope.dtDepart = moment(newValue);
+						}
+						$scope.dtDepart.set($scope.dtDepartTimeConfig);
+						$scope.dtDepartLabel = $scope.dtDepart.format('dddd') + ' ' + getDaySection($scope.dtDepart) + ', ' + $scope.dtDepart.format('M/D');
 						checkBooking();
+					}
+					else {
+						$scope.dtDepartLabel = '';
+						$scope.bookingIncomplete = true;
 					}
 				});
 
@@ -150,6 +169,13 @@ angular.module('rsl')
 									if (res.status >= 200 && res.status < 300) {
 										if (res.data.data.hasOwnProperty('_id')) {
 											console.log('Booking dates overlap: ' + res.data.data.arrive);
+											$rootScope.$emit('system-message', {source: 'booking.js', level: 'critical', message: 'Selected dates overlap, please change or edit existing booking'});
+											$scope.bookingIncomplete = true;
+											//$scope.dtArrive = null;
+											//$scope.dtDepart = null;
+											//var booking = res.data.data;
+											//changeBooking(booking);
+											//$state.go('booking-schedule');
 										}
 										else {
 											//do nothing
@@ -163,19 +189,29 @@ angular.module('rsl')
 					}
 				}
 
+				/*
+				$scope.gridOptions = {
+					data: 'bookings',
+					columnDefs: [
+						{field: 'member.llcname', displayName: 'member', width: 90},
+						{field: 'room.displayName', displayName: 'Room', width: 80},
+						{field: 'arrive', displayName: 'Arrive'}
+						]
+				};
+*/
 				function getBookings(oQuerySpec, oDateSpec, oFieldSpec) {
 					$scope.booking = null;
 					$scope.selectedId = '';
 					bookingData.getBookings(oQuerySpec, oDateSpec, oFieldSpec)
-							.then(function (res) {
-								if (res.status >= 200 && res.status < 300) {
-									$scope.bookings = res.data.data;
-								}
-								else {
-									console.log('HTTP Error: ' + res.statusText);
-								}
+						.then(function (res) {
+							if (res.status >= 200 && res.status < 300) {
+								$scope.bookings = res.data.data;
+							}
+							else {
+								console.log('HTTP Error: ' + res.statusText);
+							}
 
-							});
+						});
 				}
 
 				/**
@@ -278,11 +314,10 @@ angular.module('rsl')
 				 * @param oRoom
 				 */
 				$scope.bookDays = function (oMember, aDays, oRoom) {
-					console.log('bookDays');
-
+					console.log('bookDays',moment().weekday());
 					if (aDays.length === 1) {
 						$scope.dtArriveTimeConfig = appConstants.MORNING;
-						$scope.dtArrive = Date.parse('next ' + getWeekday(aDays[0]));
+						$scope.dtArrive = moment().day(aDays[0] + 7);
 						$scope.dtDepartTimeConfig = appConstants.EVENING;
 						$scope.dtDepart = $scope.dtArrive.clone();
 					}
@@ -298,7 +333,7 @@ angular.module('rsl')
 								$scope.dtArriveTimeConfig = appConstants.AFTERNOON;
 								break;
 						}
-						$scope.dtArrive = Date.parse('next ' + getWeekday(aDays[0]));
+						$scope.dtArrive = moment().day(aDays[0] + 7);
 						switch (aDays[1]) {
 							case 5:	//departing sat
 							case 6:
@@ -308,7 +343,7 @@ angular.module('rsl')
 								$scope.dtDepartTimeConfig = appConstants.AFTERNOON;
 								break;
 						}
-						$scope.dtDepart = Date.parse('next ' + getWeekday(aDays[1]));
+						$scope.dtDepart = $scope.dtArrive.clone().day(aDays[1] + 7 );
 					}
 
 				};
@@ -400,7 +435,7 @@ angular.module('rsl')
 					bookingData.deleteBooking(oBooking._id)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-									getResidenceSchedule(null, {from: Date.parse('yesterday').toISOString()});
+									getResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -425,7 +460,7 @@ angular.module('rsl')
 
 				function getDaySection(dt) {
 					var sReturn = 'evening';
-					var hour = dt.getHours();
+					var hour = dt.hour();
 					if (hour <= appConstants.MORNING.hour) {
 						sReturn = 'morning';
 					}

@@ -1,6 +1,7 @@
 "use strict";
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 var business = require('../business');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 
@@ -128,8 +129,8 @@ router.get('/residence-schedule', function (req, res, next) {
 
 router.get('/check-booking-overlap', function (req, res, next) {
 	var memberid = req.query.memberid;
-	var dtArrive = req.query.arrive;
-	var dtDepart = req.query.depart;
+	var dtArrive = moment(req.query.arrive, 'YYYY-MM-DDTHH:mm:ss.SSSZ').toDate();    //"2016-08-19T21:59:00.000Z"
+	var dtDepart = moment(req.query.depart, 'YYYY-MM-DDTHH:mm:ss.SSSZ').toDate();
 	business.checkBookingOverlap(memberid, dtArrive, dtDepart, function (err, statusResponse) {
 		res.send(statusResponse);
 	})

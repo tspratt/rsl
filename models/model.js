@@ -164,6 +164,12 @@ function getUser(oQuery, callback) {
 			});
 }
 
+function updateUser(sId, oUpdate, callback) {
+	mongoose.model('User').update({_id : ObjectId(sId)}, oUpdate, {multi : false}, function (err, result) {
+		callback(err, result);
+	});
+}
+
 function getPerson(id, callback) {
 	var oId = new ObjectId(id);
 	mongoose.model('Person').findOne({_id : oId})
@@ -328,6 +334,15 @@ function checkBookingOverlap(memberId, dtArrive, dtDepart, callback) {
 			});
 }
 
+/**
+ *
+ * @param oPerson
+ * @param callback
+ */
+function saveResidenceSchedule(aResidenceSchedule, callback) {
+	calback(null, 'ok');
+}
+
 function insertPerson(oPerson, callback) {
 	var Person = mongoose.model('Person');
 	var person = new Person(oPerson);
@@ -394,6 +409,7 @@ function setProperty(callback) {
 
 
 exports.getUser = getUser;
+exports.updateUser = updateUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
@@ -411,5 +427,6 @@ exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;
 exports.listBookings = listBookings;
+exports.saveResidenceSchedule = saveResidenceSchedule;
 exports.setProperty = setProperty;
 exports.checkBookingOverlap = checkBookingOverlap;

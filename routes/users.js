@@ -12,4 +12,14 @@ router.post('/loginUser', function (req, res, next) {
 				res.send(statusResponse);
 			});
 });
+
+router.post('/setpassword', function (req, res, next) {
+	var userid = req.body.userid;
+	var oldPassword = req.body.password;
+	var newPassword = req.body.newPassword;
+	business.setPassword(userid, oldPassword, newPassword,
+			function (err, statusResponse) {
+				res.send(statusResponse);
+			});
+});
 module.exports = router;

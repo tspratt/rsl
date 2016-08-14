@@ -1,7 +1,8 @@
 angular
   .module('rsl', [
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngStorage'
   ])
   .config(function ($stateProvider, $urlRouterProvider,$httpProvider,$sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -43,6 +44,11 @@ angular
       .state('booking-schedule', {
         url: '/booking-schedule',
         templateUrl: '/views/booking-schedule.html',
+        controller: 'bookingCtrl'
+      })
+      .state('booking-list', {
+        url: '/booking-list',
+        templateUrl: '/views/booking-list.html',
         controller: 'bookingCtrl'
       })
       .state('settings', {

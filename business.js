@@ -27,7 +27,7 @@ function loginUser(userid, password, callback) {
 			}
 			else {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
-					delete user.passwordHash;
+					delete user.passwordHash;                                           //remove these from the response
 					delete user.salt;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
 				}
@@ -35,6 +35,54 @@ function loginUser(userid, password, callback) {
 					statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message : 'incorrect password for ' + userid});
 				}
 			}
+		}
+		callback(err, statusResponse);
+	});
+}
+
+function setPassword (userid, oldPassword, newPassword) {
+	model.getUser({userid : userid}, function (err, user) {
+		var statusResponse;
+		if (err) {
+			statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
+		}
+		else {
+			if (!user) {
+				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'user not found'});
+			}
+			else {
+				if (utils.compareHash(password, user.salt, user.passwordHash)) {
+					var newHash = utils.buildHash(newPassword, user.salt);
+					var oUpdate = {$set:{"passwordHash": newHash}};
+					model.updateUser(sId, oUpdate, function (err, result) {
+						if (err) {
+							statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
+						}
+						else {
+							statusResponse = new StatusResponse('success', 'setPassword', '', 'business', result);
+						}
+						callback(err, statusResponse);
+					});
+				}
+				else {
+					statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'incorrect original password for ' + userid});
+				}
+			}
+		}
+		callback(err, statusResponse);
+	});
+
+
+}
+
+function updateUser(sId, oUpdate, callback) {
+	var statusResponse;
+	model.updateUser(sId, oUpdate, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'updateUser', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'updateUser', '', 'business', result);
 		}
 		callback(err, statusResponse);
 	});
@@ -121,7 +169,8 @@ function bookRoom(sAction, oBooking, callback) {
 			}
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
-				updateResidenceSchedule(result._doc);
+				//model.deleteBooking(result._doc._id);
+				//updateResidenceSchedule(result._doc);
 			}
 			callback(err, statusResponse);
 		});
@@ -196,7 +245,6 @@ function updatePerson(sId, oUpdate, callback) {
 		}
 		callback(err, statusResponse);
 	});
-
 }
 
 function updateMember(sId, oUpdate, callback) {
@@ -242,7 +290,74 @@ function listBookings(filterSpec, dateSpec, fieldSpec, callback) {
 	});
 }
 
-function updateResidenceSchedule (booking) {
+function updateResidenceSchedule (oBooking) {
+	var statusResponse;
+	var aResidenceSchedule = [];
+	var idxResidenceElement = -1;
+	var oResidenceElement;
+	var sResidenceType = '';
+	var dtFirstArrival = null;
+	var firstDaySec;
+	var dtArrive;			//full date time
+	var dtDepart;
+	var dArrive;			//H,M,S set to 0, for use in compare
+	var dDepart;
+	var dCur;
+	var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
+	var idxDaySection = 0;
+	var j = 0;
+
+	var oResidence;
+	var memberCur = {};
+
+	oBooking.index = 0;
+	dtArrive = oBooking.arrive;
+	dtDepart = oBooking.depart;
+	dArrive = dtArrive.clone();
+	dArrive.setHours(0);
+	dArrive.setMinutes(0);
+	dDepart = dtDepart.clone();
+	dDepart.setHours(0);
+	dDepart.setMinutes(0);
+	if (true) {
+		idxDaySection = 0;
+		dtFirstArrival = dtArrive;
+		dCur = dtFirstArrival.clone();
+		dCur.setHours(0);
+		dCur.setMinutes(0);
+		firstDaySec = utils.getDaySection(dtArrive);
+		while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
+			oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+			oResidence.members = new EmptyMembersArray();
+			aResidenceSchedule.push(oResidence);
+			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+		}
+		sResidenceType = '';
+		while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
+			if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
+				sResidenceType = 'arrive';
+			}
+			else if (dCur.equals(dDepart) && idxDaySection === utils.getDaySection(dtDepart).index) {
+				sResidenceType = 'depart';
+			}
+			else {
+				sResidenceType = 'resident';
+			}
+			memberCur = new ResidentMember(oBooking, sResidenceType);
+			oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+			oResidence.members = new EmptyMembersArray();
+			oResidence.members[oBooking.member.order] = memberCur;
+			aResidenceSchedule.push(oResidence);
+
+			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+			if (idxDaySection === 0) {																		//change days, reset vars
+				dCur = dCur.add(1).days();
+			}
+		}
+		model.saveResidenceSchedule(aResidenceSchedule, function (err, result) {
+			logger.info('here');
+		})
+	}
 
 }
 
@@ -501,6 +616,7 @@ function insertCollection(sCollection, callback) {
 
 exports.isAlive = isAlive;
 exports.loginUser = loginUser;
+exports.setPassword = setPassword;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
