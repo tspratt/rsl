@@ -40,20 +40,23 @@ function loginUser(userid, password, callback) {
 	});
 }
 
-function setPassword (userid, oldPassword, newPassword) {
+function setPassword (userid, oldPassword, newPassword, callback) {
 	model.getUser({userid : userid}, function (err, user) {
 		var statusResponse;
 		if (err) {
 			statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
+			callback(err, statusResponse);
 		}
 		else {
 			if (!user) {
 				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'user not found'});
+				callback(err, statusResponse);
 			}
 			else {
-				if (utils.compareHash(password, user.salt, user.passwordHash)) {
+				if (utils.compareHash(oldPassword, user.salt, user.passwordHash)) {
 					var newHash = utils.buildHash(newPassword, user.salt);
 					var oUpdate = {$set:{"passwordHash": newHash}};
+					var sId = user._id.toString();
 					model.updateUser(sId, oUpdate, function (err, result) {
 						if (err) {
 							statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
@@ -66,13 +69,42 @@ function setPassword (userid, oldPassword, newPassword) {
 				}
 				else {
 					statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'incorrect original password for ' + userid});
+					callback(err, statusResponse);
 				}
 			}
 		}
-		callback(err, statusResponse);
 	});
+}
 
-
+function resetPassword (userid, callback) {
+	var tempPassword = 'gabboob';
+	model.getUser({userid : userid}, function (err, user) {
+		var statusResponse;
+		if (err) {
+			statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
+			callback(err, statusResponse);
+		}
+		else {
+			if (!user) {
+				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'user not found'});
+				callback(err, statusResponse);
+			}
+			else {
+				var newHash = utils.buildHash(tempPassword, user.salt);
+				var oUpdate = {$set:{"passwordHash": newHash}};
+				var sId = user._id.toString();
+				model.updateUser(sId, oUpdate, function (err, result) {
+					if (err) {
+						statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
+					}
+					else {
+						statusResponse = new StatusResponse('success', 'setPassword', '', 'business', result);
+					}
+					callback(err, statusResponse);
+				});
+			}
+		}
+	});
 }
 
 function updateUser(sId, oUpdate, callback) {
@@ -617,6 +649,7 @@ function insertCollection(sCollection, callback) {
 exports.isAlive = isAlive;
 exports.loginUser = loginUser;
 exports.setPassword = setPassword;
+exports.resetPassword = resetPassword;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;

@@ -43,14 +43,14 @@
 									ng-disabled="false">Sched
 					</button>
 					<button class="module-menu-item"
-									ng-class="{'selected':'person-list' === activeState}"
-									ng-click="goView('person-list')"
-									ng-disabled="false">Persons
-					</button>
-					<button class="module-menu-item"
 									ng-class="{'selected':'booking-list' === activeState}"
 									ng-click="goView('booking-list')"
 									ng-disabled="false">List
+					</button>
+					<button class="module-menu-item"
+									ng-class="{'selected':'person-list' === activeState}"
+									ng-click="goView('person-list')"
+									ng-disabled="false">Persons
 					</button>
 					<button class="module-menu-item"
 									ng-class="{'selected':'settings' === activeState}"
@@ -67,12 +67,7 @@
 			<div>{{systemMessage}}</div>
 		</div>
     <div ui-view="" ></div>
-
-    <div>
-      <uib-alert class="system-alert" ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="5000" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-    </div>
   </div>
-
 </div>
 
 <!-- Bootstrap compiled and minified JavaScript -->
@@ -80,7 +75,7 @@
 <script src="lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
 <script src="controllers/main.js"></script>
-<script src="controllers/person-list.js"></script>
+<script src="controllers/person.js"></script>
 <script src="controllers/name-search.js"></script>
 <script src="controllers/field-filter.js"></script>
 <script src="controllers/paginator.js"></script>

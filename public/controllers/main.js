@@ -34,11 +34,11 @@ angular.module('rsl')
       });
 
       $scope.logIn = function (sState) {
-        $scope.addAlert('success', '...working');
         if ($scope.vm.password === 'demo') {
           $scope.isLoggedIn = true;
           if (sState === 'book') {
-            $scope.addAlert('warning', 'Demo users cannot book, showing schedule');
+            $rootScope.$emit('system-message',
+                {source: 'main.js', level: 'warning', message: 'Demo users cannot book, showing schedule'});
             sState = 'booking-schedule';
           }
           $scope.goView(sState, null);
@@ -50,20 +50,21 @@ angular.module('rsl')
           }
           PersonData.loginUser($scope.vm.username, $scope.vm.password)
               .then(function (res) {
-                $scope.closeAllAlerts();
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
                     $scope.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
-                      $scope.addAlert('warning', 'Only members can book, showing schedule');
+                      $rootScope.$emit('system-message',
+                          {source: 'main.js', level: 'warning', message: 'Only members can book, showing schedule'});
                       sState = 'booking-schedule'
                     }
                     $scope.goView(sState, {booking: null});
                   }
                   else {
-                    $scope.addAlert('danger', 'Login Failed: ' + res.data.data.message);
+                    $rootScope.$emit('system-message',
+                        {source: 'main.js', level: 'critical', message: 'Login Failed: ' + res.data.data.message});
                   }
 
                 }
@@ -89,19 +90,6 @@ angular.module('rsl')
 
       $scope.goView = function (state, oParams) {
         $state.go(state, oParams);
-      };
-
-      $scope.alerts = [];
-
-      $scope.addAlert = function(type,msg) {
-        $scope.alerts.push({type: type, msg: msg});
-      };
-
-      $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-      };
-      $scope.closeAllAlerts = function() {
-        $scope.alerts = [];
       };
 
       /****  Initilaize **/

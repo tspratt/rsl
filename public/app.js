@@ -54,7 +54,7 @@ angular
       .state('settings', {
         url: '/settings',
         templateUrl: '/views/settings.html',
-        controller: 'bookingCtrl'
+        controller: 'personCtrl'
       })
   })
   .run(['$rootScope', '$state', function($rootScope, $state) {
