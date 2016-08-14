@@ -172,7 +172,7 @@ button.log-in {
   width: 12em;
 }
 
-.login-input input[type=checkbox]  {
+.login-input input[type=checkbox] {
   font-size: 2em;
   width: unset;
   margin-left: 0.2em;
@@ -339,12 +339,12 @@ button.menu-nav {
   width: 20px;
   height: 100%;
   border-radius: 0;
-  margin: 0 3px 0 3px
+  margin: 0 3px 0 3px;
 }
 
 div.menu-buttons {
   overflow: hidden;
-  height:100%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -544,8 +544,9 @@ button.plus {
 
 .booking-grid {
   width: 380px;
-  height: 400px
+  height: 400px;
 }
+
 .booking-list-item {
   width: 100%;
   height: 20px;
@@ -564,10 +565,12 @@ button.plus {
   width: 35%;
   text-overflow: ellipsis;
 }
+
 .booking-list-item .room {
   width: 25%;
   text-overflow: ellipsis;
 }
+
 .booking-list-item .date {
   width: 20%;
 }
@@ -590,7 +593,7 @@ button.plus {
 .system-message button {
   position: absolute;
   top: 5px;
-  right:5px;
+  right: 5px;
   height: 30px;
   width: 30px;
 }
@@ -608,11 +611,13 @@ button.plus {
   align-items: center;
 }
 
-.settings-section .setting-label{
+.settings-section .setting-label {
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: 30%;
   text-align: right;
 }
+
+/*# sourceMappingURL=style.css.map */
 
 /*# sourceMappingURL=style.css.map */
