@@ -85,6 +85,8 @@ var mgSchema = {
 		room: {type: Schema.ObjectId, ref: 'Room'},
 		who: [{type: Schema.ObjectId, ref: 'Person'}],
 		whoCount: Number,
+		guestCount: Number,
+		roomRequestCount: Number,
 		arrive: Date,
 		depart: Date,
 		note: String

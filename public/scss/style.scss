@@ -172,7 +172,7 @@ button.log-in {
 	width: 12em;
 }
 
-.login-input input[type=checkbox]  {
+.login-input input[type=checkbox] {
 	font-size: 2em;
 	width: unset;
 	margin-left: 0.2em;
@@ -339,12 +339,12 @@ button.menu-nav {
 	width: 20px;
 	height: 100%;
 	border-radius: 0;
-	margin: 0 3px 0 3px
+	margin: 0 3px 0 3px;
 }
 
 div.menu-buttons {
 	overflow: hidden;
-	height:100%;
+	height: 100%;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -544,8 +544,9 @@ button.plus {
 
 .booking-grid {
 	width: 380px;
-	height: 400px
+	height: 400px;
 }
+
 .booking-list-item {
 	width: 100%;
 	height: 20px;
@@ -564,10 +565,12 @@ button.plus {
 	width: 35%;
 	text-overflow: ellipsis;
 }
+
 .booking-list-item .room {
 	width: 25%;
 	text-overflow: ellipsis;
 }
+
 .booking-list-item .date {
 	width: 20%;
 }
@@ -590,7 +593,7 @@ button.plus {
 .system-message button {
 	position: absolute;
 	top: 5px;
-	right:5px;
+	right: 5px;
 	height: 30px;
 	width: 30px;
 }
@@ -608,11 +611,59 @@ button.plus {
 	align-items: center;
 }
 
-.settings-section .setting-label{
+.settings-section .setting-label {
 	flex-grow: 0;
 	flex-shrink: 0;
 	flex-basis: 30%;
 	text-align: right;
 }
 
-/*# sourceMappingURL=style.css.map */
+div[rn-stepper] {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: none;
+	display: inline-block;
+	height: 32px;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+div[rn-stepper].ng-invalid-out-of-bounds input {
+	color: #FF3B34;
+	border: 3px solid #FF3B34;
+}
+
+div[rn-stepper][disabled] input {
+	color: #aaa;
+	border: 0;
+}
+
+div[rn-stepper] button {
+	width: 30px;
+	height: 30px;
+	background: slategrey;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+div[rn-stepper] button[disabled] {
+	opacity: 0.3;
+}
+
+div[rn-stepper] button:active {
+	box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25);
+	background: #3434ff;
+}
+
+div[rn-stepper] input {
+	width: 30px;
+	vertical-align: middle;
+	padding: 0;
+	background: #ffffff;
+	text-align: center;
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	margin-top: -3px;
+}

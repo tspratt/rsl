@@ -549,6 +549,26 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 
 			}
 
+			/*Now add a day of empty records*/
+			oResidenceElement = aResidenceSchedule[aResidenceSchedule.length - 1];	//get the last element in the schedule
+			dCur = oResidenceElement.dt.clone();
+			idxDaySection = oResidenceElement.daySection.index;
+			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;					//increment daysection
+			if (idxDaySection === 0) {																							//if morning, increment day
+				dCur = dCur.add(1).days();
+			}
+			var dtNext = dCur.clone().add(2).days();
+			while (dCur.isBefore(dtNext)) {
+				oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+				oResidence.members = new EmptyMembersArray();
+				aResidenceSchedule.push(oResidence);
+				idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+				if (idxDaySection === 0) {																							//if morning, increment day
+					dCur = dCur.add(1).days();
+				}
+			}
+			idxResidenceElement = aResidenceSchedule.length;
+
 			statusResponse = new StatusResponse('success', 'listBookings', '', 'business', aResidenceSchedule);
 		}
 

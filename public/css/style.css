@@ -618,6 +618,54 @@ button.plus {
   text-align: right;
 }
 
-/*# sourceMappingURL=style.css.map */
+div[rn-stepper] {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: none;
+  display: inline-block;
+  height: 32px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+div[rn-stepper].ng-invalid-out-of-bounds input {
+  color: #FF3B34;
+  border: 3px solid #FF3B34;
+}
+
+div[rn-stepper][disabled] input {
+  color: #aaa;
+  border: 0;
+}
+
+div[rn-stepper] button {
+  width: 30px;
+  height: 30px;
+  background: slategrey;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+div[rn-stepper] button[disabled] {
+  opacity: 0.3;
+}
+
+div[rn-stepper] button:active {
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25);
+  background: #3434ff;
+}
+
+div[rn-stepper] input {
+  width: 30px;
+  vertical-align: middle;
+  padding: 0;
+  background: #ffffff;
+  text-align: center;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  margin-top: -3px;
+}
 
 /*# sourceMappingURL=style.css.map */
