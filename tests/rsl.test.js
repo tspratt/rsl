@@ -66,7 +66,7 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe('Test Users endpoints (business)',
+	describe.only('Test Users endpoints (business)',
 			function () {
 				it('should return a person from login with good credentials', function (done) {
 					business.loginUser('Tracy', 'gabboob',
@@ -88,6 +88,52 @@ describe('Setup tests', function () {
 									expect(err).to.not.exist;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.status).to.equal('fail');
+								});
+							}
+					);
+				});
+				it('should set password', function (done) {
+					business.setPassword('Amy', 'gabboob', 'amy',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+				it('should return a person from login with good credentials', function (done) {
+					business.loginUser('Amy', 'amy',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+									expect(statusResponse.data.person.member.unit).to.exist;
+									console.log(statusResponse.data);
+								});
+							}
+					);
+				});
+				it('should re-set password', function (done) {
+					business.resetPassword('Amy',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+				it('should log in successfully', function (done) {
+					business.loginUser('Amy', 'gabboob',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
 								});
 							}
 					);

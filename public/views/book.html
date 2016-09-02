@@ -87,6 +87,16 @@
 				</div>
 			</div>
 		</div>
+		<div class="form-group" >
+			<label class="control-label col-xs-2">Guests:</label>
+			<div class="col-xs-4">
+					<div rn-stepper ng-model="guestCount" min="0" max="15"></div>
+			</div>
+			<label class="control-label col-xs-2">Room<br>Req:</label>
+			<div class="col-xs-4">
+				<div rn-stepper ng-model="roomRequestCount" min="0" max="15"></div>
+			</div>
+		</div>
 		<div class="form-group">
 			<div class="col-xs-12">
 				<button class="label" ng-click="whoDetail=!whoDetail">Who:</button>

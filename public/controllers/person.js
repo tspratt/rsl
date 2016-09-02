@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('personCtrl', ['$scope', '$state', 'appConstants', 'PersonData',
-    function($scope, $state, appConstants, PersonData) {
+  .controller('personCtrl', ['$rootScope', '$scope', '$state', 'appConstants', 'PersonData',
+    function($rootScope, $scope, $state, appConstants, PersonData) {
       $scope.persons = [];
       $scope.person = {};
       $scope.selectedId = '';
@@ -35,6 +35,23 @@ angular.module('rsl')
       //  $scope.person = oPerson;
       //  $scope.selectedId = oPerson._id
       //};
+
+
+      /****   Settings view ****/
+      $scope.vm.newPassword = '';
+      $scope.setPassword = function () {
+        PersonData.setPassword($scope.vm.username, $scope.vm.password, $scope.vm.newPassword)
+            .then(function (res) {
+              if (res.data.data.status !== 'success') {
+                $rootScope.$emit('system-message',
+                    {source: 'main.js', level: 'success', message: 'Password Set'});
+              }
+              else {
+                $rootScope.$emit('system-message',
+                    {source: 'main.js', level: 'fail', message: 'Password set FAILED'});
+              }
+            });
+      };
 
       initModule();
 

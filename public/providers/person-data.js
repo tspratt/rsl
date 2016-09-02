@@ -1,6 +1,6 @@
 'use strict';
 angular.module('rsl')
-  .factory('PersonData', ['$http', 'envConfig', function ($http, envConfig) {
+  .factory('PersonData', ['$rootScope','$http', 'envConfig', function ($rootScope, $http, envConfig) {
     var PersonData = {};
 
     PersonData.loginUser = function (userid, password) {
@@ -16,6 +16,21 @@ angular.module('rsl')
           });
       return promise;
     };
+
+		PersonData.setPassword = function (userid, password, newPassword) {
+			var oBody = {userid: userid, password: password, newPassword: newPassword};
+
+			var promise =  $http.post(envConfig.SERVICE_URL_BASE + 'setpassword', oBody)
+					.then(function (res) {
+						return res;
+					})
+					.catch(function(res) {
+						console.error('setpassword', res.status, res.data);
+						$rootScope.$emit('system-message', {source: 'person-data.js', level: 'service-error', message: 'Service error setting password'});
+						return res;
+					});
+			return promise;
+		};
 
     PersonData.getPersons = function (iPageNum, iPageLen, oQuery, sFilterFieldName, filterValue, bReducedPayload) {
       var oQueryParams = {pageNum: iPageNum, pageLength: iPageLen, query: oQuery, field:sFilterFieldName, value: filterValue};

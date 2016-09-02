@@ -1,9 +1,12 @@
 <div>
   <div class="login-input">
-    <input type="text" placeholder="user name" ng-model="username" focus-me="true">
+    <input type="text" placeholder="user name" ng-model="vm.username" focus-me="true">
     <input type="password" placeholder="password"
-           ng-model="password"
+           ng-model="vm.password"
            ng-change="validateForm()" on-enter-key="logIn()">
+    <div>
+      <input type="checkbox" ng-model="vm.rememberMe"> Remember me on this device
+    </div>
   </div>
 
   <button class="module-menu-item"
@@ -14,16 +17,23 @@
   <button class="module-menu-item"
           ng-class="{'selected':'booking-schedule' === activeState}"
           ng-click="logIn('booking-schedule')"
-          ng-disabled="!isFormValid">Bookings
+          ng-disabled="!isFormValid">Sched
   </button>
+  <!--
   <button class="module-menu-item"
           ng-class="{'selected':'person-list' === activeState}"
           ng-click="logIn('person-list')"
           ng-disabled="!isFormValid">Persons
   </button>
   <button class="module-menu-item"
+          ng-class="{'selected':'booking-list' === activeState}"
+          ng-click="goView('booking-list')"
+          ng-disabled="false">Bookings
+  </button>
+  <button class="module-menu-item"
           ng-class="{'selected':'settings' === activeState}"
           ng-click="logIn('settings')"
           ng-disabled="!isFormValid">Other
   </button>
+-->
 </div>

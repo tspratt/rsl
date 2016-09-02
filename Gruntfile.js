@@ -105,7 +105,12 @@ module.exports = function (grunt) {
 	]);
 
 
-	//included to demonstrate pattern
+	grunt.registerTask('build_dev', [
+		'sass:dev',
+		'replace:dev'
+	]);
+
+	/* Use to run against local service */
 	grunt.registerTask('build_local', [
 		'sass:dev',
 		'replace:local'

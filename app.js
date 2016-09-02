@@ -78,6 +78,8 @@ model.initDb(uri, function(err, db){
       else {
         app.listen(app.get('port'), function() {
           console.log("Node app is running at " + os.hostname() +':' + app.get('port'));
+          console.log('run grunt build_local to use local services');
+          console.log('run grunt build_dev to use heroku services');
         });
       }
     });
