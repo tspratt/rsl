@@ -303,10 +303,10 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
  * @param dtDepart
  * @param callback
  */
-function checkBookingOverlap(memberId, dtArrive, dtDepart, callback) {
+function checkBookingOverlap(roomId, dtArrive, dtDepart, callback) {
 	//var oQuery = {"member._id": memberId, $or:[{arrive: {$gte:dtArrive,$lte:dtDepart}},{depart: {$gte:dtArrive,$lte:dtDepart}}]};
 	var oQuery = {
-		"member" : ObjectId(memberId),
+		"room" : ObjectId(roomId),
 		$or      : [
 			{"arrive" : {$gte : dtArrive, $lte : dtDepart}},
 			{"depart" : {$gte : dtArrive, $lte : dtDepart}},

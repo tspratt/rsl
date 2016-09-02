@@ -127,10 +127,10 @@ router.get('/residence-schedule', function (req, res, next) {
 });
 
 router.get('/check-booking-overlap', function (req, res, next) {
-	var memberid = req.query.memberid;
+	var roomId = req.query.roomid;
 	var dtArrive = req.query.arrive;
 	var dtDepart = req.query.depart;
-	business.checkBookingOverlap(memberid, dtArrive, dtDepart, function (err, statusResponse) {
+	business.checkBookingOverlap(roomId, dtArrive, dtDepart, function (err, statusResponse) {
 		res.send(statusResponse);
 	})
 });

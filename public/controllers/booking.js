@@ -145,7 +145,7 @@ angular.module('rsl')
 				function checkBooking() {
 					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
 					if ($scope.dtArrive && $scope.dtDepart) {
-						bookingData.checkBookingOverlap(appData.loggedInUser.person.member._id, $scope.dtArrive, $scope.dtDepart)
+						bookingData.checkBookingOverlap($scope.selectedRoom, $scope.dtArrive, $scope.dtDepart)
 								.then(function (res) {
 									if (res.status >= 200 && res.status < 300) {
 										if (res.data.data.hasOwnProperty('_id')) {
