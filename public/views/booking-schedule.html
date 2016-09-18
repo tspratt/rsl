@@ -64,11 +64,11 @@
 			 </div>
 			 <div class="form-group">
 				 <span class="col-xs-3 popup-label">Arrive:</span>
-				 <span class="col-xs-9 popup-value">{{bookingSelected.arrive | date:'EEEE MMM-d'}}</span>
+				 <span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.arrive)}}</span>
 			 </div>
 			 <div class="form-group">
 				 <span class="col-xs-3 popup-label">Depart:</span>
-				 <span class="col-xs-9 popup-value">{{bookingSelected.depart | date:'EEEE MMM-d'}}</span>
+				 <span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.depart)}}</span>
 			 </div>
 			 <div class="form-group">
 				 <span class="col-xs-3 popup-label">Who</span>

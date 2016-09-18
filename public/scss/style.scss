@@ -667,3 +667,11 @@ div[rn-stepper] input {
 	line-height: 30px;
 	margin-top: -3px;
 }
+
+.datepicker.booking {
+	margin-top: 5px;
+}
+.datepicker.booking > table {
+	width: 300px;
+	height: 250px;
+}

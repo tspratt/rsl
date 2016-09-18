@@ -56,10 +56,11 @@
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
+					<button class="close" ng-click="arriveDetail=false">Close</button>
 				</div>
 
 				<div style="display:inline-block; min-height:290px;">
-					<uib-datepicker ng-model="dtArrive" min-date="dtArriveMin" show-weeks="true" class="well well-sm"
+					<uib-datepicker ng-model="dtArrive" min-date="dtArriveMin" show-weeks="false" class="datepicker booking well well-sm"
 									ng-change="onSelectArriveDate()"></uib-datepicker>
 				</div>
 
@@ -79,9 +80,10 @@
 					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
 					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
 					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
+					<button class="close" ng-click="departDetail=false">Close</button>
 				</div>
 				<div style="display:inline-block; min-height:290px;">
-					<uib-datepicker ng-model="dtDepart" min-date="dtDepartMin" show-weeks="true" class="well well-sm"
+					<uib-datepicker ng-model="dtDepart" min-date="dtDepartMin" show-weeks="false" class="datepicker booking well well-sm"
 									ng-change="onSelectDepartDate()"
 							></uib-datepicker>
 				</div>
@@ -100,7 +102,7 @@
 		<div class="form-group">
 			<div class="col-xs-12">
 				<button class="label" ng-click="whoDetail=!whoDetail">Who:</button>
-				<span class="book-who" ng-repeat="person in personsForMember | filter:{ selected: true }">{{person.firstname}}&nbsp;</span>
+				<span class="book-who" ng-repeat="person in booking.who">{{person.firstname}}&nbsp;</span>
 			</div>
 		</div>
 		<div class="form-group expander" ng-show="whoDetail">

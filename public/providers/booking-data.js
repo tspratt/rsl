@@ -33,8 +33,8 @@ angular.module('rsl')
 				return promise;
 			};
 
-			bookingData.checkBookingOverlap = function (memberid, dtArrive, dtDepart) {
-				var oQueryParams = {memberid: memberid, arrive:dtArrive, depart:dtDepart};
+			bookingData.checkBookingOverlap = function (roomid, dtArrive, dtDepart) {
+				var oQueryParams = {roomid: roomid, arrive:dtArrive, depart:dtDepart};
 				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'check-booking-overlap/',
 						{params : oQueryParams})
 						.then(function (res) {

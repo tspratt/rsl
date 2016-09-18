@@ -128,10 +128,10 @@ router.get('/residence-schedule', function (req, res, next) {
 });
 
 router.get('/check-booking-overlap', function (req, res, next) {
-	var memberid = req.query.memberid;
+    var roomId = req.query.roomid;
 	var dtArrive = moment(req.query.arrive, 'YYYY-MM-DDTHH:mm:ss.SSSZ').toDate();    //"2016-08-19T21:59:00.000Z"
 	var dtDepart = moment(req.query.depart, 'YYYY-MM-DDTHH:mm:ss.SSSZ').toDate();
-	business.checkBookingOverlap(memberid, dtArrive, dtDepart, function (err, statusResponse) {
+	business.checkBookingOverlap(roomId, dtArrive, dtDepart, function (err, statusResponse) {
 		res.send(statusResponse);
 	})
 });

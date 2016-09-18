@@ -293,9 +293,9 @@ function updateMember(sId, oUpdate, callback) {
 
 }
 
-function checkBookingOverlap(memberId, dtArrive, dtDepart, callback) {
+function checkBookingOverlap(roomId, dtArrive, dtDepart, callback) {
 	var statusResponse;
-	model.checkBookingOverlap(memberId, dtArrive, dtDepart, function (err, data) {
+	model.checkBookingOverlap(roomId, dtArrive, dtDepart, function (err, data) {
 		if (err) {
 			statusResponse = new StatusResponse('error', 'checkBookingOverlap', '', 'business', err);
 		}
