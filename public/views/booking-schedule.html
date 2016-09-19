@@ -19,24 +19,33 @@
 		<div class="container">
 			<div class="row res-sched-section"
 					 ng-class="residence.daySection.lclabel"
-					 ng-repeat="residence in residenceSchedule track by residence.index">
+					 ng-repeat="residence in residenceSchedule track by $index">
 				<div class="col-xs-2">
-					<span class="day-label" ng-show="residence.daySection.index%4===0">{{residence.dt | date:'EEEE'}}</span>
-					<span class="daypart-label" ng-show="residence.daySection.index%4===1">{{residence.dt | date:'MMM-d'}}</span>
+					<span class="day-label"
+								ng-show="residence.daySection.index%4===0"
+								ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'EEEE'}}</span>
+					<span class="daypart-label"
+								ng-show="residence.daySection.index%4===1"
+								ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'MMM-d'}}</span>
 				</div>
 				<div class="col-xs-10">
 					<div class="residence-day-section"
-							 ng-repeat="resMember in residence.members track by resMember.member._id"
+							 ng-repeat="resMember in residence.members track by $index"
 							 ng-class="resMember.residenceType"
 							 ng-click="showBookingDetail(residence, resMember)" ng-attribute="">
-					<span class="res-day-section-content"
-								ng-if="resMember.residenceType.length>0"></span></div>
+						<div class="res-day-section-content"
+								ng-if="resMember.residenceType.length>0">
+							<div class="room-req-count" ng-if="resMember.guestRoomRequestCount&&resMember.guestRoomRequestCount>0">{{resMember.guestRoomRequestCount}}</div>
+							<div class="who-count" ng-if="resMember.whoCount">{{resMember.whoCount}}</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
  <div class="center-content">
 	 <div id="booking-detail" class="popup-large booking" ng-show="bookingDetailShow">
+		 <button class="button close" style="position:relative; top:0; right: 5px;" ng-click="bookingDetailClose('close', bookingSelected)">Close</button>
 		 <form class="form-horizontal book-form">
 			 <div class="popup-title">Booking detail</div>
 			 <div class="form-group">
@@ -44,13 +53,6 @@
 					 <button class="label button" ng-click="bookingDetailClose('change', bookingSelected)">Change</button>
 					 <button class="label button" ng-click="bookingDetailClose('delete', bookingSelected)">Delete</button>
 					 <button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
-
-				 </div>
-				 <div class="col-xs-1">
-					 <button class="button close" ng-click="bookingDetailClose('close', bookingSelected)">Close</button>
-				 </div>
-				 <div class="col-xs-1">
-
 				 </div>
 			 </div>
 			 <hr class="header">
@@ -71,8 +73,25 @@
 				 <span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.depart)}}</span>
 			 </div>
 			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Who</span>
-				 <span class="book-who" ng-repeat="person in bookingSelected.who">{{person.firstname}}&nbsp;</span>
+				 <span class="col-xs-3 popup-label">Who:</span>
+				 <div class="col-xs-9 popup-value">
+					 <span ng-repeat="person in bookingSelected.who">{{person.firstname}}&nbsp;</span>
+				 </div>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Guests:</span>
+				 <span class="col-xs-1 popup-value">{{bookingSelected.guestCount}}</span>
+				 <span class="col-xs-6 popup-value">Room Requests: {{bookingSelected.guestRoomRequestCount}}</span>
+			 </div>
+			 <div class="form-group" ng-if="bookingSelected.guestRoomRequestCount>0">
+				 <span class="col-xs-4 popup-label">Confirm Guest Room:</span>
+				 <div class="col-xs-8">
+					 <select class="popup-label"
+									 ng-model="bookingSelected.guestRoomConfirm"
+									 ng-options="room as room.unit + ': ' + room.description for room in rooms track by room._id"></select>
+				 		<button class="label button" ng-click="confirmGuestBooking(bookingSelected)">Confirm</button>
+				 </div>
+
 			 </div>
 
 			 <div class="form-group">
@@ -80,7 +99,7 @@
 					 <label class="control-label col-xs-2" for="taNotes">Notes:</label>
 				 </div>
 				 <div class="col-xs-10">
-					 <textarea id="taNotes" ng-value="note" readonly></textarea>
+					 <textarea id="taNotes" ng-model="bookingSelected.note" readonly></textarea>
 				 </div>
 			 </div>
 		 </form>

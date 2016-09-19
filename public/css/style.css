@@ -263,6 +263,10 @@ button.log-in {
   font-size: 16px;
 }
 
+.book-who {
+
+}
+
 .form-label {
   float: left;
   /*width:50px;*/
@@ -439,6 +443,12 @@ button.plus {
   font-style: italic;
 }
 
+.day-label.today,
+.daypart-label.today {
+  color: deepskyblue;
+  font-weight: normal;
+}
+
 .residence-day-section {
   display: block;
   float: left;
@@ -507,6 +517,29 @@ button.plus {
 
 .row.res-sched-section.evening {
   background: linear-gradient(orange, black);
+}
+
+.room-req-count {
+  color: red;
+  font-weight: bold;
+  background-color: white;
+  padding: 1px;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin: 1px;
+}
+
+.room-req-count.confirmed {
+  color: black;
+}
+
+.who-count {
+  color: black;
+  font-weight: normal;
+  padding: 1px;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin: 1px;
 }
 
 .popup-large {
@@ -671,6 +704,7 @@ div[rn-stepper] input {
 .datepicker.booking {
   margin-top: 5px;
 }
+
 .datepicker.booking > table {
   width: 300px;
   height: 250px;

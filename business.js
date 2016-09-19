@@ -204,7 +204,10 @@ function bookRoom(sAction, oBooking, callback) {
 				//model.deleteBooking(result._doc._id);
 				//updateResidenceSchedule(result._doc);
 			}
-			callback(err, statusResponse);
+			rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+				callback(err, statusResponse);
+			});
+
 		});
 	}
 	else if (sAction === 'update') {
@@ -216,7 +219,10 @@ function bookRoom(sAction, oBooking, callback) {
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
 			}
-			callback(err, statusResponse);
+
+			rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+				callback(err, statusResponse);
+			});
 		});
 
 	}
@@ -247,9 +253,10 @@ function deleteBooking(sId, callback) {
 		else {
 			statusResponse = new StatusResponse('success', 'deleteBooking', '', 'business', result);
 		}
-		callback(err, statusResponse);
+		rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+			callback(err, statusResponse);
+		});
 	});
-
 }
 
 function insertPerson(oPerson, callback) {
@@ -322,7 +329,7 @@ function listBookings(filterSpec, dateSpec, fieldSpec, callback) {
 	});
 }
 
-function updateResidenceSchedule (oBooking) {
+/*function updateResidenceSchedule (oBooking) {
 	var statusResponse;
 	var aResidenceSchedule = [];
 	var idxResidenceElement = -1;
@@ -361,7 +368,9 @@ function updateResidenceSchedule (oBooking) {
 		while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
 			oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 			oResidence.members = new EmptyMembersArray();
+ 			oResidence.guestRoomRequestCount = oBooking.guestRoomRequestCount;
 			aResidenceSchedule.push(oResidence);
+
 			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 		}
 		sResidenceType = '';
@@ -379,6 +388,7 @@ function updateResidenceSchedule (oBooking) {
 			oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 			oResidence.members = new EmptyMembersArray();
 			oResidence.members[oBooking.member.order] = memberCur;
+ 			oResidence.guestRoomRequestCount = oBooking.guestRoomRequestCount;
 			aResidenceSchedule.push(oResidence);
 
 			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
@@ -391,15 +401,26 @@ function updateResidenceSchedule (oBooking) {
 		})
 	}
 
-}
+}*/
 
 function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
+	model.getResidenceSchedule(dateSpec, callback);
+}
+
+function rebuildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
+	model.clearResidenceSchedule(function () {
+		buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback);
+	})
+}
+
+function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	var statusResponse;
 	var aResidenceSchedule = [];
 	var idxResidenceElement = -1;
 	var oResidenceElement;
 	var sResidenceType = '';
 	var dtFirstArrival = null;
+	var guestRoomRequestCount = 0;
 	var firstDaySec;
 	var dtArrive;			//full date time
 	var dtDepart;
@@ -423,6 +444,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 				idxDaySection = 0;
 				oBooking = aBookings[i];
 				oBooking.index = i;
+				guestRoomRequestCount += oBooking.guestRoomRequestCount;
 				dtArrive = oBooking.arrive;
 				dtDepart = oBooking.depart;
 				dArrive = dtArrive.clone();
@@ -459,6 +481,7 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 						oResidence.members = new EmptyMembersArray();
 						oResidence.members[oBooking.member.order] = memberCur;
+						oResidence.guestRoomRequestCount = guestRoomRequestCount;
 						aResidenceSchedule.push(oResidence);
 
 						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
@@ -498,6 +521,8 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 							oResidence.members = new EmptyMembersArray();
 							aResidenceSchedule.push(oResidence);
+
+
 							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 							if (idxDaySection === 0) {																							//if morning, increment day
 								dCur = dCur.add(1).days();
@@ -537,7 +562,10 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 							oResidence.members = new EmptyMembersArray();
 							oResidence.members[oBooking.member.order] = memberCur;
+							oResidence.guestRoomRequestCount = guestRoomRequestCount;
 							aResidenceSchedule.push(oResidence);
+
+
 							idxResidenceElement++;
 							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 							if (idxDaySection === 0) {																		//change days, reset vars
@@ -549,19 +577,28 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 
 			}
 
-			/*Now add a day of empty records*/
+			/*Now add some empty day records*/
 			oResidenceElement = aResidenceSchedule[aResidenceSchedule.length - 1];	//get the last element in the schedule
-			dCur = oResidenceElement.dt.clone();
-			idxDaySection = oResidenceElement.daySection.index;
-			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;					//increment daysection
-			if (idxDaySection === 0) {																							//if morning, increment day
-				dCur = dCur.add(1).days();
+			if (oResidenceElement) {
+				dCur = oResidenceElement.dt.clone();
+				idxDaySection = oResidenceElement.daySection.index;
+				idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;					//increment daysection
+				if (idxDaySection === 0) {																							//if morning, increment day
+					dCur = dCur.add(1).days();
+				}
 			}
+			else {
+				dCur = new Date();
+				idxDaySection = 0;
+			}
+
 			var dtNext = dCur.clone().add(2).days();
 			while (dCur.isBefore(dtNext)) {
 				oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
 				oResidence.members = new EmptyMembersArray();
 				aResidenceSchedule.push(oResidence);
+
+
 				idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 				if (idxDaySection === 0) {																							//if morning, increment day
 					dCur = dCur.add(1).days();
@@ -571,8 +608,24 @@ function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 
 			statusResponse = new StatusResponse('success', 'listBookings', '', 'business', aResidenceSchedule);
 		}
+		model.saveResidenceSchedule(aResidenceSchedule, function (err, results) {
+			console.log('residence schedule UPDATED');
+			callback(err, statusResponse);
+		});
 
-		callback(err, statusResponse);
+	});
+}
+
+function saveResidenceElement (oResidence) {
+	model.saveResidence(oResidence, function (err, result) {
+		if (err) {
+			//statusResponse = new StatusResponse('error', 'bookRoom', '', 'business', err);
+		}
+		else {
+			//statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
+			//model.deleteBooking(result._doc._id);
+			//updateResidenceSchedule(result._doc);
+		}
 	});
 }
 
@@ -582,8 +635,12 @@ var DaySectionResidence = function (index, dt, daySection) {
 	dCur.setMinutes(0);
 	this.index = index;
 	this.dt = dCur;
+	this.sDt = dCur.toISOString();
+	this.daySectionIndex = daySection.index;
 	this.daySection = daySection;
 	this.members = [];
+	this.rooms = [];
+	// this.roomRequest = 0;
 };
 
 var EmptyMembersArray = function () {
@@ -660,6 +717,12 @@ var ResidentMember = function (oBooking, residenceType) {
 	this.bookingid = oBooking._id;
 	this.member = (oBooking) ? oBooking.member : null;
 	this.residenceType = residenceType || '';
+	if (this.residenceType === 'arrive') {
+		this.guestRoomRequestCount = oBooking.guestRoomRequestCount;
+	}
+	if (this.residenceType === 'depart') {
+		this.whoCount = oBooking.whoCount;
+	}
 };
 
 function insertCollection(sCollection, callback) {

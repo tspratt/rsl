@@ -439,6 +439,12 @@ button.plus {
 	font-style: italic;
 }
 
+.day-label.today,
+.daypart-label.today {
+	color: deepskyblue;
+	font-weight: normal;
+}
+
 .residence-day-section {
 	display: block;
 	float: left;
@@ -507,6 +513,19 @@ button.plus {
 
 .row.res-sched-section.evening {
 	background: linear-gradient(orange, black);
+}
+
+.room-req-count {
+	color: red;
+	font-weight: bold;
+	background-color: white;
+	padding: 2px;
+	border: 1px solid white;
+	border-radius: 5px;
+}
+
+.room-req-count.confirmed {
+	color: black;
 }
 
 .popup-large {

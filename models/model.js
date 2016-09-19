@@ -340,7 +340,57 @@ function checkBookingOverlap(roomId, dtArrive, dtDepart, callback) {
  * @param callback
  */
 function saveResidenceSchedule(aResidenceSchedule, callback) {
-	calback(null, 'ok');
+	_db.collection('residenceSchedule', {safe : true},
+			function (err, collection) {
+				collection.insert(
+						aResidenceSchedule,
+						{},
+						function (err, data) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, data);
+							}
+						});
+			});
+}
+
+function getResidenceSchedule(dateSpec, callback) {
+	var oQuery = {};
+
+	_db.collection('residenceSchedule', {safe : true},
+			function (err, collection) {
+				collection.find(oQuery, {sort:{"index": 1}})
+						.toArray(function (err, data) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, data);
+							}
+						});
+			});
+}
+
+function clearResidenceSchedule(callback) {
+	_db.collection('residenceSchedule').remove(function (err, result) {
+		callback(err);
+	})
+}
+
+function saveResidence(oResidence, callback) {
+	_db.collection('residenceSchedule', {safe : true},
+			function (err, collection) {
+				collection.insert(
+						oResidence,
+						{ordered : true},
+						function (err, data) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, data);
+							}
+						});
+			});
 }
 
 function insertPerson(oPerson, callback) {
@@ -427,6 +477,9 @@ exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;
 exports.listBookings = listBookings;
+exports.clearResidenceSchedule = clearResidenceSchedule;
 exports.saveResidenceSchedule = saveResidenceSchedule;
+exports.saveResidence = saveResidence;
+exports.getResidenceSchedule = getResidenceSchedule;
 exports.setProperty = setProperty;
 exports.checkBookingOverlap = checkBookingOverlap;

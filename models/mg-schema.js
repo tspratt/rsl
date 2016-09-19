@@ -21,7 +21,7 @@ var mgSchema = {
 		address: String,
 		phone: String,
 		email: String
-	},{collection: 'persons'})
+	}, {collection: 'persons'})
 			.plugin(deepPopulate, {}),
 	Member: new Schema({
 		llcName: String,
@@ -34,28 +34,28 @@ var mgSchema = {
 		order: Number,
 		abr2: String,
 		abr3: String
-	},{collection: 'members'})
+	}, {collection: 'members'})
 			.plugin(deepPopulate, {}),
-	User: new Schema ({
+	User: new Schema({
 		person: {type: Schema.ObjectId, ref: 'Person'},
 		userid: String,
 		passwordHash: String,
 		salt: String
-	},{collection: 'users'})
+	}, {collection: 'users'})
 			.plugin(deepPopulate, {}),
 	Branch: new Schema({
 		branchname: String,
 		parentid: Schema.ObjectId,
 		share: Number,
 		unit: String
-	},{collection: 'branches'}),
+	}, {collection: 'branches'}),
 	Property: new Schema({
 		name: String,
 		description: String,
 		capacity: Number,
 		expandable: Number,
 		images: [String]
-	},{collection: 'properties'}),
+	}, {collection: 'properties'}),
 	Unit: new Schema({
 		property: String,
 		number: String,
@@ -68,9 +68,9 @@ var mgSchema = {
 			ref: 'Branch'
 		},
 		images: [String]
-	},{collection: 'units'})
+	}, {collection: 'units'})
 			.plugin(deepPopulate, {}),
-	Room: new Schema ({
+	Room: new Schema({
 		number: String,
 		unitid: Schema.ObjectId,
 		unit: String,
@@ -79,18 +79,48 @@ var mgSchema = {
 		expandable: Number,
 		displayName: String,
 		images: [String]
-	},{collection: 'rooms'}),
+	}, {collection: 'rooms'}),
 	Booking: new Schema({
 		member: {type: Schema.ObjectId, ref: 'Member'},
 		room: {type: Schema.ObjectId, ref: 'Room'},
 		who: [{type: Schema.ObjectId, ref: 'Person'}],
 		whoCount: Number,
 		guestCount: Number,
-		roomRequestCount: Number,
+		guestRoomRequestCount: Number,
+		guestRoomConfirmCount: Number,
 		arrive: Date,
 		depart: Date,
 		note: String
-	},{collection: 'bookings'})
+	}, {collection: 'bookings'})
+			.plugin(deepPopulate, {}),
+	Residence: new Schema({
+		index: Number,
+		dt: Date,
+		sDt: String,
+		daySectionIndex: Number,
+		daySection: {
+			hour: Number,
+			minute: Number,
+			second: Number,
+			millisecond: Number,
+			lclabel: String,
+			index: Number
+		},
+		members: [
+			{
+				residenceType: String,
+				bookingid: {type: Schema.ObjectId},
+				member: {type: Schema.ObjectId, ref: 'Member'}
+			}
+		],
+		rooms: [
+			{
+				residenceType: String,
+				bookingid: {type: Schema.ObjectId},
+				room: {type: Schema.ObjectId, ref: 'Room'}
+			}
+		]
+	}, {collection: 'residenceSchedule'})
 			.plugin(deepPopulate, {})
 
 };

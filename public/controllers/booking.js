@@ -9,11 +9,12 @@ angular.module('rsl')
 		$scope.bookMember = appData.loggedInUser.person.member;
 		$scope.bookMemberId = appData.loggedInUser.person.member._id;
 		$scope.selectedRoom = null;
+		$scope.isoToday = moment().toISOString().substr(0,10);
 		$scope.dtArrive = null;
 		$scope.dtDepart = null;
 		$scope.booking.who = [];
 		$scope.guestCount = 0;
-		$scope.roomRequestCount = 0;
+		$scope.guestRoomRequestCount = 0;
 		$scope.note = '';
 
 		$scope.dtArriveMin = null;
@@ -21,6 +22,7 @@ angular.module('rsl')
 		$scope.departDisabled = true;
 		$scope.dtArriveTimeConfig = appConstants.AFTERNOON;
 		$scope.dtDepartTimeConfig = appConstants.EVENING;
+		$scope.dtmSchedStart = moment().subtract(20, 'days');
 		$scope.appConstants = appConstants;
 		$scope.arriveDaySection = 'Afternoon';
 		$scope.departDaySection = 'Evening';
@@ -36,6 +38,7 @@ angular.module('rsl')
 		$scope.addingPerson = false;
 		$scope.bookingIncomplete = true;
 		$scope.bookingSelected = {};
+		$scope.bookingSelected.guestRoomConfirm = null;
 		$scope.bookingDetailShow = false;
 		$scope.bookingMode = 'new';
 		$scope.initialData;
@@ -53,28 +56,34 @@ angular.module('rsl')
 					}
 					else if ($scope.initialData.mode === 'change') {
 						$scope.booking = $scope.initialData.booking;
+						$scope.whoCount = $scope.booking.whoCount;
 						$scope.bookMember = $scope.initialData.booking.member;
 						$scope.dtArrive = moment($scope.initialData.booking.arrive);
 						$scope.dtDepart = moment($scope.initialData.booking.depart);
 						$scope.note = $scope.initialData.booking.note;
 						$scope.bookMemberId = $scope.initialData.booking.member._id;			//there will always be a memberid if we are launched from the booking schedule
+						$scope.guestCount = $scope.initialData.booking.guestCount;
+						$scope.guestRoomRequestCount = $scope.initialData.booking.guestRoomRequestCount;
 					}
-
 				}
-				getBookings();    //necessary for lookups
-				getRooms();
-				getMembers();
+				else {
+					$scope.bookMember = appData.loggedInUser.person.member;
+					$scope.bookMemberId = appData.loggedInUser.person.member._id;
+				}
 			}
 			else if ($state.$current.name === 'booking-schedule') {
-				getBookings();    //necessary for lookups
-				getResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
+				getResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
 			}
-			else if ($state.$current.name === 'booking-list') {
-				getBookings();
+
+			if ($scope.members.length === 0) {
+				getMembers();
+			}
+			if ($scope.bookings.length === 0) {
+				getBookings();    //necessary for lookups
 			}
 		}
 
-		$scope.$watch('bookMember', function (member) {
+		$scope.$watch('bookMember', function (member, prevMember) {
 			if (member) {
 				$scope.selectedRoom = null;				//set these so they blank out immediately on member change
 				$scope.personsForMember = [];
@@ -124,13 +133,14 @@ angular.module('rsl')
 		});
 
 		$scope.$watch('personsForMember', function (newValue) {
-			$scope.whoCount = 0;
+			$scope.booking.who = [];
 			for (var i = 0; i < $scope.personsForMember.length; i++) {
 				if ($scope.personsForMember[i].selected) {
-					$scope.whoCount++;
+					$scope.booking.who.push($scope.personsForMember[i]);
 				}
 			}
-			checkBooking();
+			$scope.whoCount = $scope.personsForMember.length;
+			// checkBooking();
 		}, true);
 
 		$scope.$watch('arriveDetail', function (newValue) {
@@ -166,6 +176,10 @@ angular.module('rsl')
 			}
 		};
 
+		$scope.isToday = function (dt) {
+			return (dt.substr(0,10) === $scope.isoToday);
+		};
+
 		function collapseOthers(sExpCur) {
 			for (var i = 0; i < aExpanders.length; i++) {
 				var sName = aExpanders[i];
@@ -178,7 +192,7 @@ angular.module('rsl')
 		function checkBooking() {
 			$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
 			if ($scope.bookingMode === 'new' && $scope.dtArrive && $scope.dtDepart) {
-				bookingData.checkBookingOverlap($scope.selectedRoom, $scope.dtArrive, $scope.dtDepart)
+				bookingData.checkBookingOverlap($scope.selectedRoom._id, $scope.dtArrive, $scope.dtDepart)
 				.then(function (res) {
 					if (res.status >= 200 && res.status < 300) {
 						if (res.data.data.hasOwnProperty('_id')) {
@@ -236,7 +250,7 @@ angular.module('rsl')
 			bookingData.getResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec)
 			.then(function (res) {
 				if (res.status >= 200 && res.status < 300) {
-					$scope.residenceSchedule = res.data.data;
+					$scope.residenceSchedule = res.data;
 				}
 				else {
 					console.log('HTTP Error: ' + res.statusText);
@@ -278,9 +292,7 @@ angular.module('rsl')
 					var aTmp = res.data.data.map(function (person) {
 						return person.member;
 					});
-
 					$scope.members = aTmp;
-
 					for (var i = 0; i < $scope.members.length; i++) {
 						if ($scope.members[i]._id === $scope.bookMemberId) {
 							$scope.members[i].selected = true;
@@ -288,12 +300,11 @@ angular.module('rsl')
 							break;
 						}
 					}
-
+					getRooms();
 				}
 				else {
 					console.log('HTTP Error: ' + res.statusText);
 				}
-
 			});
 		}
 
@@ -359,29 +370,28 @@ angular.module('rsl')
 		$scope.bookRoom = function () {
 			if ($scope.bookingMode === 'new') {
 				$scope.booking = {};
-				$scope.booking.member = $scope.bookMember._id;
-				$scope.booking.room = $scope.selectedRoom._id;
-				$scope.booking.arrive = $scope.dtArrive;
-				$scope.booking.depart = $scope.dtDepart;
-				$scope.booking.note = $scope.note;
-				$scope.booking.who = [];
-				$scope.booking.whoCount = 0;
-				$scope.booking.guestCount = $scope.guestCount;
-				$scope.booking.roomRequestCount = $scope.roomRequestCount;
-				for (var i = 0; i < $scope.personsForMember.length; i++) {
-					if ($scope.personsForMember[i].selected) {
-						$scope.booking.who.push($scope.personsForMember[i]._id);
-						$scope.booking.whoCount++;
-					}
+			}
+			$scope.booking.member = $scope.bookMember._id;
+			$scope.booking.room = $scope.selectedRoom._id;
+			$scope.booking.arrive = $scope.dtArrive;
+			$scope.booking.depart = $scope.dtDepart;
+			$scope.booking.note = $scope.note;
+			$scope.booking.who = [];
+			$scope.booking.whoCount = 0;
+			$scope.booking.guestCount = $scope.guestCount;
+			$scope.booking.guestRoomRequestCount = $scope.guestRoomRequestCount;
+			for (var i = 0; i < $scope.personsForMember.length; i++) {
+				if ($scope.personsForMember[i].selected) {
+					$scope.booking.who.push($scope.personsForMember[i]._id);
+					$scope.booking.whoCount++;
 				}
 			}
-			else {
 
-			}
-
+			$scope.bookingIncomplete = true;     //to turn off blinking button
 			bookingData.bookRoom($scope.bookingMode, $scope.booking)
 			.then(function (res) {
 				if (res.status >= 200 && res.status < 300) {
+					getBookings();
 					$state.go('booking-schedule');
 				}
 				else {
@@ -427,6 +437,38 @@ angular.module('rsl')
 
 		};
 
+		$scope.confirmGuestBooking = function (oBooking) {
+			$scope.bookingDetailShow = false;
+			var oGuestBooking = {};
+
+
+			oGuestBooking.room = oBooking.guestRoomConfirm._id;
+			for (var i = 0; i < $scope.members.length; i++) {
+				var oMember = $scope.members[i];
+				if (oMember.defaultroom === oBooking.guestRoomConfirm._id) {
+					oGuestBooking.member = oMember._id;
+				}
+			}
+			oGuestBooking.arrive = oBooking.arrive;
+			oGuestBooking.depart = oBooking.depart;
+			oGuestBooking.note = 'Guest room request confirmed by: ' + appData.loggedInUser.person.member.llcname;
+			oGuestBooking.who = [];
+			oGuestBooking.whoCount = oBooking.guestCount;
+			oGuestBooking.guestCount = 0;
+			oGuestBooking.guestRoomRequestCount = 0;
+
+			bookingData.bookRoom('new', oGuestBooking)
+					.then(function (res) {
+						if (res.status >= 200 && res.status < 300) {
+							getBookings();
+							getResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
+						}
+						else {
+							console.log('HTTP Error: ' + res.statusText);
+						}
+					});
+		};
+
 		$scope.bookingDetailClose = function (sMode, oBooking) {
 			$scope.bookingDetailShow = false;
 			switch (sMode) {
@@ -446,6 +488,7 @@ angular.module('rsl')
 			bookingData.deleteBooking(oBooking._id)
 			.then(function (res) {
 				if (res.status >= 200 && res.status < 300) {
+					getBookings();
 					getResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
 				}
 				else {
