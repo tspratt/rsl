@@ -263,10 +263,6 @@ button.log-in {
   font-size: 16px;
 }
 
-.book-who {
-
-}
-
 .form-label {
   float: left;
   /*width:50px;*/
@@ -523,23 +519,13 @@ button.plus {
   color: red;
   font-weight: bold;
   background-color: white;
-  padding: 1px;
+  padding: 2px;
   border: 1px solid white;
   border-radius: 5px;
-  margin: 1px;
 }
 
 .room-req-count.confirmed {
   color: black;
-}
-
-.who-count {
-  color: black;
-  font-weight: normal;
-  padding: 1px;
-  border: 1px solid white;
-  border-radius: 5px;
-  margin: 1px;
 }
 
 .popup-large {
