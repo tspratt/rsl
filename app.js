@@ -2,6 +2,7 @@
 
 var express = require('express');
 var app = express();
+var http = require('http');
 var cors = require('cors');
 var os = require('os');
 
@@ -31,6 +32,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(users);     //returns router to handle user requests
 app.use(booking);     //returns router to handle user requests
 app.use(persons);
+
+
+var handleDisconnect = function () {
+  logger.info('RSL socket disconnect...');
+};
+
+var handleMessage = function (from, msg) {
+  logger.info('Chat message from: ', from,':', msg);
+};
+
+var handleConnect = function (socket) {
+  logger.info('RSL socket connection...');
+  socket.on('disconnect', handleDisconnect);
+  socket.on('message', handleMessage);
+  socket.emit('message', 'Hello!');
+};
+
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+io.on('connection', handleConnect);
 
 /*
 // catch 404 and forward to error handler
@@ -67,7 +88,7 @@ app.use(function(err, req, res, next) {
 */
 
 var uri = process.env.MONGOLAB_URI;
-logger.info('uri:', uri)
+logger.info('uri:', uri);
 model.initDb(uri, function(err, db){
   if (err) {
     logger.error(err);
@@ -78,7 +99,7 @@ model.initDb(uri, function(err, db){
         logger.error(err);
       }
       else {
-        app.listen(app.get('port'), function() {
+        server.listen(app.get('port'), function() {
           console.log("Node app is running at " + os.hostname() +':' + app.get('port'));
           console.log('run grunt build_local to use local services');
           console.log('run grunt build_dev to use heroku services');

@@ -51,6 +51,11 @@ angular
         templateUrl: '/views/booking-list.html',
         controller: 'bookingCtrl'
       })
+      .state('chat', {
+          url: '/chat',
+          templateUrl: '/views/chat.html',
+          controller: 'chatCtrl'
+        })
       .state('settings', {
         url: '/settings',
         templateUrl: '/views/settings.html',

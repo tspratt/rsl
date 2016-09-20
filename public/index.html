@@ -16,6 +16,7 @@
   <!-- Bootstrap Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
   <script src="./app.js"></script>
 </head>
 
@@ -42,6 +43,11 @@
 									ng-class="{'selected':'booking-schedule' === activeState}"
 									ng-click="goView('booking-schedule')"
 									ng-disabled="false">Sched
+					</button>
+					<button class="module-menu-item"
+									ng-class="{'selected':'chat' === activeState}"
+									ng-click="goView('chat')"
+									ng-disabled="false">Chat
 					</button>
 					<button class="module-menu-item"
 									ng-class="{'selected':'booking-list' === activeState}"
@@ -78,6 +84,7 @@
 <!--<script type="text/javascript" src="lib/angular-range-slider.js"></script>-->
 <script src="controllers/main.js"></script>
 <script src="controllers/person.js"></script>
+<script src="controllers/chat.js"></script>
 <script src="controllers/name-search.js"></script>
 <script src="controllers/field-filter.js"></script>
 <script src="controllers/paginator.js"></script>
@@ -87,6 +94,7 @@
 <script src="providers/app-data.js"></script>
 <script src="providers/alert-service.js"></script>
 <script src="providers/person-data.js"></script>
+<script src="providers/chat-data.js"></script>
 <script src="providers/booking-data.js"></script>
 <script src="directives/person-detail.js"></script>
 <script src="directives/add-person.js"></script>
