@@ -2,7 +2,8 @@ angular
   .module('rsl', [
     'ui.router',
     'ui.bootstrap',
-    'ngStorage'
+    'ngStorage',
+    'btford.socket-io'
   ])
   .config(function ($stateProvider, $urlRouterProvider,$httpProvider,$sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([

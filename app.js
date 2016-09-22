@@ -16,7 +16,7 @@ var persons = require('./routes/persons');
 var users = require('./routes/users');
 var booking = require('./routes/booking');
 var model = require('./models/model');
-
+var chatServer = require('./chatServer');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -34,24 +34,8 @@ app.use(booking);     //returns router to handle user requests
 app.use(persons);
 
 
-var handleDisconnect = function () {
-  logger.info('RSL socket disconnect...');
-};
-
-var handleMessage = function (from, msg) {
-  logger.info('Chat message from: ', from,':', msg);
-};
-
-var handleConnect = function (socket) {
-  logger.info('RSL socket connection...');
-  socket.on('disconnect', handleDisconnect);
-  socket.on('message', handleMessage);
-  socket.emit('message', 'Hello!');
-};
-
 var server = http.createServer(app);
 var io = require('socket.io')(server);
-io.on('connection', handleConnect);
 
 /*
 // catch 404 and forward to error handler
@@ -99,6 +83,7 @@ model.initDb(uri, function(err, db){
         logger.error(err);
       }
       else {
+        chatServer.initModule(io);
         server.listen(app.get('port'), function() {
           console.log("Node app is running at " + os.hostname() +':' + app.get('port'));
           console.log('run grunt build_local to use local services');

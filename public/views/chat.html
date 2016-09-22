@@ -1,9 +1,37 @@
-<div>
-  <div class="container">
-    <div class="message-list">
-      <span>Messages ({{messageList.length}})</span>
+<div class="chat-view">
+	<div class="">
+		<div class="chat-msg-header">
+			<span>Messages ({{messageList.length}})</span>
+			<span>Date:</span>
+		</div>
+		<div class="chat-msg-list container">
+			<div class="row" ng-repeat="msg in chatMessages">
+				<div class="col-xs-10">
+					{{msg}}
 
-    </div>
-  </div>
+				</div>
+				<div class="col-xs-10">
+					{{today | date:'dd/mm'}}
+
+				</div>
+			</div>
+
+		</div>
+		<div class="chat-msg-footer">
+			<form role="form" novalidate name="form">
+				<div class="form-group">
+					<input type="text" style="width: 80%"
+								 required
+								 ng-model="vm.chatMsg"
+								 focus>
+					<button class="btn btn-sm btn-primary"
+									ng-enable="form.$valid"
+									ng-click="sendChatMessage()">SEND
+					</button>
+				</div>
+			</form>
+		</div>
+
+	</div>
 
 </div>
