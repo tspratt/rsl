@@ -609,13 +609,14 @@ button.plus {
 
 .msg-search-bar {
   height: 35px;
-  display:flex;
+  display: flex;
   flex-flow: row nowrap;
   align-items: center;
   font-size: 16px;
 }
 
-.msg-search-bar .dropdown-menu {   /*placement config option not working*/
+.msg-search-bar .dropdown-menu {
+  /*placement config option not working*/
   left: unset !important;
   right: 5px !important;
 }
@@ -631,18 +632,11 @@ input.month-picker {
 textarea.chat-msg {
   width: 100%;
   height: 60px;
-
 }
-
 
 .row.chat-msg {
-  margin: 0 0 0 0;
   border-top: 1px dashed white;
   border-right: 1px dashed white;
-}
-
-.msg-info {
-
 }
 
 .full-height-view {
@@ -652,31 +646,29 @@ textarea.chat-msg {
 
 .flex-v-container {
   height: 100%;
-  display:flex;
+  display: flex;
   flex-flow: column nowrap;
   width: 100%;
 }
 
 .flex-v-header {
-  display:flex;
+  display: flex;
   flex-flow: column nowrap;
   width: 100%;
 }
 
 .flex-v-footer {
-  display:flex;
+  display: flex;
   flex-flow: column nowrap;
   width: 100%;
 }
 
 .flex-v-content {
-  flex:auto;
-  overflow-y:scroll;
+  flex: auto;
+  overflow-y: scroll;
   width: 100%;
   padding: 0 0 5px 0;
 }
-
-
 
 .system-message {
   width: 300px;
@@ -779,5 +771,7 @@ div[rn-stepper] input {
   width: 300px;
   height: 250px;
 }
+
+/*# sourceMappingURL=style.css.map */
 
 /*# sourceMappingURL=style.css.map */
