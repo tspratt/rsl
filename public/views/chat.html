@@ -1,31 +1,53 @@
-<div class="chat-view">
-	<div class="">
-		<div class="chat-msg-header">
-			<span>Messages ({{messageList.length}})</span>
-			<span>Date:</span>
-		</div>
-		<div class="chat-msg-list container">
-			<div class="row" ng-repeat="msg in chatMessages">
-				<div class="col-xs-10">
-					{{msg}}
-
-				</div>
-				<div class="col-xs-10">
-					{{today | date:'dd/mm'}}
-
-				</div>
+<div class="full-height-view chat-view">
+	<div class="flex-v-container">
+		<div class="flex-v-header chat-msg-header">
+			<div class="msg-search-bar">
+				<input id="inputMatchString" type="text" class="match-string chat-msg-search"
+							 placeholder="Search in messages for..."
+							 ng-model="matchString">
+				<input type="text" readonly class="month-picker"
+							 uib-datepicker-popup="MMM-yyyy"
+							 ng-model="dtFrom" is-open="vm.monthPickOpen"
+							 popup-placement="bottom-right"
+							 datepicker-mode="'month'"
+							 datepicker-options="dateOptions"
+							 close-text="Close"/>
+				<span >
+				<button type="button" class="btn btn-default"
+								ng-click="vm.monthPickOpen=!vm.monthPickOpen" >
+				<i class="glyphicon glyphicon-calendar"></i></button>
+			</span>
 			</div>
 
 		</div>
-		<div class="chat-msg-footer">
+		<div class="flex-v-content chat-msg-list container">
+			<div class="row chat-msg"
+					 ng-repeat="msg in chatMessages"
+						ng-style="{'font-size':vm.msgFontSize + 'px'}">
+				<div class="col-xs-10">
+					{{msg.msg}}
+				</div>
+				<div class="col-xs-2 msg-info">
+					{{msg.dt | date:'HH:mm'}}<br>
+					{{msg.person.firstname}}
+				</div>
+			</div>
+		</div>
+		<div class="flex-v-footer chat-msg-footer">
 			<form role="form" novalidate name="form">
 				<div class="form-group">
-					<input type="text" style="width: 80%"
-								 required
-								 ng-model="vm.chatMsg"
-								 focus>
-					<button class="btn btn-sm btn-primary"
-									ng-enable="form.$valid"
+					<textarea class="chat-msg"
+										required
+										ng-model="vm.chatMsgSend"
+										focus-me="true"></textarea>
+					<br>
+					<div style="float: left">
+						<label >Font:</label><br>
+						<div rn-stepper ng-model="vm.msgFontSize" min="10" max="20"></div>
+					</div>
+
+					<button class="chat-msg"
+									ng-enable="vm.chatMsgSend.length>0"
 									ng-click="sendChatMessage()">SEND
 					</button>
 				</div>

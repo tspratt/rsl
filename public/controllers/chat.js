@@ -5,9 +5,19 @@ angular.module('rsl')
 		.controller('chatCtrl', ['$rootScope', '$scope', '$state', 'appConstants', 'appData', 'ChatSocket',
 			function ($rootScope, $scope, $state, appConstants, appData, ChatSocket) {
 				$scope.vm = {};
-				$scope.vm.chatMsg = '';
+				$scope.vm.chatMsgSend = '';
+				$scope.vm.matchString = '';
 				$scope.chatMessages = [];
-				$scope.today = new Date();
+				$scope.dtFrom = moment().subtract('days', 30).toDate();
+				$scope.vm.monthPickOpen = false;
+				$scope.dateOptions = {
+					minMode: "month",
+					startingDay: 1,
+					placement: 'bottom-right'
+				};
+
+				$scope.vm.msgFontSize = 12;
+
 				$scope.$on('socket:message', function(event, oData) {
 					console.log('got a message', event.name);
 					$scope.$apply(function() {
@@ -37,7 +47,7 @@ angular.module('rsl')
 								switch (oData.cmd) {
 									case 'message-list':
 										console.log(oData.cmd, oData.result);
-										$scope.chatMessages = oData.resul;
+										//$scope.chatMessages = oData.result;
 										break;
 								}
 								break;
@@ -45,11 +55,22 @@ angular.module('rsl')
 					});
 				});
 
+				$scope.onChangeMatchString = function () {
+					$timeout(function () {
+
+
+					},100);
+				};
+
+
+
 
 				$scope.sendChatMessage = function () {
-					console.log('semding ', $scope.vm.chatMsg);
-					ChatSocket.emit('message', {msgType: 'chat', msg: $scope.vm.chatMsg, socketId:ChatSocket.id});
-				}
+					console.log('semding ', $scope.vm.chatMsgSend);
+					$scope.chatMessages.push({msg: $scope.vm.chatMsgSend, dt: new Date(), person: appData.loggedInUser.person});
+					ChatSocket.emit('message', {msgType: 'chat', msg: $scope.vm.chatMsgSend, socketId:ChatSocket.id});
+					$scope.vm.chatMsgSend = '';
+				};
 				function sendInfo () {
 					console.log('sending Info');
 					ChatSocket.emit('message', {msgType: 'info', user: appData.loggedInUser.person });
