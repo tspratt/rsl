@@ -4,10 +4,11 @@
 			<div class="msg-search-bar">
 				<input id="inputMatchString" type="text" class="match-string chat-msg-search"
 							 placeholder="Search in messages for..."
-							 ng-model="matchString">
+							 ng-model="vm.matchString">
 				<input type="text" readonly class="month-picker"
 							 uib-datepicker-popup="MMM-yyyy"
-							 ng-model="dtFrom" is-open="vm.monthPickOpen"
+							 ng-model="vm.dtFrom" is-open="vm.monthPickOpen"
+							 ng-model-options="{ debounce: 300 }"
 							 popup-placement="bottom-right"
 							 datepicker-mode="'month'"
 							 datepicker-options="dateOptions"
@@ -22,7 +23,7 @@
 		</div>
 		<div class="flex-v-content chat-msg-list">
 			<div class="row-chat-msg"
-					 ng-repeat="message in chatMessages"
+					 ng-repeat="message in chatMessagesDisplay"
 					 ng-class="{read: message.read}"
 					 ng-style="{'font-size':vm.msgFontSize + 'px'}"
 					 scroll-to-last
@@ -31,8 +32,7 @@
 					{{message.msg}}
 				</div>
 				<div class="col-msg-info">
-					{{message.person.firstname}}<br>
-					{{message.dt | date:'HH:mm'}}<br>
+					{{message.dt | date:'HH:mm'}} {{message.person.firstname}}<br>
 					{{message.dt | date:'MMM-dd'}}
 				</div>
 			</div>

@@ -9,8 +9,9 @@ angular.module('rsl')
 				$scope.vm.chatMsgSend = '';
 				$scope.vm.matchString = '';
 				$scope.chatMessages = [];
+				$scope.chatMessagesDisplay = [];
 				$scope.dtLastRead = $scope.storage.dtLastRead || new Date();
-				$scope.dtFrom = moment().subtract('days', 30).toDate();
+				$scope.vm.dtFrom = moment().subtract('days', 30).toDate();
 				$scope.vm.monthPickOpen = false;
 				$scope.dateOptions = {
 					minMode: "month",
@@ -37,7 +38,8 @@ angular.module('rsl')
 				$scope.$on('socket:chat-msg', function(event, oData) {
 					console.log('got a message', event.name);
 					$scope.$apply(function() {
-						$scope.chatMessages.push(oData.message)
+						$scope.chatMessages.push(oData.message);
+						buildMsgDisplayList();
 					});
 				});
 
@@ -54,6 +56,7 @@ angular.module('rsl')
 											message.read = (message.dt <= $scope.dtLastRead);
 											return message;
 										});
+										buildMsgDisplayList()
 										break;
 								}
 								break;
@@ -61,12 +64,9 @@ angular.module('rsl')
 					});
 				});
 
-				$scope.onChangeMatchString = function () {
-					$timeout(function () {
-
-
-					},100);
-				};
+				$scope.$watch('vm.matchString', function (newValue) {
+					buildMsgDisplayList()
+				});
 
 				$scope.markAsRead = function ($element, scope) {
 					console.log('markasread');
@@ -91,11 +91,21 @@ angular.module('rsl')
 				}
 				function getChatMessages () {
 					console.log('requesting message list');
-					ChatSocket.emit('command', {cmdType: 'get', cmd: 'message-list', socketId:ChatSocket.id});
+					ChatSocket.emit('command', {cmdType: 'get', cmd: 'message-list', from: $scope.vm.dtFrom, socketId:ChatSocket.id});
+				}
+
+				function buildMsgDisplayList () {
+					$scope.chatMessagesDisplay = $scope.chatMessages;
+					$scope.chatMessagesDisplay = $scope.chatMessagesDisplay.filter(function (message) {
+						return ((message.msg + message.dt).toLowerCase().indexOf($scope.vm.matchString.toLowerCase()) > -1);
+					});
 				}
 
 				$scope.$on("$locationChangeStart", function(event, next, current) {
-					if (next.indexOf('chat') === -1) {
+					if (next.indexOf('chat') > -1) {
+						getChatMessages();
+					}
+					else {
 						ChatSocket.emit('command', {cmdType: 'status', cmd: 'inactive', socketId:ChatSocket.id});
 					}
 				});

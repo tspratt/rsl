@@ -653,8 +653,10 @@ div.col-chat-msg {
 }
 
 div.col-msg-info {
-  flex-basis: 5.0em;
+  flex-basis: 8.0em;
   text-align: right;
+  text-overflow: ellipsis;
+  font-weight: normal;
 }
 
 .full-height-view {
