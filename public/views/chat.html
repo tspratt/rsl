@@ -12,37 +12,41 @@
 							 datepicker-mode="'month'"
 							 datepicker-options="dateOptions"
 							 close-text="Close"/>
-				<span >
+				<span>
 				<button type="button" class="btn btn-default"
-								ng-click="vm.monthPickOpen=!vm.monthPickOpen" >
+								ng-click="vm.monthPickOpen=!vm.monthPickOpen">
 				<i class="glyphicon glyphicon-calendar"></i></button>
 			</span>
 			</div>
 
 		</div>
-		<div class="flex-v-content chat-msg-list container">
-			<div class="row chat-msg"
-					 ng-repeat="msg in chatMessages"
-						ng-style="{'font-size':vm.msgFontSize + 'px'}">
-				<div class="col-xs-10">
-					{{msg.msg}}
+		<div class="flex-v-content chat-msg-list">
+			<div class="row-chat-msg"
+					 ng-repeat="message in chatMessages"
+					 ng-class="{read: message.read}"
+					 ng-style="{'font-size':vm.msgFontSize + 'px'}"
+					 scroll-to-last
+					 when-visible="markAsRead">
+				<div class="col-chat-msg">
+					{{message.msg}}
 				</div>
-				<div class="col-xs-2 msg-info">
-					{{msg.dt | date:'HH:mm'}}<br>
-					{{msg.person.firstname}}
+				<div class="col-msg-info">
+					{{message.person.firstname}}<br>
+					{{message.dt | date:'HH:mm'}}<br>
+					{{message.dt | date:'MMM-dd'}}
 				</div>
 			</div>
 		</div>
 		<div class="flex-v-footer chat-msg-footer">
 			<form role="form" novalidate name="form">
 				<div class="form-group">
-					<textarea class="chat-msg"
+					<textarea id="chatMsgInput" class="chat-msg"
 										required
 										ng-model="vm.chatMsgSend"
-										focus-me="true"></textarea>
+										focus-me="vm.focusInput"></textarea>
 					<br>
 					<div style="float: left">
-						<label >Font:</label><br>
+						<label>Font:</label><br>
 						<div rn-stepper ng-model="vm.msgFontSize" min="10" max="20"></div>
 					</div>
 

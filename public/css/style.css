@@ -153,8 +153,9 @@ hr.paginator {
 .header-link {
   float: right;
   cursor: pointer;
-  padding-left: 5px;
+  margin: 0 0 5px 20px;
   text-decoration: underline;
+  font-size: 18px;
 }
 
 .header-link:hover {
@@ -634,9 +635,25 @@ textarea.chat-msg {
   height: 60px;
 }
 
-.row.chat-msg {
-  border-top: 1px dashed white;
-  border-right: 1px dashed white;
+.row-chat-msg {
+  display: flex;
+  flex-flow: row nowrap;
+  border-radius: 5px;
+  background-color: white;
+  margin: 0 0 2px 0;
+}
+.row-chat-msg.read {
+  background-color: ghostwhite;
+  transition: background-color 2s
+}
+
+div.col-chat-msg {
+  flex-basis: 100%;
+}
+
+div.col-msg-info {
+  flex-basis: 5.0em;
+  text-align: right;
 }
 
 .full-height-view {
@@ -664,10 +681,11 @@ textarea.chat-msg {
 }
 
 .flex-v-content {
+  height: calc(100% - 180px);
   flex: auto;
   overflow-y: scroll;
   width: 100%;
-  padding: 0 0 5px 0;
+  margin: 10px 0 5px 0;
 }
 
 .system-message {

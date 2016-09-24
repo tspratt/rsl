@@ -23,19 +23,39 @@ var handleMessage = function (socket, oData) {
 
 			break;
 		case 'chat':
-			logger.info('msgType: ', oData.msgType, 'cmd:', oData.msg);
-
+			logger.info('msgType: ', oData.msgType, 'cmd:', oData.message);
+			model.insertChatMessage(oData, function (err, result) {
+				if (err) {
+					console.log(err);
+				}
+				else {
+					socket.emit('broadcast', oData.message);
+				}
+			});
 			break;
 	}
 };
 
 var handleCommand = function (socket, oData) {
+	var dateSpec = null;
+	var aMessages = [];
 	switch (oData.cmdType) {
 		case 'get':
 			logger.info('cmdType: ', oData.cmdType, 'cmd:', oData.cmd);
 				switch (oData.cmd) {
 					case 'message-list':
-						socket.emit('cmd-result', {cmdType:oData.cmdType, cmd: oData.cmd, result:['msg1','msg2']});
+						if (oData.dtFrom) {
+							dateSpec.from = oData.from;
+						}
+						model.listChatMessages(dateSpec, function (err, data) {
+							if (err) {
+								console.log(err);
+							}
+							else {
+								aMessages = data;
+							}
+							socket.emit('cmd-result', {cmdType:oData.cmdType, cmd: oData.cmd, result:aMessages});
+						});
 						break;
 				}
 			break;

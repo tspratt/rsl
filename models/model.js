@@ -67,6 +67,45 @@ function initMgModels() {
 
 }
 
+function insertChatMessage (message, callback) {
+	_db.collection('chatMessages', {safe : true},
+			function (err, collection) {
+				collection.insert(
+						message,
+						{},
+						function (err, data) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, data);
+							}
+						});
+			});
+}
+
+function listChatMessages (dateSpec, callback) {
+	var oQuery = {};
+	if (dateSpec) {
+		var dtFrom = new Date(dateSpec.from);
+		oQuery.dt = {$gte : dtFrom};
+		if (dateSpec.hasOwnProperty('to')) {
+			var dtTo = new Date(dateSpec.to);
+			oQuery.dt = {$lte : dtTo};
+		}
+	}
+	_db.collection('chatMessages', {safe : true},
+			function (err, collection) {
+				collection.find(oQuery, {sort:{"dt": 1}})
+						.toArray(function (err, data) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, data);
+							}
+						});
+			});
+}
+
 function listPersons(oQuery, filterSpec, pageSpec, oFieldSpec, callback) {
 	oQuery = oQuery || {};
 	oFieldSpec = oFieldSpec || {};
@@ -483,3 +522,5 @@ exports.saveResidence = saveResidence;
 exports.getResidenceSchedule = getResidenceSchedule;
 exports.setProperty = setProperty;
 exports.checkBookingOverlap = checkBookingOverlap;
+exports.insertChatMessage = insertChatMessage;
+exports.listChatMessages = listChatMessages;
