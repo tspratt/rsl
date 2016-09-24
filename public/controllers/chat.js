@@ -82,8 +82,8 @@ angular.module('rsl')
 					$scope.chatMessages.push(message);
 					ChatSocket.emit('message', {msgType: 'chat', message:message, socketId:ChatSocket.id});
 					$scope.vm.chatMsgSend = '';
-					$scope.vm.focusInput = true;                    //does not work
-					$document.find('#chatMsgInput').focus();     //todo: fix directive
+					// $scope.vm.focusInput = true;                    //does not work
+					// $document.find('#chatMsgInput').focus();     //todo: fix directive
 				};
 				function sendInfo () {
 					console.log('sending Info');
