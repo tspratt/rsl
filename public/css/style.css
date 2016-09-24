@@ -642,9 +642,10 @@ textarea.chat-msg {
   background-color: white;
   margin: 0 0 2px 0;
 }
+
 .row-chat-msg.read {
   background-color: ghostwhite;
-  transition: background-color 2s
+  transition: background-color 2s;
 }
 
 div.col-chat-msg {
@@ -790,6 +791,7 @@ div[rn-stepper] input {
   height: 250px;
 }
 
+/*# sourceMappingURL=style.css.map */
 /*# sourceMappingURL=style.css.map */
 
 /*# sourceMappingURL=style.css.map */
