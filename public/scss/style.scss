@@ -659,7 +659,7 @@ div.col-msg-info {
 }
 
 .full-height-view {
-	height: calc(100% - 100px);
+	height: calc(100% - 115px);
 	width: 100%;
 }
 
@@ -688,6 +688,10 @@ div.col-msg-info {
 	overflow-y: scroll;
 	width: 100%;
 	margin: 10px 0 5px 0;
+}
+
+form.chat-msg-footer {
+	margin-bottom: 0;
 }
 
 .system-message {
