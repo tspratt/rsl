@@ -29,7 +29,7 @@ var handleMessage = function (socket, oData) {
 					console.log(err);
 				}
 				else {
-					socket.emit('broadcast', oData.message);
+					socket.broadcast.emit('chat-msg', {message: oData.message, socketid: socket.id});
 				}
 			});
 			break;
