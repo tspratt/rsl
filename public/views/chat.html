@@ -29,10 +29,10 @@
 					 scroll-to-last
 					 when-visible="markAsRead">
 				<div class="col-chat-msg">
-					{{message.msg}}
+					<span class="message-from">{{message.person.firstname}}:</span>{{message.msg}}
 				</div>
 				<div class="col-msg-info">
-					{{message.dt | date:'HH:mm'}} {{message.person.firstname}}<br>
+					{{message.dt | date:'HH:mm'}}<br>
 					{{message.dt | date:'MMM-dd'}}
 				</div>
 			</div>

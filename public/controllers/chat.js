@@ -19,7 +19,7 @@ angular.module('rsl')
 					placement: 'bottom-right'
 				};
 
-				$scope.vm.msgFontSize = 12;
+				$scope.vm.msgFontSize = 13;
 				$scope.vm.focusInput = true;
 
 				$scope.$on('socket:message', function(event, oData) {
@@ -65,7 +65,7 @@ angular.module('rsl')
 				});
 
 				$scope.$watch('vm.matchString', function (newValue) {
-					buildMsgDisplayList()
+					buildMsgDisplayList();
 				});
 
 				$scope.markAsRead = function ($element, scope) {
@@ -80,6 +80,7 @@ angular.module('rsl')
 				$scope.sendChatMessage = function () {
 					var message = {msg: $scope.vm.chatMsgSend, dt: new Date(), person: appData.loggedInUser.person};
 					$scope.chatMessages.push(message);
+					buildMsgDisplayList();
 					ChatSocket.emit('message', {msgType: 'chat', message:message, socketId:ChatSocket.id});
 					$scope.vm.chatMsgSend = '';
 					// $scope.vm.focusInput = true;                    //does not work

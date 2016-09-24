@@ -95,7 +95,7 @@ function listChatMessages (dateSpec, callback) {
 	}
 	_db.collection('chatMessages', {safe : true},
 			function (err, collection) {
-				collection.find(oQuery, {sort:{"dt": 1}})
+				collection.find(oQuery, {sort:{"message.dt": 1}})
 						.toArray(function (err, data) {
 							if (err) {
 								callback(err, null);
