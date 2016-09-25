@@ -65,7 +65,9 @@ button, button.label {
 }
 
 button.close {
-  align: right;
+  position: relative;
+  top: 0;
+  right: 0;
   color: black;
   font-size: 14px;
 }
