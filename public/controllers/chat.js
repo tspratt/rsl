@@ -10,6 +10,7 @@ angular.module('rsl')
 				$scope.vm.matchString = '';
 				$scope.chatMessages = [];
 				$scope.chatMessagesDisplay = [];
+				$scope.vm.isFilterEmpty = false;
 				$scope.dtLastRead = $scope.storage.dtLastRead || new Date();
 				$scope.vm.dtFrom = moment().subtract('days', 30).toDate();
 				$scope.vm.monthPickOpen = false;
@@ -56,7 +57,7 @@ angular.module('rsl')
 											message.read = (message.dt <= $scope.dtLastRead);
 											return message;
 										});
-										buildMsgDisplayList()
+										buildMsgDisplayList();
 										break;
 								}
 								break;
@@ -64,12 +65,24 @@ angular.module('rsl')
 					});
 				});
 
-				$scope.$watch('vm.matchString', function (newValue) {
-					buildMsgDisplayList();
+				$scope.$watch('vm.matchString', function (newValue, oldValue) {
+					if (newValue.toLowerCase() !== oldValue.toLowerCase()) {
+						buildMsgDisplayList();
+					}
+				});
+
+				$scope.clearMatchString = function () {
+					$scope.vm.matchString = '';
+				};
+
+				$scope.toggleMonthPicker = function () {
+					$scope.vm.monthPickOpen=!$scope.vm.monthPickOpen;
+				};
+				$scope.$watch('vm.dtFrom', function () {
+					getChatMessages();
 				});
 
 				$scope.markAsRead = function ($element, scope) {
-					console.log('markasread');
 					var message = scope.$parent.message;
 					$timeout(function () {message.read = true;},1000);
 					$scope.storage.dtLastRead = message.dt;
@@ -100,6 +113,7 @@ angular.module('rsl')
 					$scope.chatMessagesDisplay = $scope.chatMessagesDisplay.filter(function (message) {
 						return ((message.msg + message.dt).toLowerCase().indexOf($scope.vm.matchString.toLowerCase()) > -1);
 					});
+					$scope.vm.isFilterEmpty = ($scope.chatMessagesDisplay.length === 0);
 				}
 
 				$scope.$on("$locationChangeStart", function(event, next, current) {
@@ -118,9 +132,8 @@ angular.module('rsl')
 					$timeout(function() {
 						//$("body").animate({scrollTop: $target.offset().top}, "slow");
 						var scrollContainer = $element[0].parentElement;
-						if (scrollContainer.scrollHeight > scrollContainer.offsetHeight) {
+						if (scrollContainer && scrollContainer.scrollHeight > scrollContainer.offsetHeight) {
 							scrollContainer.scrollTop = scrollContainer.scrollHeight;
-
 						}
 					}, 0);
 				}

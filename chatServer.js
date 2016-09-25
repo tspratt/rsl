@@ -23,7 +23,7 @@ var handleMessage = function (socket, oData) {
 
 			break;
 		case 'chat':
-			logger.info('msgType: ', oData.msgType, 'cmd:', oData.message);
+			logger.info('msgType: ', oData.msgType, 'msg:', oData.message.msg);
 			model.insertChatMessage(oData, function (err, result) {
 				if (err) {
 					console.log(err);

@@ -156,6 +156,7 @@ hr.paginator {
 	margin: 0 0 5px 20px;
 	text-decoration: underline;
 	font-size: 18px;
+	color:slategrey;
 }
 
 .header-link:hover {
@@ -626,9 +627,23 @@ input.chat-msg-search {
 	flex-basis: 70%;
 }
 
+i.glyphicon-remove-sign.match-string {
+	margin-left: -4px;
+	padding-right: 20px;
+	font-size: 25px;
+	color: slategray;
+}
+
 input.month-picker {
 	width: 70px;
 }
+
+i.glyphicon-calendar.month-picker {
+	margin-left: -4px;
+	font-size: 25px;
+	color: slategray;
+}
+
 
 textarea.chat-msg {
 	width: 100%;
@@ -659,7 +674,6 @@ div.col-chat-msg {
 div.col-msg-info {
 	flex-basis: 5.0em;
 	text-align: right;
-	text-overflow: ellipsis;
 	font-weight: normal;
 }
 
@@ -671,6 +685,14 @@ span.message-from {
 	font-style: italic;
 	color: steelblue;
 	padding-right: 20px;
+}
+
+div.empty-msg-list {
+	margin: 30px;
+	padding: 10px;
+	background-color: ghostwhite;
+	font-size: 16px;
+	color: steelblue;
 }
 
 .full-height-view {
@@ -702,7 +724,7 @@ span.message-from {
 	flex: auto;
 	overflow-y: scroll;
 	width: 100%;
-	margin: 10px 0 5px 0;
+	margin: 5px 0 5px 0;
 }
 
 form.chat-msg-footer {
@@ -752,12 +774,22 @@ form.chat-msg-footer {
 	text-align: right;
 }
 
+.datepicker.booking {
+	margin-top: 5px;
+}
+
+.datepicker.booking > table {
+	width: 300px;
+	height: 250px;
+}
+
+/***** direectives *************/
+
 div[rn-stepper] {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border: none;
-	display: inline-block;
-	height: 32px;
+	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
@@ -773,44 +805,34 @@ div[rn-stepper][disabled] input {
 	border: 0;
 }
 
-div[rn-stepper] button {
-	width: 30px;
-	height: 30px;
-	background: slategrey;
+div[rn-stepper] i {
+	color: slategrey;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 25px;
+	.glyphicon-minus-sign {
+
+	}
+	.glyphicon-plus-sign {
+
+	}
 }
 
-div[rn-stepper] button[disabled] {
+div[rn-stepper] i[disabled] {
 	opacity: 0.3;
 }
 
-div[rn-stepper] button:active {
+div[rn-stepper] i:active {
 	box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25);
 	background: #3434ff;
 }
 
 div[rn-stepper] input {
 	width: 30px;
-	vertical-align: middle;
+	height: 25px;
 	padding: 0;
 	background: #ffffff;
 	text-align: center;
-	display: inline-block;
-	height: 30px;
-	line-height: 30px;
-	margin-top: -3px;
 }
 
-.datepicker.booking {
-	margin-top: 5px;
-}
-
-.datepicker.booking > table {
-	width: 300px;
-	height: 250px;
-}
-
-/*# sourceMappingURL=style.css.map */
 
 /*# sourceMappingURL=style.css.map */

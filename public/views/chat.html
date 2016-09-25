@@ -3,8 +3,9 @@
 		<div class="flex-v-header chat-msg-header">
 			<div class="msg-search-bar">
 				<input id="inputMatchString" type="text" class="match-string chat-msg-search"
-							 placeholder="Search in messages for..."
+							 placeholder="Filter messages for..."
 							 ng-model="vm.matchString">
+					<i class="glyphicon glyphicon-remove-sign match-string" ng-click="clearMatchString()"></i>
 				<input type="text" readonly class="month-picker"
 							 uib-datepicker-popup="MMM-yyyy"
 							 ng-model="vm.dtFrom" is-open="vm.monthPickOpen"
@@ -14,14 +15,21 @@
 							 datepicker-options="dateOptions"
 							 close-text="Close"/>
 				<span>
-				<button type="button" class="btn btn-default"
-								ng-click="vm.monthPickOpen=!vm.monthPickOpen">
-				<i class="glyphicon glyphicon-calendar"></i></button>
+				<i class="glyphicon glyphicon-calendar month-picker"
+					 ng-click="toggleMonthPicker()"></i>
 			</span>
 			</div>
 
 		</div>
 		<div class="flex-v-content chat-msg-list">
+			<div class="empty-msg-list" ng-show="vm.isFilterEmpty">
+				<p>No messages match your filter</p>
+				<ul>
+					<li>Try selecting an earlier 'From' date in the filter bar above.</li>
+					<li>Change your search string.</li>
+					<li>Clear your search string.</li>
+				</ul>
+			</div>
 			<div class="row-chat-msg"
 					 ng-repeat="message in chatMessagesDisplay"
 					 ng-class="{read: message.read}"
