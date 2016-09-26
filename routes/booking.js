@@ -81,7 +81,18 @@ router.get('/bookings', function (req, res, next) {
 		dateSpec = {from: dtFrom, to: dtTo};
 	}
 
-	business.listBookings(filterSpec, dateSpec, oFieldSpec, function (err, statusResponse) {
+	var sSortSpec = req.query.sortSpec;						//string representation
+	var oSortSpec = null;                         //defaults to arraive date, ascending
+	if (sSortSpec && sSortSpec.length > 0) {
+		try {
+			oSortSpec = JSON.parse(sSortSpec);
+		}
+		catch (err) {
+			console.log('invalid sortSpec: ', sSortSpec);
+		}
+	}
+
+	business.listBookings(filterSpec, dateSpec, oSortSpec, oFieldSpec, function (err, statusResponse) {
 		res.send(statusResponse);
 	})
 

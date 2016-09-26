@@ -78,17 +78,31 @@ angular.module('rsl')
       return promise;
     };
 
-			PersonData.savePerson = function (oPerson) {
-				var oBody = { person: oPerson};
-				var promise =  $http.put(envConfig.SERVICE_URL_BASE + 'person', oBody)
-						.then(function (res) {
-							return res;
-						})
-						.catch(function(res) {
-							console.error('savePerson', res.status, res.data);
-							return res;
-						});
-				return promise;
-			};
+		PersonData.savePerson = function (oPerson) {
+			var oBody = { person: oPerson};
+			var promise =  $http.put(envConfig.SERVICE_URL_BASE + 'person', oBody)
+					.then(function (res) {
+						return res;
+					})
+					.catch(function(res) {
+						console.error('savePerson', res.status, res.data);
+						return res;
+					});
+			return promise;
+		};
+
+		PersonData.deletePerson = function (sOid) {
+			var oQueryParams = {oid: sOid};
+			var promise =  $http.delete(envConfig.SERVICE_URL_BASE + 'persons/' + sOid,
+					{params: oQueryParams})
+					.then(function (res) {
+						return res;
+					})
+					.catch(function(res) {
+						console.error('getPerson', res.status, res.data);
+						return res;
+					});
+			return promise;
+		};
     return PersonData;
   }]);

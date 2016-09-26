@@ -122,6 +122,7 @@ function listPersons(oQuery, filterSpec, pageSpec, oFieldSpec, callback) {
 		//oQuery = JSON.parse(sQuery);
 	}
 	mongoose.model('Person').find(oQuery, oFieldSpec, {memberrelationship : 1})
+			.sort({"lastname":1, "firstname":1})
 			.skip(iSkip)
 			.limit(iLimit)
 			.deepPopulate('member.branch')
@@ -271,6 +272,7 @@ function listRooms(filterSpec, pageSpec, oFieldSpec, callback) {
 	}
 
 	mongoose.model('Room').find(oQuery, oFieldSpec)
+			.sort({"unit":1, "number":1})
 			.skip(iSkip)
 			.limit(iLimit)
 			.populate('branch')
@@ -305,7 +307,7 @@ function deleteBooking(sId, callback) {
 	});
 }
 
-function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
+function listBookings(filterSpec, dateSpec, sortSpec, oFieldSpec, callback) {
 	var iSkip = 0;
 	var iLimit = 0;
 	var oQuery = {};
@@ -322,8 +324,11 @@ function listBookings(filterSpec, dateSpec, oFieldSpec, callback) {
 			oQuery.depart = {$lte : dtTo};
 		}
 	}
+	if (!sortSpec) {
+		sortSpec = {arrive : 1};
+	}
 	mongoose.model('Booking').find(oQuery, oFieldSpec)
-			.sort({arrive : 1})
+			.sort(sortSpec)
 			.skip(iSkip)
 			.limit(iLimit)
 			.populate('who')
@@ -447,6 +452,13 @@ function updatePerson(sId, oUpdate, callback) {
 	});
 }
 
+
+function deletePerson(sId, callback) {
+	mongoose.model('Person').findOneAndRemove({_id : ObjectId(sId)}, function (err, result) {
+		callback(err, result);
+	});
+}
+
 function updateMember(sId, oUpdate, callback) {
 	mongoose.model('Member').update({_id : ObjectId(sId)}, oUpdate, {multi : false}, function (err, result) {
 		callback(err, result);
@@ -515,6 +527,7 @@ exports.updatePerson = updatePerson;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;
+exports.deletePerson = deletePerson;
 exports.listBookings = listBookings;
 exports.clearResidenceSchedule = clearResidenceSchedule;
 exports.saveResidenceSchedule = saveResidenceSchedule;

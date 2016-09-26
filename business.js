@@ -286,6 +286,19 @@ function updatePerson(sId, oUpdate, callback) {
 	});
 }
 
+function deletePerson(sId, callback) {
+	var statusResponse;
+	model.deletePerson(sId, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'deletePerson', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'deletePerson', '', 'business', result);
+		}
+		callback(err, statusResponse);
+	});
+}
+
 function updateMember(sId, oUpdate, callback) {
 	var statusResponse;
 	model.updateMember(sId, oUpdate, function (err, result) {
@@ -314,10 +327,10 @@ function checkBookingOverlap(roomId, dtArrive, dtDepart, callback) {
 
 }
 
-function listBookings(filterSpec, dateSpec, fieldSpec, callback) {
+function listBookings(filterSpec, dateSpec, sortSpec, fieldSpec, callback) {
 	var statusResponse;
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
-	model.listBookings(filterSpec, dateSpec, fieldSpec, function (err, aBookings) {
+	model.listBookings(filterSpec, dateSpec, sortSpec, fieldSpec, function (err, aBookings) {
 		if (err) {
 			statusResponse = new StatusResponse('error', 'listBookings', '', 'business', err);
 		}
@@ -434,7 +447,7 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	var oResidence;
 	var memberCur = {};
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
-	model.listBookings(filterSpec, dateSpec, fieldSpec, function (err, aBookings) {
+	model.listBookings(filterSpec, dateSpec, null, fieldSpec, function (err, aBookings) {
 		var oBooking;
 		if (err) {
 			statusResponse = new StatusResponse('error', 'listBookings', '', 'business', err);
@@ -741,6 +754,7 @@ exports.listRooms = listRooms;
 exports.bookRoom = bookRoom;
 exports.insertPerson = insertPerson;
 exports.updatePerson = updatePerson;
+exports.deletePerson = deletePerson;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;

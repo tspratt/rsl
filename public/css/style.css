@@ -592,6 +592,16 @@ button.plus {
   font-weight: normal;
 }
 
+.booking-list table, td, th {
+  border: 1px solid steelblue;
+  border-collapse: collapse;
+}
+
+.booking-list td, th {
+  border: 1px solid steelblue;
+  padding: 2px;
+}
+
 .booking-list-item .member {
   width: 35%;
   text-overflow: ellipsis;
@@ -644,6 +654,11 @@ i.glyphicon-calendar.month-picker {
   margin-left: -4px;
   font-size: 25px;
   color: slategray;
+}
+
+.booking-list-item i.glyphicon-remove.booking {
+  font-size: 25px;
+  color: red;
 }
 
 textarea.chat-msg {
@@ -827,6 +842,20 @@ div[rn-stepper] input {
   padding: 0;
   background: #ffffff;
   text-align: center;
+}
+
+div.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 16px;
+}
+div.toolbar .tool {
+  font-size: 16px;
+}
+div.toolbar .tool.delete {
+  background-color: red;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -31,6 +31,31 @@ angular.module('rsl')
           });
       }
 
+      $scope.deletePerson = function (person) {
+        PersonData.deletePerson(person._id)
+            .then(function (res) {
+              if (res.status >= 200 && res.status < 300) {
+                getPersons();
+              }
+              else {
+                console.log('HTTP Error: ' + res.statusText);
+              }
+
+            });
+      };
+
+      $scope.updatePerson = function (person) {
+        PersonData.savePerson(person)
+            .then(function (res) {
+              if (res.status >= 200 && res.status < 300) {
+                getPersons();
+              }
+              else {
+                console.log('HTTP Error: ' + res.statusText);
+              }
+
+            });
+      };
       //$scope.onClickPerson = function(oPerson, index) {
       //  $scope.person = oPerson;
       //  $scope.selectedId = oPerson._id

@@ -3,8 +3,8 @@ angular.module('rsl')
 		.factory('bookingData', ['$http', 'envConfig', 'appConstants', 'appData', function ($http, envConfig, appConstants, appData) {
 			var bookingData = {};
 
-			bookingData.getBookings = function (dtFrom, dtTo, sFilterFieldName, filterValue) {
-				var oQueryParams = {from : dtFrom, to : dtTo};
+			bookingData.getBookings = function (dtFrom, dtTo, sSortSpec, sFilterFieldName, filterValue) {
+				var oQueryParams = {from:dtFrom, to:dtTo, sortSpec:sSortSpec};
 
 				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'bookings',
 						{params : oQueryParams})

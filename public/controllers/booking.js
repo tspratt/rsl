@@ -224,9 +224,9 @@ angular.module('rsl')
 		 ]
 		 };
 		 */
-		function getBookings(oQuerySpec, oDateSpec, oFieldSpec) {
+		function getBookings(oQuerySpec, oDateSpec, oSortSpec, oFieldSpec) {
 			$scope.selectedId = '';
-			bookingData.getBookings(oQuerySpec, oDateSpec, oFieldSpec)
+			bookingData.getBookings(oQuerySpec, oDateSpec, '{"arrive": -1}', oFieldSpec)
 			.then(function (res) {
 				if (res.status >= 200 && res.status < 300) {
 					$scope.bookings = res.data.data;
@@ -260,7 +260,7 @@ angular.module('rsl')
 		}
 
 		function getRooms() {
-			bookingData.getRooms(null, null, 'unit', $scope.bookMember.branch.unit, null)
+			bookingData.getRooms(null, null, 'unit', null, null)
 			.then(function (res) {
 				if (res.status >= 200 && res.status < 300) {
 					$scope.rooms = res.data.data;
@@ -269,7 +269,6 @@ angular.module('rsl')
 				else {
 					console.log('HTTP Error: ' + res.statusText);
 				}
-
 			});
 		}
 
@@ -476,7 +475,7 @@ angular.module('rsl')
 					newBooking(oBooking);
 					break;
 				case 'delete':
-					deleteBooking(oBooking);
+					$scope.deleteBooking(oBooking);
 					break;
 				case 'change':
 					changeBooking(oBooking);
@@ -484,7 +483,8 @@ angular.module('rsl')
 			}
 		};
 
-		function deleteBooking(oBooking) {
+		$scope.deleteBooking = function (oBooking) {
+			$scope.bookings = [];
 			bookingData.deleteBooking(oBooking._id)
 			.then(function (res) {
 				if (res.status >= 200 && res.status < 300) {

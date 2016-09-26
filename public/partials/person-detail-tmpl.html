@@ -3,56 +3,56 @@
 		<label class="control-label col-xs-2" for="firstname">First Name:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="firstname" placeholder="name"
-						 ng-value="person.firstname"
-						 ng-disabled="person._id!==loggedInPersonId">
+						 ng-value="person.firstname">
 		</div>
 
 		<label class="control-label col-xs-2" for="lastname">Last Name:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="lastname" placeholder="branch"
-						 ng-value="person.lastname"
-						 ng-disabled="person._id!==loggedInPersonId">
+						 ng-value="person.lastname">
 		</div>
 
 		<label class="control-label col-xs-2" for="address">Address:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="address" placeholder="address"
-						 ng-value="person.address"
-						 ng-disabled="person._id!==loggedInPersonId">
+						 ng-value="person.address">
 		</div>
 
 	</div>
 
-	<div class="form-group" ng-show=person.memberrelationship!=='self'>
+	<div class="form-group" ng-show="person.memberrelationship!=='self'">
 		<label class="control-label col-xs-2" for="name">Member:</label>
 		<div class="col-xs-10">
 			<p class="form-control-static">{{person.member.llcname}} ({{person.memberrelationship}})</p>
 		</div>
 	</div>
 
-	<div class="form-group" ng-show=person.memberrelationship==='self'>
+	<div class="form-group" ng-show="person.memberrelationship==='self'">
 		<label class="control-label col-xs-2" for="name">Member Name:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="name" placeholder="name"
-						 ng-value="person.member.llcname"
-						 ng-disabled="person._id!==loggedInPersonId">
+						 ng-value="person.member.llcname">
 		</div>
 
 		<label class="control-label col-xs-2" for="branch">Branch:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="branch" placeholder="branch"
-						 ng-value="person.member.branch.branchname"
-						 ng-disabled="person._id!==loggedInPersonId">
+						 ng-value="person.member.branch.branchname">
 		</div>
 
 		<label class="control-label col-xs-2" for="share">Share:</label>
 		<div class="col-xs-5">
 			<input type="text" class="form-control" id="share" placeholder="share"
-						 ng-value="person.member.share"
-						 ng-disabled="person._id!==loggedInPersonId">
+						 ng-value="person.member.share">
 		</div>
 		<div class="col-xs-4">
 			({{shareToPercent(person.member.share)}}%)
 		</div>
+	</div>
+	<div class="toolbar">
+		<button class="tool delete" ng-hide="person.memberrelationship==='self'" ng-click="deletePerson(person)">Delete</button>
+		<button class="tool"
+						ng-disabled="true"
+						ng-click="updatePerson(person)">Save Changes</button>
 	</div>
 </form>

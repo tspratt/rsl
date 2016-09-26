@@ -4,7 +4,9 @@
     <uib-accordion close-others="true">
       <uib-accordion-group ng-repeat="person in persons" is-open="status.open">
         <uib-accordion-heading class="person-list-heading">
-          {{person.firstname}} {{person.lastname}}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+          {{person.firstname}} {{person.lastname}}
+          <span ng-show="person.memberrelationship==='self'">(Member)</span>
+          <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
         </uib-accordion-heading>
         <person-detail></person-detail>
       </uib-accordion-group>

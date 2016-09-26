@@ -66,7 +66,14 @@ router.get('/persons/:oid', function (req, res, next) {
 router.put('/person', function (req, res, next) {
   var oUpdate = req.body.update;
 	var sId = req.body.sId;
-  business.updatePerson(oPerson, function(err, statusResponse) {
+  business.updatePerson(oUpdate, function(err, statusResponse) {
+    res.send(statusResponse);
+  });
+});
+
+router.delete('/persons/:oid', function (req, res, next) {
+  var sOId = req.params.oid || '';
+  business.deletePerson(sOId, function(err, statusResponse) {
     res.send(statusResponse);
   });
 });
