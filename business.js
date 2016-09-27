@@ -286,6 +286,19 @@ function updatePerson(sId, oUpdate, callback) {
 	});
 }
 
+function updatePersons(oQuery, oUpdate, callback) {
+	var statusResponse;
+	model.updatePersons(oQuery, oUpdate, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'updatePerson', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'updatePerson', '', 'business', result);
+		}
+		callback(err, statusResponse);
+	});
+}
+
 function deletePerson(sId, callback) {
 	var statusResponse;
 	model.deletePerson(sId, function (err, result) {
@@ -754,6 +767,7 @@ exports.listRooms = listRooms;
 exports.bookRoom = bookRoom;
 exports.insertPerson = insertPerson;
 exports.updatePerson = updatePerson;
+exports.updatePersons = updatePersons;
 exports.deletePerson = deletePerson;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;

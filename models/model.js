@@ -453,6 +453,13 @@ function updatePerson(sId, oUpdate, callback) {
 }
 
 
+function updatePersons(oQuery, oUpdate, callback) {
+	mongoose.model('Person').update(oQuery, oUpdate, {multi : true}, function (err, result) {
+		callback(err, result);
+	});
+}
+
+
 function deletePerson(sId, callback) {
 	mongoose.model('Person').findOneAndRemove({_id : ObjectId(sId)}, function (err, result) {
 		callback(err, result);
@@ -524,6 +531,7 @@ exports.listRooms = listRooms;
 exports.insertBooking = insertBooking;
 exports.insertPerson = insertPerson;
 exports.updatePerson = updatePerson;
+exports.updatePersons = updatePersons;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;

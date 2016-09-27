@@ -20,7 +20,9 @@ var mgSchema = {
 		},
 		address: String,
 		phone: String,
-		email: String
+		email: String,
+		role: String,
+		permissions: [String]
 	}, {collection: 'persons'})
 			.plugin(deepPopulate, {}),
 	Member: new Schema({
