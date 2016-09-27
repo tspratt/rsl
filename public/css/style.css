@@ -65,9 +65,7 @@ button, button.label {
 }
 
 button.close {
-  position: relative;
-  top: 0;
-  right: 0;
+  align: right;
   color: black;
   font-size: 14px;
 }
@@ -77,13 +75,6 @@ button.main-action {
   height: 2.5em;
   min-width: 4.5em;
   font-size: 14px;
-}
-
-button.chat-msg {
-  float: right;
-  height: 4.0em;
-  width: 6.0em;
-  font-size: 1.2em;
 }
 
 button:focus {
@@ -155,10 +146,8 @@ hr.paginator {
 .header-link {
   float: right;
   cursor: pointer;
-  margin: 0 0 5px 20px;
+  padding-left: 5px;
   text-decoration: underline;
-  font-size: 18px;
-  color: slategrey;
 }
 
 .header-link:hover {
@@ -450,12 +439,6 @@ button.plus {
   font-style: italic;
 }
 
-.day-label.today,
-.daypart-label.today {
-  color: deepskyblue;
-  font-weight: normal;
-}
-
 .residence-day-section {
   display: block;
   float: left;
@@ -526,20 +509,6 @@ button.plus {
   background: linear-gradient(orange, black);
 }
 
-.room-req-count {
-  color: red;
-  font-weight: bold;
-  background-color: white;
-  padding: 1px;
-  margin: 2px;
-  border: 1px solid white;
-  border-radius: 5px;
-}
-
-.room-req-count.confirmed {
-  color: black;
-}
-
 .popup-large {
   position: fixed;
   top: 50%;
@@ -592,16 +561,6 @@ button.plus {
   font-weight: normal;
 }
 
-.booking-list table, td, th {
-  border: 1px solid steelblue;
-  border-collapse: collapse;
-}
-
-.booking-list td, th {
-  border: 1px solid steelblue;
-  padding: 2px;
-}
-
 .booking-list-item .member {
   width: 35%;
   text-overflow: ellipsis;
@@ -614,138 +573,6 @@ button.plus {
 
 .booking-list-item .date {
   width: 20%;
-}
-
-.chat-view {
-  padding: 0;
-  font-size: 12px;
-}
-
-.msg-search-bar {
-  height: 35px;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  font-size: 16px;
-}
-
-.msg-search-bar .dropdown-menu {
-  /*placement config option not working*/
-  left: unset !important;
-  right: 5px !important;
-}
-
-input.chat-msg-search {
-  flex-basis: 70%;
-}
-
-i.glyphicon-remove-sign.match-string {
-  margin-left: -4px;
-  padding-right: 20px;
-  font-size: 25px;
-  color: slategray;
-}
-
-input.month-picker {
-  width: 70px;
-}
-
-i.glyphicon-calendar.month-picker {
-  margin-left: -4px;
-  font-size: 25px;
-  color: slategray;
-}
-
-.booking-list-item i.glyphicon-remove.booking {
-  font-size: 25px;
-  color: red;
-}
-
-textarea.chat-msg {
-  width: 100%;
-  height: 60px;
-  font-weight: normal;
-  color: black;
-}
-
-.row-chat-msg {
-  display: flex;
-  flex-flow: row nowrap;
-  border-radius: 5px;
-  background-color: white;
-  margin: 0 0 2px 0;
-  padding: 5px 0 0 0;
-  font-weight: normal;
-  color: black;
-}
-
-.row-chat-msg.read {
-  background-color: ghostwhite;
-  transition: background-color 2s;
-}
-
-div.col-chat-msg {
-  flex-basis: 100%;
-}
-
-div.col-msg-info {
-  flex-basis: 5.0em;
-  text-align: right;
-  font-weight: normal;
-}
-
-span.message-from {
-  display: inline-block;
-  width: 5em;
-  text-align: right;
-  font-weight: bold;
-  font-style: italic;
-  color: steelblue;
-  padding-right: 20px;
-}
-
-div.empty-msg-list {
-  margin: 30px;
-  padding: 10px;
-  background-color: ghostwhite;
-  font-size: 16px;
-  color: steelblue;
-}
-
-.full-height-view {
-  height: calc(100% - 115px);
-  width: 100%;
-}
-
-.flex-v-container {
-  height: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100%;
-}
-
-.flex-v-header {
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100%;
-}
-
-.flex-v-footer {
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100%;
-}
-
-.flex-v-content {
-  height: calc(100% - 180px);
-  flex: auto;
-  overflow-y: scroll;
-  width: 100%;
-  margin: 5px 0 5px 0;
-}
-
-form.chat-msg-footer {
-  margin-bottom: 0;
 }
 
 .system-message {
@@ -791,21 +618,12 @@ form.chat-msg-footer {
   text-align: right;
 }
 
-.datepicker.booking {
-  margin-top: 5px;
-}
-
-.datepicker.booking > table {
-  width: 300px;
-  height: 250px;
-}
-
-/***** direectives *************/
 div[rn-stepper] {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   border: none;
-  display: flex;
+  display: inline-block;
+  height: 32px;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
@@ -821,43 +639,42 @@ div[rn-stepper][disabled] input {
   border: 0;
 }
 
-div[rn-stepper] i {
-  color: slategrey;
+div[rn-stepper] button {
+  width: 30px;
+  height: 30px;
+  background: slategrey;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 18px;
 }
 
-div[rn-stepper] i[disabled] {
+div[rn-stepper] button[disabled] {
   opacity: 0.3;
 }
 
-div[rn-stepper] i:active {
+div[rn-stepper] button:active {
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.25);
   background: #3434ff;
 }
 
 div[rn-stepper] input {
   width: 30px;
-  height: 25px;
+  vertical-align: middle;
   padding: 0;
   background: #ffffff;
   text-align: center;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  margin-top: -3px;
 }
 
-div.toolbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  font-size: 16px;
-}
-div.toolbar .tool {
-  font-size: 16px;
-}
-div.toolbar .tool.delete {
-  background-color: red;
+.datepicker.booking {
+  margin-top: 5px;
 }
 
-/*# sourceMappingURL=style.css.map */
+.datepicker.booking > table {
+  width: 300px;
+  height: 250px;
+}
 
 /*# sourceMappingURL=style.css.map */

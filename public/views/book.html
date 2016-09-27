@@ -2,30 +2,27 @@
 
 	<form class="form-horizontal book-form">
 		<div class="form-group">
+			<label class="control-label col-xs-2" for="selectRoom">Room:</label>
+			<div class="col-xs-10">
+				<select id="selectRoom"
+								ng-model="selectedRoom"
+								ng-options="room as room.displayName + ': ' + room.description for room in rooms track by room._id"></select>
+			</div>
+		</div>
 
+		<div class="form-group">
 			<label class="control-label col-xs-2" for="selectMember">Member:</label>
-
 			<div class="col-xs-10">
 				<div class="col-xs-10">
 					<select id="selectMember"
-							ng-model="bookMember"
-							ng-options="member as member.llcname for member in members track by member._id"></select>
+									ng-model="bookMember"
+									ng-options="member as member.llcname for member in members track by member._id"></select>
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
 
-			<label class="control-label col-xs-2" for="selectRoom">Room:</label>
-
-			<div class="col-xs-10">
-				<select id="selectRoom"
-						ng-model="selectedRoom"
-						ng-options="room as room.displayName + ': ' + room.description for room in rooms track by room._id"></select>
-			</div>
-		</div>
 		<div class="form-group">
 			<label class="control-label col-xs-2">Quick Book:</label>
-
 			<div class="col-xs-10">
 				<button class="quick-book" ng-click="bookDays(bookMember,[5,0],selectedRoom)">Fri - Sun</button>
 				<button class="quick-book" ng-click="bookDays(bookMember,[5,6],selectedRoom)">Fri - Sat</button>
@@ -34,63 +31,83 @@
 				<button class="quick-book" ng-click="bookDays(bookMember,[0],selectedRoom)">Sun</button>
 			</div>
 		</div>
+
 		<div class="form-group">
 			<label class="control-label col-xs-2">Detail Book:</label>
-
 			<div class="col-xs-10">
 				<button class="label"
-						ng-disabled="bookingIncomplete || !canBook"
-						ng-click="bookRoom()"><span ng-class="{blink: !bookingIncomplete && canBook}">Click when ready to {{((bookingMode==='new')?'book':'update')}}</span></button>
+								ng-disabled="bookingIncomplete || !canBook"
+								ng-click="bookRoom()"><span
+						ng-class="{blink: !bookingIncomplete && canBook}">Click when ready to book</span>
+				</button>
 			</div>
 		</div>
+
 		<div id="arriveDetail" class="form-group">
 			<div class="col-xs-12">
 				<button class="label button"
-						ng-click="arriveDetail=!arriveDetail">Arrive:</button>
+								ng-click="arriveDetail=!arriveDetail">Arrive:
+				</button>
 				<span class="book-date">{{dtArriveLabel}}</span>
 			</div>
 		</div>
+
 		<div class="form-group" ng-show="arriveDetail">
 			<div class="col-xs-12 expander">
-				<button class="close" ng-click="arriveDetail=false"><i class="glyphicon glyphicon-remove"></i></button>
 				<div class="btn-group">
-					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
-					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
-					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig"
+								 uib-btn-radio="appConstants.MORNING">Morning</label>
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig"
+								 uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig"
+								 uib-btn-radio="appConstants.EVENING">Evening</label>
+					<button class="close" ng-click="arriveDetail=false">Close</button>
 				</div>
-				<uib-datepicker ng-model="dtArrive" min-date="dtArriveMin" show-weeks="false" class="datepicker booking well well-sm"
-												ng-change="onSelectArriveDate()"></uib-datepicker>
+
+				<div style="display:inline-block; min-height:290px;">
+					<uib-datepicker ng-model="dtArrive" min-date="dtArriveMin" show-weeks="false"
+													class="datepicker booking well well-sm"
+													ng-change="onSelectArriveDate()"></uib-datepicker>
+				</div>
+
 			</div>
 		</div>
+
 		<div id="departDetail" class="form-group">
 			<div class="col-xs-12">
 				<button class="label button"
-						ng-click="departDetail=!departDetail"
-						ng-disabled="departDisabled">Depart:</button>
+								ng-click="departDetail=!departDetail"
+								ng-disabled="departDisabled">Depart:
+				</button>
 				<span class="book-date">{{dtDepartLabel}}</span>
 			</div>
 		</div>
 		<div class="form-group" ng-show="departDetail">
-			<div class="col-xs-12 expander" >
-				<button class="close" ng-click="arriveDetail=false"><i class="glyphicon glyphicon-remove"></i></button>
+			<div class="col-xs-12 expander">
 				<div class="btn-group">
-					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.MORNING">Morning</label>
-					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
-					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" uib-btn-radio="appConstants.EVENING">Evening</label>
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig"
+								 uib-btn-radio="appConstants.MORNING">Morning</label>
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig"
+								 uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig"
+								 uib-btn-radio="appConstants.EVENING">Evening</label>
 					<button class="close" ng-click="departDetail=false">Close</button>
 				</div>
-				<uib-datepicker ng-model="dtDepart" min-date="dtDepartMin" show-weeks="false" class="datepicker booking well well-sm"
-												ng-change="onSelectDepartDate()"></uib-datepicker>
+				<div style="display:inline-block; min-height:290px;">
+					<uib-datepicker ng-model="dtDepart" min-date="dtDepartMin" show-weeks="false"
+													class="datepicker booking well well-sm"
+													ng-change="onSelectDepartDate()"></uib-datepicker>
+				</div>
 			</div>
 		</div>
-		<div class="form-group" >
+		<div class="form-group">
 			<label class="control-label col-xs-2">Guests:</label>
 			<div class="col-xs-4">
-					<div rn-stepper ng-model="guestCount" min="0" max="15"></div>
+				<div rn-stepper ng-model="guestCount" min="0" max="15"></div>
 			</div>
 			<label class="control-label col-xs-2">Room<br>Req:</label>
 			<div class="col-xs-4">
-				<div rn-stepper ng-model="guestRoomRequestCount" min="0" max="15"></div>
+				<div rn-stepper ng-model="roomRequestCount" min="0" max="15"></div>
 			</div>
 		</div>
 		<div class="form-group">
@@ -100,14 +117,14 @@
 			</div>
 		</div>
 		<div class="form-group expander" ng-show="whoDetail">
-			<div class="col-xs-12" >
+			<div class="col-xs-12">
 				<label class="btn btn-primary" style="margin:0.2em"
-					   ng-repeat="person in personsForMember"
-					   ng-model="person.selected" uib-btn-checkbox>{{person.firstname}}</label>
+							 ng-repeat="person in personsForMember"
+							 ng-model="person.selected" uib-btn-checkbox>{{person.firstname}}</label>
 				<button class="plus"
-								ng-click="addingPerson=true"><span class="glyphicon glyphicon-plus"></span> </button>
+								ng-click="addingPerson=true"><span class="glyphicon glyphicon-plus"></span></button>
 			</div>
-			<div class="col-xs-12" ng-if="addingPerson" >
+			<div class="col-xs-12" ng-if="addingPerson">
 				<add-person memberid="bookMember._id" on-success="onSuccessAddPerson(person)"></add-person>
 			</div>
 		</div>
