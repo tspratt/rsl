@@ -66,7 +66,7 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe.only('Test Users endpoints (business)',
+	describe('Test Users endpoints (business)',
 			function () {
 				it('should return a person from login with good credentials', function (done) {
 					business.loginUser('Tracy', 'gabboob',
@@ -263,10 +263,10 @@ describe('Setup tests', function () {
 					);
 				});
 
-				it('should updte a single person document by Id', function (done) {
+				it('should update a single person document by Id', function (done) {
 					var id = '563c1e35ef69c27818dd916d';
-					var sUpdateData = 'email-' + Date.now();
-					business.updatePerson(id, {email: sUpdateData},
+					var sUpdateData = 'tracy';
+					business.updatePerson(id, {role: sUpdateData},
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
@@ -277,6 +277,24 @@ describe('Setup tests', function () {
 							}
 					);
 				});
+
+/***************** dev only! *************************
+				it.skip('should update multiple person documents', function (done) {
+					var id = '563c1e35ef69c27818dd916d';
+					var oQuery ={"memberrelationship":"friend"};
+					var oUpdate = {role: 'user', "permissions": ["view_persons","view_bookings","view_schedule","view_book"]};
+					business.updatePersons(oQuery, oUpdate,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+***************** dev only! *************************/
 
 				it('should updte a single Member document by Id', function (done) {
 					var id = '563c2368bad73ad4191aed11';

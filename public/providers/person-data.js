@@ -78,8 +78,8 @@ angular.module('rsl')
       return promise;
     };
 
-		PersonData.savePerson = function (oPerson) {
-			var oBody = { person: oPerson};
+		PersonData.savePerson = function (oUpdate) {
+			var oBody = { update: oUpdate};
 			var promise =  $http.put(envConfig.SERVICE_URL_BASE + 'person', oBody)
 					.then(function (res) {
 						return res;
