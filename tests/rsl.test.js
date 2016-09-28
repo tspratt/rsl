@@ -158,8 +158,8 @@ describe('Setup tests', function () {
 				});
 				it('should return a list of members by branch id', function (done) {
 					business.listMembers({
-								field : "branch",
-								value : new ObjectId("563c2429404d259013af4a8a")
+								field: "branch",
+								value: new ObjectId("563c2429404d259013af4a8a")
 							}, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -172,6 +172,7 @@ describe('Setup tests', function () {
 							}
 					);
 				});
+
 				it('should return a list of all persons', function (done) {
 					business.listPersons(null, null, null, null,
 							function (err, statusResponse) {
@@ -187,9 +188,9 @@ describe('Setup tests', function () {
 				});
 
 				it('should return a list persons for member', function (done) {
-					business.listPersons({memberrelationship : {$ne : "self"}}, {
-								field : 'member',
-								value : "563c2368bad73ad4191aed11"
+					business.listPersons({memberrelationship: {$ne: "self"}}, {
+								field: 'member',
+								value: "563c2368bad73ad4191aed11"
 							}, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -204,8 +205,8 @@ describe('Setup tests', function () {
 				});
 
 				it.skip('should return a page of persons, filtered by branch=Spratt', function (done) {
-					var filterSpec = {field : 'branchid', value : 'Spratt'};
-					var pageSpec = {pageLength : 50, pageNum : 0};
+					var filterSpec = {field: 'branchid', value: 'Spratt'};
+					var pageSpec = {pageLength: 50, pageNum: 0};
 					business.listPersons(null, filterSpec, pageSpec, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -236,7 +237,7 @@ describe('Setup tests', function () {
 				});
 				it('should return filtered list with reduced payload', function (done) {
 					var matchString = 'Trud';
-					business.filterPersonsByName(matchString, {llcname : 1},
+					business.filterPersonsByName(matchString, {llcname: 1},
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
@@ -278,8 +279,8 @@ describe('Setup tests', function () {
 					);
 				});
 
-/***************** dev only! *************************
-				it.skip('should update multiple person documents', function (done) {
+				/***************** dev only! *************************
+				 it.skip('should update multiple person documents', function (done) {
 					var id = '563c1e35ef69c27818dd916d';
 					var oQuery ={"memberrelationship":"friend"};
 					var oUpdate = {role: 'user', "permissions": ["view_persons","view_bookings","view_schedule","view_book"]};
@@ -294,7 +295,7 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-***************** dev only! *************************/
+				 ***************** dev only! *************************/
 
 				it('should updte a single Member document by Id', function (done) {
 					var id = '563c2368bad73ad4191aed11';
@@ -312,7 +313,7 @@ describe('Setup tests', function () {
 				});
 
 				it('should return a list of Rooms for Unit "A"', function (done) {
-					business.listRooms({"field" : "unit", "value" : "A"}, null, null,
+					business.listRooms({"field": "unit", "value": "A"}, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
@@ -327,14 +328,58 @@ describe('Setup tests', function () {
 			}
 	);
 
+	describe('Test Roles and Permissions',
+			function () {
+				it('should return a list of all Roles', function (done) {
+					business.listRoles(
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+								});
+							}
+					);
+				});
+
+				it('should return a list of all Permissions by action', function (done) {
+					business.listPermissions('action',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+									expect(statusResponse.data[0].name).to.equal('add_booking');
+								});
+							}
+					);
+				});
+
+				it('should return a list of all Permissions by context', function (done) {
+					business.listPermissions('context',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.array;
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+									expect(statusResponse.data[0].name).to.equal('view_book');
+								});
+							}
+					);
+				});
+			}
+	);
 	describe('Test Booking endpoints (business)',
 			function () {
 				var aBookings;
 				var booking;
 				it('should NOT return a booking overlap id', function (done) {
 					var memberId = '563c2368bad73ad4191aed11';
-					var dtArrive = new Date(2015,10,1); //11-1
-					var dtDepart = new Date(2015,10,6);	//11-6
+					var dtArrive = new Date(2015, 10, 1); //11-1
+					var dtDepart = new Date(2015, 10, 6);	//11-6
 					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -347,8 +392,8 @@ describe('Setup tests', function () {
 				});
 				it('should return a booking overlap id surrounded', function (done) {
 					var memberId = '563c2368bad73ad4191aed11';
-					var dtArrive = new Date(2015,10,1); //11-1
-					var dtDepart = new Date(2016,0,1);	//1/1
+					var dtArrive = new Date(2015, 10, 1); //11-1
+					var dtDepart = new Date(2016, 0, 1);	//1/1
 					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -363,8 +408,8 @@ describe('Setup tests', function () {
 				});
 				it('should return a booking overlap id on the front', function (done) {
 					var memberId = '563c2368bad73ad4191aed11';
-					var dtArrive = new Date(2015,10,1);//11-1
-					var dtDepart = new Date(2015,11,1);	//12-1
+					var dtArrive = new Date(2015, 10, 1);//11-1
+					var dtDepart = new Date(2015, 11, 1);	//12-1
 					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -379,8 +424,8 @@ describe('Setup tests', function () {
 				});
 				it('should return a booking overlap id on the back', function (done) {
 					var memberId = '563c2368bad73ad4191aed11';
-					var dtArrive = new Date(2015,11,1);		//12-1
-					var dtDepart = new Date(2015,11,10);	//12-10
+					var dtArrive = new Date(2015, 11, 1);		//12-1
+					var dtDepart = new Date(2015, 11, 10);	//12-10
 					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -395,8 +440,8 @@ describe('Setup tests', function () {
 				});
 				it('should return a booking overlap id enclosed', function (done) {
 					var memberId = '563c2368bad73ad4191aed11';
-					var dtArrive = new Date(2015,10,30);		//11-30
-					var dtDepart = new Date(2015,11,4);			//12-4
+					var dtArrive = new Date(2015, 10, 30);		//11-30
+					var dtDepart = new Date(2015, 11, 4);			//12-4
 					business.checkBookingOverlap(memberId, dtArrive, dtDepart,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -426,8 +471,8 @@ describe('Setup tests', function () {
 				});
 				it('should return an array of bookings for a single member', function (done) {
 					business.listBookings({
-								field : 'member',
-								value : '563c2368bad73ad4191aed11'
+								field: 'member',
+								value: '563c2368bad73ad4191aed11'
 							}, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -442,8 +487,8 @@ describe('Setup tests', function () {
 				});
 				it('should return an array of bookings for a date range', function (done) {
 					business.listBookings(null, {
-								from : '2015-11-29T22:59:00.000Z',
-								to   : '2015-11-30T22:59:00.000Z'
+								from: '2015-11-29T22:59:00.000Z',
+								to: '2015-11-30T22:59:00.000Z'
 							}, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
@@ -491,7 +536,7 @@ describe('Setup tests', function () {
 										var mbmb1label = (memb1.llcname || '') + ':' + (oRes.members[1].residenceType || '');
 										var mbmb2label = (memb2.llcname || '') + ':' + (oRes.members[2].residenceType || '');
 										var mbmb3label = (memb3.llcname || '') + ':' + (oRes.members[3].residenceType || '');
-										console.log(i, oRes.dt, oRes.daySection.lclabel, mbmb1label + ' | ' + mbmb2label + '|' +  mbmb3label)
+										console.log(i, oRes.dt, oRes.daySection.lclabel, mbmb1label + ' | ' + mbmb2label + '|' + mbmb3label)
 									}
 								});
 							}
@@ -519,23 +564,23 @@ describe('Setup tests', function () {
 	 */
 
 	/*
-	describe.only('set a property',
-			function () {
-				it('should return an schema object', function (done) {
-					model.setProperty(
-							function (err, sItemJson) {
-								asyncAssertionCheck(done, function () {
-									expect(err).to.not.exist;
-									expect(sItemJson).to.exist;
-									console.log(sItemJson);
-								});
-							}
-					);
-				});
-			}
-	);
+	 describe.only('set a property',
+	 function () {
+	 it('should return an schema object', function (done) {
+	 model.setProperty(
+	 function (err, sItemJson) {
+	 asyncAssertionCheck(done, function () {
+	 expect(err).to.not.exist;
+	 expect(sItemJson).to.exist;
+	 console.log(sItemJson);
+	 });
+	 }
+	 );
+	 });
+	 }
+	 );
 
-*/
+	 */
 	/*
 	 describe.skip('insert item data',
 	 function () {

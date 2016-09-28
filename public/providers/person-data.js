@@ -58,7 +58,7 @@ angular.module('rsl')
           return res;
         })
         .catch(function(res) {
-          console.error('getPersonsByNameMatch', resp.status, res.data);
+          console.error('getPersonsByNameMatch', res.status, res.data);
           return res;
         });
       return promise;
@@ -72,7 +72,7 @@ angular.module('rsl')
           return res;
         })
         .catch(function(res) {
-          console.error('getPerson', resp.status, res.data);
+          console.error('getPerson', res.status, res.data);
           return res;
         });
       return promise;
@@ -105,13 +105,26 @@ angular.module('rsl')
 			return promise;
 		};
 
-		PersonData.getPermsMaster = function () {
-			var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'permissions/')
+		PersonData.getRoles = function () {
+			var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'roles/')
 					.then(function (res) {
 						return res;
 					})
 					.catch(function(res) {
-						console.error('getPerson', resp.status, res.data);
+						console.error('getPerson', res.status, res.data);
+						return res;
+					});
+			return promise;
+		};
+
+		PersonData.getPermissions = function () {
+			var oQueryParams = {orderBy: 'action'};
+			var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'permissions/',oQueryParams)
+					.then(function (res) {
+						return res;
+					})
+					.catch(function(res) {
+						console.error('getPerson', res.status, res.data);
 						return res;
 					});
 			return promise;

@@ -54,7 +54,7 @@ angular.module('rsl')
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
-                    //appData.loggedInUser.perms = buildPerms(appData.loggedInUser.permissions);
+                    getPermissions();
                     $scope.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
@@ -94,17 +94,54 @@ angular.module('rsl')
         $state.go(state, oParams);
       };
 
-      function buildPerms(aUserPermissions) {
-        PersonData.getPermsMaster()
-            .then (function (aPermsMaster) {
-              aPermsMaster.forEach(function (permission) {
-
-              })
-              $scope.permsMaster = data;
+      function getRoles () {
+        PersonData.getRoles()
+            .then (function (aRoles) {
+              $scope.roles = aRoles;
             });
+      }
+
+      function getPermissions () {
+        PersonData.getPermissions()
+            .then (function (res) {
+              if (res.status === 200) {
+                $scope.permissions = res.data.data;
+                buildPerms();
+              }
+            });
+      }
+
+      function buildPerms() {
+        var oPerms = {can: {}, nested: []};
+        var aPermsMaster = $scope.permissions;
+        var aPermsUser = appData.loggedInUser.person.permissions;
+        var oPermTmp;
+        var sAction ='';
+        var sName = '';
+        var elementCur;
+        var iLen;
+        for (var i = 0; i < aPermsMaster.length; i++) {
+          oPermTmp = aPermsMaster[i];
+          oPerms.can[oPermTmp.name] = false;
+          if (oPermTmp.action !== sAction) {
+            sAction = oPermTmp.action;
+            iLen = oPerms.nested.push(oPermTmp);
+            elementCur = oPerms.nested[iLen - 1];
+            elementCur.contexts = [];
+          }
+          else {
+            elementCur.contexts.push(oPermTmp);
+          }
+        }
+        for (i = 0; i < aPermsUser.length; i++) {
+          sName = aPermsUser[i];
+          oPerms.can[sName] = true;
+        }
+        appData.loggedInUser.perms = oPerms;
       }
       
       /****  Initilaize **/
+      getRoles();
       $scope.vm.rememberMe = $scope.storage.rememberMe;
       if ($scope.vm.rememberMe) {
         $scope.vm.username = $scope.storage.username;

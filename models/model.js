@@ -163,7 +163,30 @@ function filterPersonsByName(matchString, oFieldSpec, callback) {
 
 }
 
+function listRoles( callback) {
+	mongoose.model('Role').find()
+			.lean()
+			.exec(function (err, persons) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, persons);
+				}
+			});
+}
 
+function listPermissions(oSort, callback) {
+	mongoose.model('Permission').find()
+			.sort({"action": 1, "context": 1})
+			.lean()
+			.exec(function (err, persons) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, persons);
+				}
+			});
+}
 /**
  * run only once for a new collection!
  */
@@ -536,6 +559,8 @@ exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;
 exports.deletePerson = deletePerson;
+exports.listRoles = listRoles;
+exports.listPermissions = listPermissions;
 exports.listBookings = listBookings;
 exports.clearResidenceSchedule = clearResidenceSchedule;
 exports.saveResidenceSchedule = saveResidenceSchedule;

@@ -123,7 +123,17 @@ var mgSchema = {
 			}
 		]
 	}, {collection: 'residenceSchedule'})
-			.plugin(deepPopulate, {})
+			.plugin(deepPopulate, {}),
+	Role: new Schema({
+		name: String,
+		permissions: [String]
+	}, {collection: 'roles'}),
+	Permission: new Schema({
+		name: String,
+		label: String,
+		action: String,
+		context: String
+	}, {collection: 'permissions'})
 
 };
 

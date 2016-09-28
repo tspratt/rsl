@@ -85,5 +85,18 @@ router.post('/person', function (req, res, next) {
 	});
 });
 
+router.get('/permissions', function (req, res, next) {
+  var orderBy = req.query.orderBy;
+  business.listPermissions(orderBy, function(err, statusResponse) {
+    res.send(statusResponse);
+  });
+});
+
+router.get('/roles', function (req, res, next) {
+  business.listRoles(function(err, statusResponse) {
+    res.send(statusResponse);
+  });
+});
+
 
 module.exports = router;

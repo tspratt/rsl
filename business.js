@@ -312,6 +312,42 @@ function deletePerson(sId, callback) {
 	});
 }
 
+function listRoles(callback) {
+	var statusResponse;
+	model.listRoles(function (err, aRoles) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'listRoles', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'listRoles', '', 'business', aRoles);
+		}
+
+		callback(err, statusResponse);
+	});
+}
+
+
+function listPermissions(orderBy, callback) {
+	var statusResponse;
+	var oSort = {};
+	if (orderBy && orderBy === 'action') {
+		oSort = {"action": 1, "context": 1};
+	}
+	else {
+		oSort = {"context": 1, "action": 1};
+	}
+	model.listPermissions(oSort, function (err, aPermissions) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'listPermissions', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'listPermissions', '', 'business', aPermissions);
+		}
+
+		callback(err, statusResponse);
+	});
+}
+
 function updateMember(sId, oUpdate, callback) {
 	var statusResponse;
 	model.updateMember(sId, oUpdate, function (err, result) {
@@ -769,6 +805,8 @@ exports.insertPerson = insertPerson;
 exports.updatePerson = updatePerson;
 exports.updatePersons = updatePersons;
 exports.deletePerson = deletePerson;
+exports.listRoles = listRoles;
+exports.listPermissions = listPermissions;
 exports.updateMember = updateMember;
 exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;
