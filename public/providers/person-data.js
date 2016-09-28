@@ -104,5 +104,17 @@ angular.module('rsl')
 					});
 			return promise;
 		};
+
+		PersonData.getPermsMaster = function () {
+			var promise =  $http.get(envConfig.SERVICE_URL_BASE + 'permissions/')
+					.then(function (res) {
+						return res;
+					})
+					.catch(function(res) {
+						console.error('getPerson', resp.status, res.data);
+						return res;
+					});
+			return promise;
+		};
     return PersonData;
   }]);

@@ -1,15 +1,25 @@
 <div class="view-content">
-
-  <div class="container">
-    <uib-accordion close-others="true">
-      <uib-accordion-group ng-repeat="person in persons" is-open="status.open">
-        <uib-accordion-heading class="person-list-heading">
-          {{person.firstname}} {{person.lastname}}
-          <span ng-show="person.memberrelationship==='self'">(Member)</span>
-          <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-        </uib-accordion-heading>
-        <person-detail></person-detail>
-      </uib-accordion-group>
-    </uib-accordion>
-  </div>
+	<div class="person-list-heading">
+		<input id="inputMatchString" type="text" class="match-string"
+					 placeholder="Filter Persons for..."
+					 ng-model="vm.matchString"
+					 focus-me>
+		<i class="glyphicon glyphicon-remove-sign match-string" ng-click="clearMatchString()"></i>
+		<button class="new-user">
+			<i class="glyphicon glyphicon-plus person-header"
+				 ng-click="newPerson()"></i>
+		</button>
+	</div>
+	<div class="container">
+		<uib-accordion close-others="true">
+			<uib-accordion-group ng-repeat="person in personsDisplay" is-open="person.open">
+				<uib-accordion-heading class="person-list-heading">
+					{{person.firstname}} {{person.lastname}}
+					<span ng-show="person.memberrelationship==='self'">(Member)</span>
+					<i class="pull-right glyphicon"
+						 ng-class="{'glyphicon-chevron-down': person.open, 'glyphicon-chevron-right': !person.open}"></i>
+				</uib-accordion-heading>
+				<person-detail></person-detail>
+			</uib-accordion-group>
+		</uib-accordion>
 </div>

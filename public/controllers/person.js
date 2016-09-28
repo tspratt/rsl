@@ -1,10 +1,13 @@
 angular.module('rsl')
-  .controller('personCtrl', ['$rootScope', '$scope', '$state', 'appConstants', 'PersonData',
-    function($rootScope, $scope, $state, appConstants, PersonData) {
+  .controller('personCtrl', ['$rootScope', '$scope', '$state', '$timeout','appConstants', 'appData', 'PersonData',
+    function($rootScope, $scope, $state,$timeout, appConstants, appData, PersonData) {
+      $scope.vm = {};
+      $scope.vm.matchString = '';
+      $scope.vm.perms = appData.loggedInUser.perms;
       $scope.persons = [];
       $scope.person = {};
       $scope.selectedId = '';
-      $scope.loggedInPersonId = '563c1e35ef69c27818dd916d';
+      $scope.loggedInPersonId = appData.loggedInUser.person.member._id;
       var totalCount = 100;
 
       $scope.shareToPercent = function(share) {
@@ -16,6 +19,33 @@ angular.module('rsl')
       }
 
 
+      $scope.$watch('vm.matchString', function (newValue, oldValue) {
+        if (newValue.toLowerCase() !== oldValue.toLowerCase()) {
+          buildDisplayList();
+        }
+      });
+
+      $scope.clearMatchString = function () {
+        $scope.vm.matchString = '';
+      };
+
+      $scope.newPerson = function () {
+        var person = new Person();
+        $scope.persons.unshift(person);
+        buildDisplayList();
+        $timeout(function () {
+          person.open = true;
+        },100);
+      };
+
+      function buildDisplayList () {
+        $scope.personsDisplay = $scope.persons;
+        $scope.personsDisplay = $scope.personsDisplay.filter(function (person) {
+          return ((person.firstname + person.lastname).toLowerCase().indexOf($scope.vm.matchString.toLowerCase()) > -1);
+        });
+        // $scope.vm.isFilterEmpty = ($scope.personsDisplay.length === 0);
+      }
+      
       function getPersons () {
         $scope.person = null;
         $scope.selectedId = '';
@@ -23,6 +53,7 @@ angular.module('rsl')
           .then(function (res) {
             if (res.status >= 200 && res.status < 300) {
               $scope.persons = res.data.data;
+              buildDisplayList();
             }
             else {
               console.log('HTTP Error: ' + res.statusText);
@@ -56,10 +87,25 @@ angular.module('rsl')
 
             });
       };
-      //$scope.onClickPerson = function(oPerson, index) {
-      //  $scope.person = oPerson;
-      //  $scope.selectedId = oPerson._id
-      //};
+
+      function Person () {
+        return {
+          "member": appData.loggedInUser.person.member,
+          "memberrelationship": "friend",
+          "firstname": "New User",
+          "lastname": "",
+          "address": "",
+          "phone": "",
+          "email": "",
+          "role": "user",
+          "permissions": [
+            "view_persons",
+            "view_bookings",
+            "view_schedule",
+            "view_book"
+          ]
+        }
+      }
 
 
       /****   Settings view ****/

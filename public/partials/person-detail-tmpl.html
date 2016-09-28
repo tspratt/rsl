@@ -3,7 +3,8 @@
 		<label class="control-label col-xs-2" for="firstname">First Name:</label>
 		<div class="col-xs-10">
 			<input type="text" class="form-control" id="firstname" placeholder="name"
-						 ng-value="person.firstname">
+						 ng-value="person.firstname"
+						 focus-me>
 		</div>
 
 		<label class="control-label col-xs-2" for="lastname">Last Name:</label>
@@ -17,7 +18,30 @@
 			<input type="text" class="form-control" id="address" placeholder="address"
 						 ng-value="person.address">
 		</div>
+		<label class="control-label col-xs-2" for="email">email:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="email" placeholder="email"
+						 ng-value="person.email">
+		</div>
+		<label class="control-label col-xs-2" for="email">Phone:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="phone" placeholder="phone"
+						 ng-value="person.phone">
+		</div>
+		<label class="control-label col-xs-2" for="role">Role:</label>
+		<div class="col-xs-10">
+			<input type="text" class="form-control" id="role" placeholder="role"
+						 ng-value="person.role">
+		</div>
+		<label class="control-label col-xs-2" for="permissions">Permisions:</label>
+		<div class="col-xs-10 checkbox-group">
+			<span ng-repeat="perm in vm.perms">
+				<input type="checkbox" class="form-control" id="permissions" placeholder="permissions"
+							 ng-value="perm.permitted">
+				{{perm.name}}
+			</span>
 
+		</div>
 	</div>
 
 	<div class="form-group" ng-show="person.memberrelationship!=='self'">
@@ -50,9 +74,11 @@
 		</div>
 	</div>
 	<div class="toolbar">
-		<button class="tool delete" ng-hide="person.memberrelationship==='self'" ng-click="deletePerson(person)">Delete</button>
+		<button class="tool delete" ng-hide="person.memberrelationship==='self'" ng-click="deletePerson(person)">Delete
+		</button>
 		<button class="tool"
 						ng-disabled="true"
-						ng-click="updatePerson(person)">Save Changes</button>
+						ng-click="updatePerson(person)">Save Changes
+		</button>
 	</div>
 </form>

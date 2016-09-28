@@ -13,6 +13,7 @@ angular.module('rsl')
       $scope.loggedInUser = {};
       $scope.showSystemMessage = false;
       $scope.systemMessage = '';
+      $scope.vm.permsMaster = [];
 
       $scope.$watch('vm.rememberMe', function (newValue) {
         $scope.storage.rememberMe = $scope.vm.rememberMe;
@@ -53,6 +54,7 @@ angular.module('rsl')
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
+                    //appData.loggedInUser.perms = buildPerms(appData.loggedInUser.permissions);
                     $scope.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
@@ -92,6 +94,16 @@ angular.module('rsl')
         $state.go(state, oParams);
       };
 
+      function buildPerms(aUserPermissions) {
+        PersonData.getPermsMaster()
+            .then (function (aPermsMaster) {
+              aPermsMaster.forEach(function (permission) {
+
+              })
+              $scope.permsMaster = data;
+            });
+      }
+      
       /****  Initilaize **/
       $scope.vm.rememberMe = $scope.storage.rememberMe;
       if ($scope.vm.rememberMe) {

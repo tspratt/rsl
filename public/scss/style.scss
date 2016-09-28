@@ -263,11 +263,25 @@ button.log-in {
 }
 
 .person-list-heading {
+	height: 35px;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
 	font-size: 16px;
+}
+
+.person-list-heading button.new-user {
+	height: 2.5em;
+	width: 4em;
+	margin-left: 20px;
+}
+.person-list-heading button > i.glyphicon.glyphicon-plus {
+	font-size: 25px;
 }
 
 .person-list-detail {
 	font-size: 12px;
+
 }
 
 .book-form {
