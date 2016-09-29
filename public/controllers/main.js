@@ -113,30 +113,30 @@ angular.module('rsl')
 
       function buildPerms() {
         var oPerms = {can: {}, nested: []};
-        var aPermsMaster = $scope.permissions;
         var aPermsUser = appData.loggedInUser.person.permissions;
+
+        //build array of available permissions
+        var aPerms = $scope.permissions.filter(function (oPerm) {
+          return (aPermsUser.filter(function(sPermName){return (oPerm.name === sPermName)}).length > 0);
+        });
         var oPermTmp;
         var sAction ='';
         var sName = '';
-        var elementCur;
+        var oAction;
         var iLen;
-        for (var i = 0; i < aPermsMaster.length; i++) {
-          oPermTmp = aPermsMaster[i];
-          oPerms.can[oPermTmp.name] = false;
+        for (var i = 0; i < aPerms.length; i++) {
+          oPermTmp = aPerms[i];
+          oPerms.can[oPermTmp.name] = true;
           if (oPermTmp.action !== sAction) {
             sAction = oPermTmp.action;
-            iLen = oPerms.nested.push(oPermTmp);
-            elementCur = oPerms.nested[iLen - 1];
-            elementCur.contexts = [];
+            oAction = {action:sAction, contexts:[oPermTmp]};
+            oPerms.nested.push(oAction);
           }
           else {
-            elementCur.contexts.push(oPermTmp);
+            oAction.contexts.push(oPermTmp);
           }
         }
-        for (i = 0; i < aPermsUser.length; i++) {
-          sName = aPermsUser[i];
-          oPerms.can[sName] = true;
-        }
+
         appData.loggedInUser.perms = oPerms;
       }
       

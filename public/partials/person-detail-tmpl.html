@@ -34,13 +34,15 @@
 						 ng-value="person.role">
 		</div>
 		<label class="control-label col-xs-2" for="permissions">Permisions:</label>
-		<div class="col-xs-10 checkbox-group">
-			<span ng-repeat="perm in vm.perms">
-				<input type="checkbox" class="form-control" id="permissions" placeholder="permissions"
-							 ng-value="perm.permitted">
-				{{perm.name}}
-			</span>
-
+		<div id="permissions" class="col-xs-12 permission-actions">
+			<div class="permission-contexts" ng-repeat="action in vm.perms.nested">
+				<label>{{action.action}}</label>
+				<div ng-repeat="perm in action.contexts">
+					<input type="checkbox"
+								 ng-value="perm.can">
+					{{perm.context}}
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -74,6 +76,7 @@
 		</div>
 	</div>
 	<div class="toolbar">
+		<button class="tool cancel" ng-click="cancelUpdate(person)">Cancel
 		<button class="tool delete" ng-hide="person.memberrelationship==='self'" ng-click="deletePerson(person)">Delete
 		</button>
 		<button class="tool"

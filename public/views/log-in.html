@@ -24,16 +24,16 @@
           ng-click="logIn('chat')"
           ng-disabled="false">Chat
   </button>
+  <button class="module-menu-item"
+          ng-class="{'selected':'person-list' === activeState}"
+          ng-click="logIn('person-list')"
+          ng-disabled="false">Persons
+  </button>
 <!--
-  <button class="module-menu-item"
-          ng-class="{'selected':'booking-list' === activeState}"
-          ng-click="goView('booking-list')"
-          ng-disabled="false">Bookings
-  </button>
-  <button class="module-menu-item"
-          ng-class="{'selected':'settings' === activeState}"
-          ng-click="logIn('settings')"
-          ng-disabled="!isFormValid">Other
-  </button>
--->
+		<button class="module-menu-item"
+						ng-class="{'selected':'settings' === activeState}"
+						ng-click="logIn('settings')"
+						ng-disabled="!isFormValid">Other
+		</button>
+	-->
 </div>

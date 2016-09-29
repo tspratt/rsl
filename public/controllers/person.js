@@ -88,6 +88,10 @@ angular.module('rsl')
             });
       };
 
+      $scope.cancelUpdate = function (person) {
+        person.open = false;
+      };
+
       function Person () {
         return {
           "member": appData.loggedInUser.person.member,

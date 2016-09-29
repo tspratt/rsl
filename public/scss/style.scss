@@ -284,6 +284,17 @@ button.log-in {
 
 }
 
+.permission-actions {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+.permission-contexts {
+	display: flex;
+	flex-direction: column;
+
+}
+
 .book-form {
 	font-size: 16px;
 }
