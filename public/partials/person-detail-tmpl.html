@@ -35,11 +35,11 @@
 		</div>
 		<label class="control-label col-xs-2" for="permissions">Permisions:</label>
 		<div id="permissions" class="col-xs-12 permission-actions">
-			<div class="permission-contexts" ng-repeat="action in vm.perms.nested">
+			<div class="permission-contexts" ng-repeat="action in perms.nested">
 				<label>{{action.action}}</label>
 				<div ng-repeat="perm in action.contexts">
 					<input type="checkbox"
-								 ng-value="perm.can">
+								 ng-model="perm.allow">
 					{{perm.context}}
 				</div>
 			</div>
@@ -77,11 +77,14 @@
 	</div>
 	<div class="toolbar">
 		<button class="tool cancel" ng-click="cancelUpdate(person)">Cancel
-		<button class="tool delete" ng-hide="person.memberrelationship==='self'" ng-click="deletePerson(person)">Delete
+		<button class="tool delete"
+						ng-hide="person.memberrelationship==='self'"
+						ng-disabled="vm.action['delete-person']"
+						ng-click="deletePerson(person)">Delete
 		</button>
 		<button class="tool"
-						ng-disabled="true"
-						ng-click="updatePerson(person)">Save Changes
+						ng-disabled="vm.action['edit-person']"
+						ng-click="savePerson()">Save Changes
 		</button>
 	</div>
 </form>

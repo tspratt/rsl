@@ -65,8 +65,8 @@ router.get('/persons/:oid', function (req, res, next) {
 
 router.put('/person', function (req, res, next) {
   var oUpdate = req.body.update;
-	var sId = req.body.sId;
-  business.insertPerson(oUpdate, function(err, statusResponse) {
+	var sId = oUpdate._id;
+  business.updatePerson(sId, oUpdate, function(err, statusResponse) {
     res.send(statusResponse);
   });
 });

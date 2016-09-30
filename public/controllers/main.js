@@ -105,18 +105,18 @@ angular.module('rsl')
         PersonData.getPermissions()
             .then (function (res) {
               if (res.status === 200) {
-                $scope.permissions = res.data.data;
-                buildPerms();
+                appData.permsMaster = res.data.data;
+                buildAuth();
               }
             });
       }
 
-      function buildPerms() {
-        var oPerms = {can: {}, nested: []};
+      function buildAuth() {
+        var oPerms = {action: {}, nested: []};
         var aPermsUser = appData.loggedInUser.person.permissions;
 
         //build array of available permissions
-        var aPerms = $scope.permissions.filter(function (oPerm) {
+        var aPerms = appData.permsMaster.filter(function (oPerm) {
           return (aPermsUser.filter(function(sPermName){return (oPerm.name === sPermName)}).length > 0);
         });
         var oPermTmp;
@@ -126,7 +126,7 @@ angular.module('rsl')
         var iLen;
         for (var i = 0; i < aPerms.length; i++) {
           oPermTmp = aPerms[i];
-          oPerms.can[oPermTmp.name] = true;
+          oPerms.action[oPermTmp.name] = true;
           if (oPermTmp.action !== sAction) {
             sAction = oPermTmp.action;
             oAction = {action:sAction, contexts:[oPermTmp]};
@@ -137,9 +137,9 @@ angular.module('rsl')
           }
         }
 
-        appData.loggedInUser.perms = oPerms;
+        appData.auth = oPerms;
       }
-      
+
       /****  Initilaize **/
       getRoles();
       $scope.vm.rememberMe = $scope.storage.rememberMe;
