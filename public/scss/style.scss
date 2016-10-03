@@ -100,6 +100,10 @@ button:focus {
 	color: #245580;
 }
 
+div.border-box {
+	border: $box-border;
+}
+
 input[type="text"], input[type="password"] {
 	display: block;
 	margin: 0.25em;

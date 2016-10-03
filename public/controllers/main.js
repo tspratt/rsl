@@ -54,6 +54,7 @@ angular.module('rsl')
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
+                    getMembers();
                     getPermissions();
                     $scope.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
@@ -93,6 +94,28 @@ angular.module('rsl')
       $scope.goView = function (state, oParams) {
         $state.go(state, oParams);
       };
+
+      function getMembers() {
+        PersonData.getPersons(null, null, null, 'memberrelationship', 'self', null)
+            .then(function (res) {
+              if (res.status >= 200 && res.status < 300) {
+                appData.members = res.data.data.map(function (person) {
+                  return person.member;
+                });
+                for (var i = 0; i < $scope.members.length; i++) {
+                  if ($scope.members[i]._id === $scope.bookMemberId) {
+                    $scope.members[i].selected = true;
+                    $scope.bookMember = $scope.members[i];
+                    break;
+                  }
+                }
+                getRooms();
+              }
+              else {
+                console.log('HTTP Error: ' + res.statusText);
+              }
+            });
+      }
 
       function getRoles () {
         PersonData.getRoles()

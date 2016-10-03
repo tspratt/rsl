@@ -48,8 +48,15 @@
 
 	<div class="form-group" ng-show="person.memberrelationship!=='self'">
 		<label class="control-label col-xs-2" for="name">Member:</label>
-		<div class="col-xs-10">
-			<p class="form-control-static">{{person.member.llcname}} ({{person.memberrelationship}})</p>
+		<div class="col-xs-7">
+			<select id="selectMember"
+					ng-model="bookMember"
+					ng-options="member as member.llcname for member in vm.members track by member._id"></select>
+		</div>
+		<div class="col-xs-3">
+			<select id="selectMemberRelationship"
+					ng-model="person.memberrelationship"
+					ng-options="memberrelationship in vm.memberrelationships"></select>
 		</div>
 	</div>
 

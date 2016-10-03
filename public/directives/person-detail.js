@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('rsl')
-  .directive('personDetail', function () {
+  .directive('personDetail', [function () {
     return {
       restrict: 'E',
       scope: {
@@ -72,4 +72,4 @@ angular.module('rsl')
         generatePerms();
       }
     };
-  });
+  }]);

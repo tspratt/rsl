@@ -8,6 +8,8 @@ angular.module('rsl')
 				$scope.vm.perms = [];
 				$scope.vm.permissions = appData.loggedInUser.person.permissions;
 				$scope.vm.action = appData.allow;
+				$scope.vm.members = [];
+				$scope.vm.memberrelationships = ['self','partner','child','friend']
 				$scope.persons = [];
 				$scope.person = {};
 				$scope.selectedId = '';
@@ -46,6 +48,17 @@ angular.module('rsl')
 							if (newValue) {
 								$scope.vm.auth = newValue;
 								$scope.vm.action = $scope.vm.auth.action;
+							}
+						}
+				);
+
+				$scope.$watch(
+						function () {
+							return appData.members;
+						},
+						function (newValue) {
+							if (newValue) {
+								$scope.vm.members = newValue;
 							}
 						}
 				);
