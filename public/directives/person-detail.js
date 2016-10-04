@@ -7,7 +7,9 @@ angular.module('rsl')
     return {
       restrict: 'E',
       scope: {
-        person: '='
+        person: '=',
+        vm: '=',
+        updatePerson: '&'
       },
       templateUrl: 'partials/person-detail-tmpl.html',
       link: function (scope, element, attrs) {
@@ -56,7 +58,7 @@ angular.module('rsl')
             }
           }
           scope.person.permissions = aPermisions;
-          scope.$parent.updatePerson (scope.person);
+          scope.updatePerson({oUpdate: scope.person});
         };
 
         scope.cancelUpdate = function (person) {

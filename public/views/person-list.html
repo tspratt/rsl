@@ -19,7 +19,7 @@
 					<i class="pull-right glyphicon"
 						 ng-class="{'glyphicon-chevron-down': person.open, 'glyphicon-chevron-right': !person.open}"></i>
 				</uib-accordion-heading>
-				<person-detail person="person"></person-detail>
+				<person-detail person="person" vm="vm" update-person="updatePerson(oUpdate)"></person-detail>
 			</uib-accordion-group>
 		</uib-accordion>
 </div>

@@ -100,6 +100,10 @@ button:focus {
   color: #245580;
 }
 
+div.bordered-box {
+  border: solid 1px #000000;
+}
+
 input[type="text"], input[type="password"] {
   display: block;
   margin: 0.25em;
@@ -881,6 +885,13 @@ div.toolbar .tool {
 }
 div.toolbar .tool.delete {
   background-color: red;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /*# sourceMappingURL=style.css.map */

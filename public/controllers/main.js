@@ -102,21 +102,34 @@ angular.module('rsl')
                 appData.members = res.data.data.map(function (person) {
                   return person.member;
                 });
-                for (var i = 0; i < $scope.members.length; i++) {
-                  if ($scope.members[i]._id === $scope.bookMemberId) {
-                    $scope.members[i].selected = true;
-                    $scope.bookMember = $scope.members[i];
+                for (var i = 0; i < appData.members.length; i++) {
+                  if (appData.members[i]._id === $scope.bookMemberId) {
+                    appData.members[i].selected = true;
+                    $scope.bookMember = appData.members[i];
                     break;
                   }
                 }
-                getRooms();
+                //getRooms();
               }
               else {
                 console.log('HTTP Error: ' + res.statusText);
               }
             });
       }
-
+/*
+      function getRooms() {
+        bookingData.getRooms(null, null, 'unit', null, null)
+            .then(function (res) {
+              if (res.status >= 200 && res.status < 300) {
+                $scope.rooms = res.data.data;
+                setDefaultRoom();
+              }
+              else {
+                console.log('HTTP Error: ' + res.statusText);
+              }
+            });
+      }
+*/
       function getRoles () {
         PersonData.getRoles()
             .then (function (aRoles) {

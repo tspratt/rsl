@@ -47,16 +47,15 @@
 	</div>
 
 	<div class="form-group" ng-show="person.memberrelationship!=='self'">
-		<label class="control-label col-xs-2" for="name">Member:</label>
-		<div class="col-xs-7">
+		<div class="flex-row">
+			<label class="control-label" >Member /<br> Relationship:</label>
 			<select id="selectMember"
-					ng-model="bookMember"
-					ng-options="member as member.llcname for member in vm.members track by member._id"></select>
-		</div>
-		<div class="col-xs-3">
-			<select id="selectMemberRelationship"
-					ng-model="person.memberrelationship"
-					ng-options="memberrelationship in vm.memberrelationships"></select>
+							ng-model="person.member"
+							ng-options="member as member.llcname for member in vm.members track by member._id"></select>
+
+			<select ng-model="person.memberrelationship">
+				<option ng-repeat="item in vm.memberrelationships">{{item}}</option>
+			</select>
 		</div>
 	</div>
 

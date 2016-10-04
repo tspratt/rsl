@@ -9,7 +9,7 @@ angular.module('rsl')
 				$scope.vm.permissions = appData.loggedInUser.person.permissions;
 				$scope.vm.action = appData.allow;
 				$scope.vm.members = [];
-				$scope.vm.memberrelationships = ['self','partner','child','friend']
+				$scope.vm.memberrelationships = ['self','partner','child','friend'];
 				$scope.persons = [];
 				$scope.person = {};
 				$scope.selectedId = '';

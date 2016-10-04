@@ -1,3 +1,5 @@
+@import "variables";
+
 .nav, .pagination, .carousel, .panel-title a {
 	/*for bootstrap*/
 	cursor: pointer;
@@ -100,7 +102,7 @@ button:focus {
 	color: #245580;
 }
 
-div.border-box {
+div.bordered-box {
 	border: $box-border;
 }
 
@@ -894,5 +896,11 @@ div.toolbar {
 	}
 }
 
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
 
 /*# sourceMappingURL=style.css.map */
