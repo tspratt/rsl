@@ -6,6 +6,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	// Configurable paths for the application
 	var appConfig = {
@@ -23,6 +24,12 @@ module.exports = function (grunt) {
 				files: {
 					'public/css/style.css': 'public/scss/style.scss'
 				}
+			}
+		},
+		watch: {
+			css: {
+				files: '**/*.scss',
+				tasks: ['sass']
 			}
 		},
 		clean: {

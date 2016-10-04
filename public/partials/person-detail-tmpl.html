@@ -1,96 +1,96 @@
-<form class="form-horizontal person-list-detail">
-	<div class="form-group">
-		<label class="control-label col-xs-2" for="firstname">First Name:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="firstname" placeholder="name"
-						 ng-value="person.firstname"
-						 focus-me>
-		</div>
+<div class="v-box person-list-detail">
+	<a ng-attr-id="{{'a-' + person._id}}" style="display:none"></a>
+	<div class="h-box">
+		<label class="control-label" for="firstname">First Name:</label>
+		<input type="text" class="form-control" id="firstname" placeholder="name"
+					 ng-value="person.firstname"
+					 focus-me>
+	</div>
 
-		<label class="control-label col-xs-2" for="lastname">Last Name:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="lastname" placeholder="branch"
-						 ng-value="person.lastname">
-		</div>
 
-		<label class="control-label col-xs-2" for="address">Address:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="address" placeholder="address"
-						 ng-value="person.address">
-		</div>
-		<label class="control-label col-xs-2" for="email">email:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="email" placeholder="email"
-						 ng-value="person.email">
-		</div>
-		<label class="control-label col-xs-2" for="email">Phone:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="phone" placeholder="phone"
-						 ng-value="person.phone">
-		</div>
-		<label class="control-label col-xs-2" for="role">Role:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="role" placeholder="role"
-						 ng-value="person.role">
-		</div>
-		<label class="control-label col-xs-2" for="permissions">Permisions:</label>
-		<div id="permissions" class="col-xs-12 permission-actions">
-			<div class="permission-contexts" ng-repeat="action in perms.nested">
-				<label>{{action.action}}</label>
-				<div ng-repeat="perm in action.contexts">
-					<input type="checkbox"
-								 ng-model="perm.allow">
-					{{perm.context}}
-				</div>
+	<div class="h-box">
+		<label class="control-label" for="lastname">Last Name:</label>
+		<input type="text" class="form-control" id="lastname" placeholder="branch"
+					 ng-value="person.lastname">
+	</div>
+
+
+	<div class="h-box">
+		<label class="control-label" for="address">Address:</label>
+		<input type="text" class="form-control" id="address" placeholder="address"
+					 ng-value="person.address">
+	</div>
+
+	<div class="h-box">
+		<label class="control-label" for="email">email:</label>
+		<input type="text" class="form-control" id="email" placeholder="email"
+					 ng-value="person.email">
+	</div>
+
+	<div class="h-box">
+		<label class="control-label" for="email">Phone:</label>
+		<input type="text" class="form-control" id="phone" placeholder="phone"
+					 ng-value="person.phone">
+	</div>
+
+	<div class="h-box">
+		<label class="control-label" for="role">Role:</label>
+		<select id="role" class="form-control"
+						ng-model="person.role"
+						ng-options="role as role.name for role in vm.roles"></select>
+	</div>
+
+	<label class="control-label" for="permissions">Permisions:</label>
+	<div id="permissions" class="col-xs-12 permission-actions">
+		<div class="permission-contexts" ng-repeat="action in perms.nested">
+			<label>{{action.action}}</label>
+			<div ng-repeat="perm in action.contexts">
+				<input type="checkbox"
+							 ng-model="perm.allow">
+				{{perm.context}}
 			</div>
 		</div>
 	</div>
 
-	<div class="form-group" ng-show="person.memberrelationship!=='self'">
-		<div class="flex-row">
-			<label class="control-label" >Member /<br> Relationship:</label>
-			<select id="selectMember"
+
+	<div class="" ng-show="person.memberrelationship!=='self'">
+		<div class="h-box">
+			<label class="control-label">Member /<br> Relationship:</label>
+			<select class="form-control"
 							ng-model="person.member"
 							ng-options="member as member.llcname for member in vm.members track by member._id"></select>
 
-			<select ng-model="person.memberrelationship">
+			<select class="form-control" ng-model="person.memberrelationship">
 				<option ng-repeat="item in vm.memberrelationships">{{item}}</option>
 			</select>
 		</div>
 	</div>
 
-	<div class="form-group" ng-show="person.memberrelationship==='self'">
-		<label class="control-label col-xs-2" for="name">Member Name:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="name" placeholder="name"
-						 ng-value="person.member.llcname">
+	<div class="h-box" ng-show="person.memberrelationship==='self'">
+		<div class="v-box">
+			<span class="control-label">Member Name:</span>
+			{{person.member.llcname}}
 		</div>
-
-		<label class="control-label col-xs-2" for="branch">Branch:</label>
-		<div class="col-xs-10">
-			<input type="text" class="form-control" id="branch" placeholder="branch"
-						 ng-value="person.member.branch.branchname">
+		<div class="v-box">
+			<span class="control-label" for="branch">Branch:</span>
+			{{person.member.branch.branchname}}
 		</div>
-
-		<label class="control-label col-xs-2" for="share">Share:</label>
-		<div class="col-xs-5">
-			<input type="text" class="form-control" id="share" placeholder="share"
-						 ng-value="person.member.share">
-		</div>
-		<div class="col-xs-4">
-			({{shareToPercent(person.member.share)}}%)
+		<div class="v-box">
+			<span class="control-label" for="share">Share:</span>
+			({{vm.shareToPercent(person.member.share)}}%)
 		</div>
 	</div>
+
 	<div class="toolbar">
-		<button class="tool cancel" ng-click="cancelUpdate(person)">Cancel
-		<button class="tool delete"
-						ng-hide="person.memberrelationship==='self'"
-						ng-disabled="vm.action['delete-person']"
-						ng-click="deletePerson(person)">Delete
-		</button>
-		<button class="tool"
-						ng-disabled="vm.action['edit-person']"
-						ng-click="savePerson()">Save Changes
-		</button>
+		<button class="tool cancel" ng-click="cancelUpdate(person)">Cancel</button>
+			<button class="tool delete"
+							ng-hide="person.memberrelationship==='self'"
+							ng-disabled="vm.action['delete-person']"
+							ng-click="deletePerson(person)">Delete
+			</button>
+			<button class="tool"
+							ng-disabled="vm.action['edit-person']"
+							ng-click="savePerson()">Save Changes
+			</button>
 	</div>
-</form>
+</div>

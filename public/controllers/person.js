@@ -1,6 +1,6 @@
 angular.module('rsl')
-		.controller('personCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'appConstants', 'appData', 'PersonData',
-			function ($rootScope, $scope, $state, $timeout, appConstants, appData, PersonData) {
+		.controller('personCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$anchorScroll','appConstants', 'appData', 'PersonData',
+			function ($rootScope, $scope, $state, $timeout, $anchorScroll, appConstants, appData, PersonData) {
 				$scope.vm = {};
 				$scope.vm.matchString = '';
 				$scope.vm.auth = appData.auth;
@@ -16,7 +16,7 @@ angular.module('rsl')
 				$scope.loggedInPersonId = appData.loggedInUser.person.member._id;
 				var totalCount = 100;
 
-				$scope.shareToPercent = function (share) {
+				$scope.vm.shareToPercent = function (share) {
 					return Math.round(share * 1000000) / 10000;
 				};
 
@@ -130,6 +130,9 @@ angular.module('rsl')
 								}
 
 							});
+				};
+				$scope.vm.scrollTo = function (locationHash) {
+					$anchorScroll(locationHash);
 				};
 
 				function Person() {

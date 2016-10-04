@@ -100,13 +100,8 @@ button:focus {
   color: #245580;
 }
 
-div.bordered-box {
-  border: solid 1px #000000;
-}
-
 input[type="text"], input[type="password"] {
   display: block;
-  margin: 0.25em;
 }
 
 input.match-string {
@@ -879,6 +874,7 @@ div.toolbar {
   justify-content: flex-end;
   align-items: center;
   font-size: 16px;
+  margin-top: 0.5em;
 }
 div.toolbar .tool {
   font-size: 16px;
@@ -887,11 +883,32 @@ div.toolbar .tool.delete {
   background-color: red;
 }
 
-.flex-row {
+.v-box {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+}
+.v-box .h-box {
+  margin-bottom: 0.25em;
+}
+
+.h-box {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+}
+.h-box > label {
+  flex-basis: 6em;
+}
+.h-box > input, .h-box select {
+  margin-left: 0.25em;
+}
+
+.h-box.borders,
+.v-box.borders {
+  border: solid 1px #000000;
 }
 
 /*# sourceMappingURL=style.css.map */

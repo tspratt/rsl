@@ -65,9 +65,9 @@ angular.module('rsl')
           person.open = false;
         };
 
-        scope.$watch(function () {scope.open}, function (newValue, oldValue) {
-          if (newValue && !perms) {
-            console.log('*******open******')
+        scope.$watch(function () {return scope.person.open}, function (newValue, oldValue) {
+          if (newValue = true) {
+            scope.vm.scrollTo('a-' + scope.person._id)
           }
         });
 
