@@ -6,6 +6,7 @@ angular.module('rsl')
     appData.loggedInUser = {};
     appData.members = [];
     appData.rooms = [];
+		appData.auth = {};
 
     appData.getDaySection  = function(dt) {
       var sReturn = 'evening';

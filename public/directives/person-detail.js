@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('rsl')
-  .directive('personDetail', [function () {
+  .directive('personDetail', ['$timeout',function ($timeout) {
     return {
       restrict: 'E',
       scope: {
@@ -66,8 +66,8 @@ angular.module('rsl')
         };
 
         scope.$watch(function () {return scope.person.open}, function (newValue, oldValue) {
-          if (newValue = true) {
-            scope.vm.scrollTo('a-' + scope.person._id)
+          if (newValue && newValue === true) {
+          	$timeout(function () {scope.vm.scrollTo('a-' + scope.person._id);},200);
           }
         });
 

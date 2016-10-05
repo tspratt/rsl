@@ -10,6 +10,12 @@
 	font-weight: normal;
 }
 
+.form-checkbox {
+	font-size: 12px;
+	font-weight: normal;
+	width: 40px;
+}
+
 .form-horizontal .form-group {
 	margin-right: 0;
 	margin-left: 0;
@@ -198,9 +204,9 @@ button.log-in {
 .view-content {
 	position: absolute;
 	top: 105px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	overflow-y: scroll;
 }
 
@@ -246,7 +252,7 @@ button.log-in {
 }
 
 .header-label {
-	font-family: "Bodoni MT Black";
+	font-family: "Bodoni MT Black", sans-serif;
 	position: relative;
 	top: 1.0em;
 	left: 10px;
@@ -911,12 +917,10 @@ div.toolbar {
 	&> label {
 		flex-basis: 6em;
 	}
-	&> input,select {
+	&> *:not(:first-child) {
 		margin-left: 0.25em;
 	}
 }
-
-
 
 .h-box,
 .v-box {

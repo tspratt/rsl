@@ -132,8 +132,9 @@ angular.module('rsl')
 */
       function getRoles () {
         PersonData.getRoles()
-            .then (function (aRoles) {
-              $scope.roles = aRoles;
+            .then (function (res) {
+              $scope.roles = res.data.data;
+              appData.auth.roles = res.data.data;
             });
       }
 
@@ -173,7 +174,7 @@ angular.module('rsl')
           }
         }
 
-        appData.auth = oPerms;
+        appData.auth.perms = oPerms;
       }
 
       /****  Initilaize **/
