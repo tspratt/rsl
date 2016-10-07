@@ -86,6 +86,7 @@ var mgSchema = {
 		images: [String]
 	}, {collection: 'rooms'}),
 	Booking: new Schema({
+		memberResident: {type: Schema.ObjectId, ref: 'Member'},
 		member: {type: Schema.ObjectId, ref: 'Member'},
 		room: {type: Schema.ObjectId, ref: 'Room'},
 		who: [{type: Schema.ObjectId, ref: 'Person'}],
