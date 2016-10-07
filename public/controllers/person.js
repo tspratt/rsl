@@ -2,6 +2,7 @@ angular.module('rsl')
 		.controller('personCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$anchorScroll','appConstants', 'appData', 'PersonData',
 			function ($rootScope, $scope, $state, $timeout, $anchorScroll, appConstants, appData, PersonData) {
 				$scope.vm = {};
+				$scope.vm.self = appData.loggedInUser.person;
 				$scope.vm.matchString = '';
 				$scope.vm.auth = appData.auth;
 				$scope.vm.permsMaster = appData.permsMaster;
@@ -120,6 +121,7 @@ angular.module('rsl')
 				};
 
 				$scope.updatePerson = function (person) {
+					person.member = person.member._id;
 					PersonData.savePerson(person)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
@@ -156,9 +158,21 @@ angular.module('rsl')
 
 
 				/****   Settings view ****/
+				$scope.updateSelf = function (self) {
+					PersonData.savePerson(self)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+									getPersons();
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+
+							});
+				};
 				$scope.vm.newPassword = '';
 				$scope.setPassword = function () {
-					PersonData.setPassword($scope.vm.username, $scope.vm.password, $scope.vm.newPassword)
+					PersonData.setPassword($scope.vm.self.username, $scope.vm.self.password, $scope.vm.self.newPassword)
 							.then(function (res) {
 								if (res.data.data.status !== 'success') {
 									$rootScope.$emit('system-message',

@@ -1,44 +1,29 @@
 <div class="v-box person-list-detail">
 	<div class="h-box">
-		<label class="control-label" for="firstname">First Name:</label>
 		<input type="text" class="form-control" id="firstname" placeholder="name"
-					 ng-value="person.firstname"
+					 ng-model="person.firstname"
 					 focus-me>
-	</div>
-
-
-	<div class="h-box">
-		<label class="control-label" for="lastname">Last Name:</label>
 		<input type="text" class="form-control" id="lastname" placeholder="branch"
-					 ng-value="person.lastname">
+					 ng-model="person.lastname">
 	</div>
 
-
 	<div class="h-box">
-		<label class="control-label" for="address">Address:</label>
 		<input type="text" class="form-control" id="address" placeholder="address"
-					 ng-value="person.address">
+					 ng-model="person.address">
 	</div>
 
 	<div class="h-box">
-		<label class="control-label" for="email">email:</label>
 		<input type="text" class="form-control" id="email" placeholder="email"
-					 ng-value="person.email">
-	</div>
-
-	<div class="h-box">
-		<label class="control-label" for="email">Phone:</label>
+					 ng-model="person.email">
 		<input type="text" class="form-control" id="phone" placeholder="phone"
 					 ng-value="person.phone">
 	</div>
 
 	<div class="h-box">
-		<label class="control-label" for="isUser">Is User?</label>
-		<input id="isUser" type="checkbox"  class="form-control form-checkbox" ng-model="person.isUser"/>
 		<label class="control-label" for="role">Role:</label>
 		<select id="role" class="form-control"
 						ng-model="person.role"
-						ng-options="role as role.name for role in vm.auth.roles"></select>
+						ng-options="role._id as role.name for role in vm.auth.roles"></select>
 	</div>
 
 	<label class="control-label" for="permissions">Permisions:</label>
@@ -56,8 +41,8 @@
 
 	<div class="" ng-show="person.memberrelationship!=='self'">
 		<div class="h-box">
-			<label class="control-label">Member /<br> Relationship:</label>
-			<select class="form-control"
+			<label class="control-label">Member:</label>
+			<select class="member form-control"
 							ng-model="person.member"
 							ng-options="member as member.llcname for member in vm.members track by member._id"></select>
 
@@ -70,15 +55,15 @@
 	<div class="h-box" ng-show="person.memberrelationship==='self'">
 		<div class="v-box">
 			<span class="control-label">Member Name:</span>
-			{{person.member.llcname}}
+			<span class="control-value">{{person.member.llcname}}</span>
 		</div>
 		<div class="v-box">
 			<span class="control-label" for="branch">Branch:</span>
-			{{person.member.branch.branchname}}
+			<span class="control-value">{{person.member.branch.branchname}}</span>
 		</div>
 		<div class="v-box">
 			<span class="control-label" for="share">Share:</span>
-			({{vm.shareToPercent(person.member.share)}}%)
+			<span class="control-value">({{vm.shareToPercent(person.member.share)}}%)</span>
 		</div>
 	</div>
 

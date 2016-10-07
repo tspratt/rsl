@@ -1,13 +1,36 @@
 <div>
-  <div class="container">
-    <div class="settings-section">
-      <span class="setting-label">New Password:</span><input type="text" ng-model="vm.newPassword"><button ng-click="setPassword()">Set</button>
+  <div class="container v-box ">
+    <div class="settings-section borders">
+      <span class="setting-label">Change Password:</span><input type="text" ng-model="vm.newPassword"><button ng-click="setPassword()">Set</button>
+    </div>
+    <div class="v-box borders">
+      <div class="h-box">
+        <input type="text" class="form-control" id="firstname" placeholder="name"
+               ng-model="vm.self.firstname"
+               focus-me>
+        <input type="text" class="form-control" id="lastname" placeholder="branch"
+               ng-model="vm.self.lastname">
+      </div>
+
+      <div class="h-box">
+        <input type="text" class="form-control" id="address" placeholder="address"
+               ng-model="vm.self.address">
+      </div>
+
+      <div class="h-box">
+        <input type="text" class="form-control" id="email" placeholder="email"
+               ng-model="vm.self.email">
+        <input type="text" class="form-control" id="phone" placeholder="phone"
+               ng-model="vm.self.phone">
+      </div>
+
+      <div class="toolbar">
+        <button class="tool"
+                ng-click="updateSelf(vm.self)">Save Changes
+        </button>
+      </div>
     </div>
 
-
-    <div>
-
-    </div>
   </div>
 
 </div>

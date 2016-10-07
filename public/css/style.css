@@ -11,7 +11,9 @@
 .form-checkbox {
   font-size: 12px;
   font-weight: normal;
-  width: 40px;
+  width: 1em;
+  height: 1em;
+  margin: 0 .25em 0 2em;
 }
 
 .form-horizontal .form-group {
@@ -178,20 +180,16 @@ button.log-in {
   margin: 0.2em;
 }
 
-.login-input {
-  border: solid 1px;
-  padding-bottom: 5px;
-}
-
 .login-input input {
   font-size: 2em;
   width: 12em;
+  margin-bottom: 0.25em;
+  padding: 0.25em;
 }
 
 .login-input input[type=checkbox] {
-  font-size: 2em;
-  width: unset;
-  margin-left: 0.2em;
+  width: 1em;
+  height: 1em;
 }
 
 .content {
@@ -273,6 +271,8 @@ button.log-in {
   flex-flow: row nowrap;
   align-items: center;
   font-size: 16px;
+  padding-right: 0.2em;
+  padding-left: 0.2em;
 }
 
 .person-list-heading button.new-user {
@@ -286,18 +286,31 @@ button.log-in {
 }
 
 .person-list-detail {
-  font-size: 12px;
+  font-size: 14px;
+}
+.person-list-detail input[type=text] {
+  font-size: 14px;
+}
+.person-list-detail select.member {
+  min-width: 170px;
+}
+
+span.control-value {
+  color: #000000;
 }
 
 .permission-actions {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  font-size: 12px;
 }
 
 .permission-contexts {
   display: flex;
   flex-direction: column;
+  color: #000000;
+  font-weight: normal;
 }
 
 .book-form {
@@ -670,7 +683,6 @@ input.chat-msg-search {
 }
 
 i.glyphicon-remove-sign.match-string {
-  margin-left: -4px;
   padding-right: 20px;
   font-size: 25px;
   color: slategray;
@@ -681,7 +693,6 @@ input.month-picker {
 }
 
 i.glyphicon-calendar.month-picker {
-  margin-left: -4px;
   font-size: 25px;
   color: slategray;
 }
@@ -813,6 +824,9 @@ form.chat-msg-footer {
   justify-content: flex-start;
   align-items: center;
 }
+.settings-section.borders {
+  border: solid 1px #337ab7;
+}
 
 .settings-section .setting-label {
   flex-grow: 0;
@@ -906,15 +920,23 @@ div.toolbar .tool.delete {
   width: 100%;
 }
 .h-box > label {
-  flex-basis: 6em;
+  flex-basis: auto;
 }
 .h-box > *:not(:first-child) {
   margin-left: 0.25em;
 }
+.h-box > *:not(:first-child).form-checkbox {
+  margin-right: 2em;
+  height: 3em;
+  width: 3em;
+}
 
-.h-box.borders,
-.v-box.borders {
-  border: solid 1px #000000;
+div.borders {
+  border: solid 1px #337ab7;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: ghostwhite;
+  margin: 0.25em 0 0.25em 0;
 }
 
 /*# sourceMappingURL=style.css.map */

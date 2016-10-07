@@ -21,7 +21,10 @@ var mgSchema = {
 		address: String,
 		phone: String,
 		email: String,
-		role: String,
+		role: {
+			type: Schema.ObjectId,
+			ref: 'Role'
+		},
 		permissions: [String]
 	}, {collection: 'persons'})
 			.plugin(deepPopulate, {}),
