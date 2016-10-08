@@ -57,12 +57,16 @@
 			 </div>
 			 <hr class="header">
 			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Member:</span>
-				 <span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
-			 </div>
-			 <div class="form-group">
 				 <span class="col-xs-3 popup-label">Room:</span>
 				 <span class="col-xs-9 popup-value">{{bookingSelected.room.displayName}}: {{bookingSelected.room.description}}</span>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Resident:</span>
+				 <span class="col-xs-9 popup-value">{{bookingSelected.resident.firstname + ' ' + bookingSelected.resident.lastname}}</span>
+			 </div>
+			 <div class="form-group">
+				 <span class="col-xs-3 popup-label">Member:</span>
+				 <span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
 			 </div>
 			 <div class="form-group">
 				 <span class="col-xs-3 popup-label">Arrive:</span>

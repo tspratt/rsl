@@ -8,6 +8,7 @@ angular.module('rsl')
 		$scope.canBook = (appData.loggedInUser.role !== 'demo');
 		$scope.bookMember = appData.loggedInUser.person.member;
 		$scope.bookMemberId = appData.loggedInUser.person.member._id;
+		$scope.persons = appData.persons;
 		$scope.selectedRoom = null;
 		$scope.isoToday = moment().toISOString().substr(0,10);
 		$scope.dtArrive = null;
@@ -85,10 +86,17 @@ angular.module('rsl')
 
 		$scope.$watch('bookMember', function (member, prevMember) {
 			if (member) {
+				$scope.resident = angular.copy(getPersonByMember($scope.persons,member));
 				$scope.selectedRoom = null;				//set these so they blank out immediately on member change
 				$scope.personsForMember = [];
 				getPersonsForMember(member._id);
 				getRooms();
+			}
+		});
+
+		$scope.$watch(function () {return appData.persons}, function (newValue) {
+			if (newValue) {
+				$scope.persons = newValue;
 			}
 		});
 
@@ -187,6 +195,17 @@ angular.module('rsl')
 					$scope[sName] = false;
 				}
 			}
+		}
+
+		function getPersonByMember (aPersons,member) {
+			var oPerson;
+			if (aPersons && member) {
+				oPerson =  aPersons.find(function (person) {
+					return person.member._id === member._id
+							&& person.memberrelationship === 'self';
+				});
+			}
+			return oPerson;
 		}
 
 		function checkBooking() {
@@ -371,6 +390,7 @@ angular.module('rsl')
 				$scope.booking = {};
 			}
 			$scope.booking.member = $scope.bookMember._id;
+			$scope.booking.resident = $scope.resident._id;
 			$scope.booking.room = $scope.selectedRoom._id;
 			$scope.booking.arrive = $scope.dtArrive;
 			$scope.booking.depart = $scope.dtDepart;

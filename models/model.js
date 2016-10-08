@@ -357,6 +357,7 @@ function listBookings(filterSpec, dateSpec, sortSpec, oFieldSpec, callback) {
 			.populate('who')
 			.deepPopulate('member.branch')
 			.populate('room')
+			.populate('resident')
 			.lean()
 			.exec(function (err, bookings) {
 				if (err) {

@@ -98,6 +98,7 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.persons = res.data.data;
+									appData.persons = $scope.persons;
 									buildDisplayList();
 								}
 								else {

@@ -56,6 +56,7 @@ angular.module('rsl')
                     appData.loggedInUser = res.data.data;
                     getMembers();
                     getPermissions();
+                    appData.getAllPersons();
                     $scope.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
@@ -116,6 +117,9 @@ angular.module('rsl')
               }
             });
       }
+
+
+
 /*
       function getRooms() {
         bookingData.getRooms(null, null, 'unit', null, null)

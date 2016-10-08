@@ -13,11 +13,17 @@
 		<div class="form-group">
 			<label class="control-label col-xs-2" for="selectMember">Member:</label>
 			<div class="col-xs-10">
-				<div class="col-xs-10">
-					<select id="selectMember"
-									ng-model="bookMember"
-									ng-options="member as member.llcname for member in members track by member._id"></select>
-				</div>
+				<select id="selectMember"
+								ng-model="bookMember"
+								ng-options="member as member.llcname for member in members track by member._id"></select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-xs-2" for="selectResident">Resident:</label>
+			<div class="col-xs-10">
+				<select id="selectResident"
+								ng-model="resident"
+								ng-options="person as person.firstname + ' ' + person.lastname for person in persons track by person._id"></select>
 			</div>
 		</div>
 
@@ -107,7 +113,7 @@
 			</div>
 			<label class="control-label col-xs-2">Room<br>Req:</label>
 			<div class="col-xs-4">
-				<div rn-stepper ng-model="roomRequestCount" min="0" max="15"></div>
+				<div rn-stepper ng-model="guestRoomRequestCount" min="0" max="15"></div>
 			</div>
 		</div>
 		<div class="form-group">
@@ -133,7 +139,7 @@
 				<label class="control-label col-xs-2" for="taNotes">Notes:</label>
 			</div>
 			<div class="col-xs-10">
-				<textarea id="taNotes" ng-value="note"></textarea>
+				<textarea id="taNotes" ng-model="note"></textarea>
 			</div>
 		</div>
 	</form>
