@@ -183,16 +183,19 @@ button.log-in {
 	margin: 0.2em;
 }
 
-.login-input input {
-	font-size: 2em;
-	width: 12em;
-	margin-bottom: 0.25em;
-	padding: 0.25em;
-}
-
-.login-input input[type=checkbox] {
-	width: 1em;
-	height: 1em;
+div.login-input {
+	overflow: hidden;
+	max-width: 25em;
+	&> input {
+		font-size: 2em;
+		width: 12em;
+		margin-bottom: 0.25em;
+		padding: 0.25em;
+	}
+	&> input[type=checkbox] {
+		width: 1em;
+		height: 1em;
+	}
 }
 
 .content {
@@ -716,6 +719,7 @@ textarea.chat-msg {
 	display: flex;
 	flex-flow: row nowrap;
 	border-radius: 5px;
+	border: $box-border;
 	background-color: white;
 	margin: 0 0 2px 0;
 	padding: 5px 0 0 0;
@@ -723,6 +727,7 @@ textarea.chat-msg {
 	color: black;
 }
 .row-chat-msg.read {
+	border: $box-border-alt;
 	background-color: ghostwhite;
 	transition: background-color 2s
 }

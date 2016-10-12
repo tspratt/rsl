@@ -40,6 +40,7 @@ angular.module('rsl')
 		$scope.bookingSelected = {};
 		$scope.bookingSelected.guestRoomConfirm = null;
 		$scope.bookingDetailShow = false;
+		$scope.guestBookingShow = false;
 		$scope.bookingMode = 'new';
 		$scope.initialData;
 		$scope.activestate = $state.$current.name;
@@ -433,6 +434,11 @@ angular.module('rsl')
 			else {
 				$state.go('book', {data: {mode: 'new', memberid: resMember.member._id, arrive: residence.dt}});
 			}
+		};
+
+		$scope.showGuestBooking = function (residence, resMember) {
+
+			$scope.guestBookingShow = ($scope.bookingSelected);
 
 		};
 

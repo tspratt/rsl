@@ -34,8 +34,11 @@
 							 ng-class="resMember.residenceType"
 							 ng-click="showBookingDetail(residence, resMember)" ng-attribute="">
 						<div class="res-day-section-content"
-								ng-if="resMember.residenceType.length>0">
-							<div class="room-req-count" ng-if="resMember.guestRoomRequestCount&&resMember.guestRoomRequestCount>0">{{resMember.guestRoomRequestCount}}</div>
+								 ng-if="resMember.residenceType.length>0">
+							<div class="room-req-count"
+									 ng-if="resMember.guestRoomRequestCount&&resMember.guestRoomRequestCount>0"
+									 ng-click="showGuestBooking(residence, resMember)">{{resMember.guestRoomRequestCount}}
+							</div>
 							<div class="who-count" ng-if="resMember.whoCount">{{resMember.whoCount}}</div>
 						</div>
 					</div>
@@ -43,72 +46,99 @@
 			</div>
 		</div>
 	</div>
- <div class="center-content">
-	 <div id="booking-detail" class="popup-large booking" ng-show="bookingDetailShow">
-		 <button class="button close" ng-click="bookingDetailClose('close', bookingSelected)"><i class="glyphicon glyphicon-remove"></i></button>
-		 <form class="form-horizontal book-form">
-			 <div class="popup-title">Booking detail</div>
-			 <div class="form-group">
-				 <div class="col-xs-10">
-					 <button class="label button" ng-click="bookingDetailClose('change', bookingSelected)">Change</button>
-					 <button class="label button" ng-click="bookingDetailClose('delete', bookingSelected)">Delete</button>
-					 <button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
-				 </div>
-			 </div>
-			 <hr class="header">
-			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Member:</span>
-				 <span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
-			 </div>
-			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Room:</span>
-				 <span class="col-xs-9 popup-value">{{bookingSelected.room.displayName}}: {{bookingSelected.room.description}}</span>
-			 </div>
-			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Arrive:</span>
-				 <span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.arrive)}}</span>
-			 </div>
-			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Depart:</span>
-				 <span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.depart)}}</span>
-			 </div>
-			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Who:</span>
-				 <div class="col-xs-9 popup-value">
-					 <span ng-repeat="person in bookingSelected.who">{{person.firstname}}&nbsp;</span>
-				 </div>
-			 </div>
-			 <div class="form-group">
-				 <span class="col-xs-3 popup-label">Guests:</span>
-				 <span class="col-xs-1 popup-value">{{bookingSelected.guestCount}}</span>
-				 <span class="col-xs-6 popup-value">Room Requests: {{bookingSelected.guestRoomRequestCount}}</span>
-			 </div>
-			 <div class="form-group" ng-if="bookingSelected.guestRoomRequestCount>0">
-				 <span class="col-xs-4 popup-label">Confirm Guest Room:</span>
-				 <div class="col-xs-8">
-					 <select class="popup-label"
-									 ng-model="bookingSelected.guestRoomConfirm"
-									 ng-options="room as room.unit + ': ' + room.description for room in rooms track by room._id">
-						 <option disabled value="">Please choose a room</option>
-					 </select>
-				 		<button class="label button" ng-click="confirmGuestBooking(bookingSelected)">Book Guest Room</button>
-				 </div>
+	<div class="center-content">
+		<div id="booking-detail" class="popup-large booking" ng-show="bookingDetailShow">
+			<button class="button close" ng-click="bookingDetailClose('close', bookingSelected)"><i
+					class="glyphicon glyphicon-remove"></i></button>
+			<form class="form-horizontal book-form">
+				<div class="popup-title">Booking detail</div>
+				<div class="form-group">
+					<div class="col-xs-10">
+						<button class="label button" ng-click="bookingDetailClose('change', bookingSelected)">Change</button>
+						<button class="label button" ng-click="bookingDetailClose('delete', bookingSelected)">Delete</button>
+						<button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
+					</div>
+				</div>
+				<hr class="header">
+				<div class="form-group">
+					<span class="col-xs-3 popup-label">Member:</span>
+					<span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
+				</div>
+				<div class="form-group">
+					<span class="col-xs-3 popup-label">Room:</span>
+					<span
+							class="col-xs-9 popup-value">{{bookingSelected.room.displayName}}: {{bookingSelected.room.description}}</span>
+				</div>
+				<div class="form-group">
+					<span class="col-xs-3 popup-label">Arrive:</span>
+					<span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.arrive)}}</span>
+				</div>
+				<div class="form-group">
+					<span class="col-xs-3 popup-label">Depart:</span>
+					<span class="col-xs-9 popup-value">{{getDateTimeLabel(bookingSelected.depart)}}</span>
+				</div>
+				<div class="form-group">
+					<span class="col-xs-3 popup-label">Who:</span>
+					<div class="col-xs-9 popup-value">
+						<span ng-repeat="person in bookingSelected.who">{{person.firstname}}&nbsp;</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<span class="col-xs-3 popup-label">Guests:</span>
+					<span class="col-xs-1 popup-value">{{bookingSelected.guestCount}}</span>
+					<span class="col-xs-6 popup-value">Room Requests: {{bookingSelected.guestRoomRequestCount}}</span>
+				</div>
+				<div class="form-group" ng-if="bookingSelected.guestRoomRequestCount>0">
+					<span class="col-xs-4 popup-label">Confirm Guest Room:</span>
+					<div class="col-xs-8">
+						<select class="popup-label"
+										ng-model="bookingSelected.guestRoomConfirm"
+										ng-options="room as room.unit + ': ' + room.description for room in rooms track by room._id">
+							<option disabled value="">Please choose a room</option>
+						</select>
+						<button class="label button" ng-click="confirmGuestBooking(bookingSelected)">Book Guest Room</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-2">
+						<label class="control-label col-xs-2" for="taNotes">Notes:</label>
+					</div>
+					<div class="col-xs-10">
+						<textarea id="taNotes" ng-model="bookingSelected.note" readonly></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div id="guest-booking" class="popup-large" ng-show="guestBookingShow">
+			<button class="button close" ng-click="bookingDetailClose('close', bookingSelected)"><i
+					class="glyphicon glyphicon-remove"></i></button>
+			<form class="form-horizontal book-form v-box">
+				<div class="popup-title">Guest Booking Request</div>
+				<hr class="header">
+				<div class="h-box">
+					<label class="popup-label">Responsible Member:</label>
+					<div class="popup-value">{{bookingSelected.member.llcname}}</div>
+				</div>
 
-			 </div>
-
-			 <div class="form-group">
-				 <div class="col-xs-2">
-					 <label class="control-label col-xs-2" for="taNotes">Notes:</label>
-				 </div>
-				 <div class="col-xs-10">
-					 <textarea id="taNotes" ng-model="bookingSelected.note" readonly></textarea>
-				 </div>
-			 </div>
-		 </form>
-
-
-	 </div>
- </div>
+				<div class="h-box">
+					<label class="popup-label">Guests:</label>
+					<div class="popup-value">{{bookingSelected.guestCount}}</div>
+					<div class="popup-value">Room Requests: {{bookingSelected.guestRoomRequestCount}}</div>
+				</div>
+				<div class="form-group" ng-if="bookingSelected.guestRoomRequestCount>0">
+					<span class="col-xs-4 popup-label">Confirm Guest Room:</span>
+					<div class="col-xs-8">
+						<select class="popup-label"
+										ng-model="bookingSelected.guestRoomConfirm"
+										ng-options="room as room.unit + ': ' + room.description for room in rooms track by room._id">
+							<option disabled value="">Please choose a room</option>
+						</select>
+						<button class="label button" ng-click="confirmGuestBooking(bookingSelected)">Book Guest Room</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
 
 </div>
