@@ -945,12 +945,12 @@ div.toolbar {
 	}
 }
 
-//.h-box,
-//.v-box {
-//	&.borders {
-//		border: $box-border;
-//	}
-//}
+.form-group .h-box {
+	justify-content: flex-start;
+}
+.h-box.left-align {
+	justify-content: flex-start;
+}
 
 div.borders {
 	border: $box-border;

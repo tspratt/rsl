@@ -56,6 +56,7 @@ angular.module('rsl')
                     appData.loggedInUser = res.data.data;
                     getMembers();
                     getPermissions();
+                    getAllPersons();
                     $scope.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
@@ -110,6 +111,19 @@ angular.module('rsl')
                   }
                 }
                 //getRooms();
+              }
+              else {
+                console.log('HTTP Error: ' + res.statusText);
+              }
+            });
+      }
+
+
+      function getAllPersons() {
+        PersonData.getPersons(null, null, null, null, null, null)
+            .then(function (res) {
+              if (res.status >= 200 && res.status < 300) {
+                appData.allPersons = res.data.data;
               }
               else {
                 console.log('HTTP Error: ' + res.statusText);

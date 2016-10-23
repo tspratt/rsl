@@ -936,6 +936,14 @@ div.toolbar .tool.delete {
   width: 3em;
 }
 
+.form-group .h-box {
+  justify-content: flex-start;
+}
+
+.h-box.left-align {
+  justify-content: flex-start;
+}
+
 div.borders {
   border: 1px solid #337ab7;
   border-radius: 10px;
