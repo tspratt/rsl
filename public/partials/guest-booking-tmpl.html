@@ -11,20 +11,23 @@
 
 		<div class="h-box">
 			<label class="popup-label">Guests:</label>
-			<div class="popup-value">{{bookingSelected.guestCount}}</div>
-			<div class="popup-value">Room Requests: {{bookingSelected.guestRoomRequestCount}}</div>
+			<div class="popup-value">Room Requests: {{bookingSelected.guestRoomRequests.length}}</div>
 		</div>
-		<div class="h-box" ng-repeat="grq in bookingSelected.guestRoomRequests">
-			<span class="popup-label">Confirm Guest Room:</span>
-
-			<div class="col-xs-8">
+		<div class="v-box borders" ng-repeat="grq in bookingSelected.guestRoomRequests">
+			<label class="popup-value">{{grq.personid}}</label>
+			<div class="h-box">
 				<select class="popup-label"
 								ng-model="grq.roomid"
 								ng-options="room as room.unit + ': ' + room.description for room in rooms track by room._id">
 					<option disabled value="">Please choose a room</option>
 				</select>
+				<button class="label button" ng-click="confirmGuestBooking(grq)">Book</button>
 			</div>
-			<button class="label button" ng-click="confirmGuestBooking(grq)">Book</button>
+			<div class="h-box">
+				<label class="popup-label">Note:</label>
+				<input type="text" class="popup-value full-width" ng-model="grq.note">
+			</div>
+
 		</div>
 	</form>
 </div>

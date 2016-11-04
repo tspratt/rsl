@@ -14,8 +14,6 @@ angular.module('rsl')
 				$scope.dtDepart = null;
 				$scope.booking.who = [];
 				$scope.guestRoomRequests = [];
-				$scope.guestCount = 0;
-				$scope.guestRoomRequestCount = 0;
 				$scope.note = '';
 
 				$scope.dtArriveMin = null;
@@ -66,8 +64,7 @@ angular.module('rsl')
 								$scope.dtDepart = moment($scope.initialData.booking.depart);
 								$scope.note = $scope.initialData.booking.note;
 								$scope.bookMemberId = $scope.initialData.booking.member._id;			//there will always be a memberid if we are launched from the booking schedule
-								$scope.guestCount = $scope.initialData.booking.guestCount;
-								$scope.guestRoomRequestCount = $scope.initialData.booking.guestRoomRequestCount;
+								$scope.guestRoomRequests = $scope.initialData.booking.guestRoomRequests;
 							}
 						}
 						else {
@@ -445,7 +442,7 @@ angular.module('rsl')
 					}
 				};
 
-				$scope.showGuestBooking = function (bookingId, event) {
+				$scope.showGuestBooking = function (bookingId, responMember) {
 					event.stopImmediatePropagation();
 					$scope.bookingSelected = getBookingById(bookingId);
 					if ($scope.bookingSelected) {
@@ -483,8 +480,6 @@ angular.module('rsl')
 					oGuestBooking.note = 'Guest room request confirmed by: ' + appData.loggedInUser.person.member.llcname;
 					oGuestBooking.who = [];
 					oGuestBooking.whoCount = guestRoomRequest.guestCount;
-					oGuestBooking.guestCount = 0;
-
 
 					bookingData.bookRoom('new', oGuestBooking)
 							.then(function (res) {
@@ -534,6 +529,7 @@ angular.module('rsl')
 				//
 				$scope.guestBookingClose = function (sMode, oBooking) {
 					$scope.guestBookingShow = false;
+					$scope.bookingDetailShow = false;
 					/*			switch (sMode) {
 					 case 'new':
 					 newBooking(oBooking);

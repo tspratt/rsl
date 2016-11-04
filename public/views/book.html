@@ -135,12 +135,16 @@
 
 
 		<div class="form-group h-box left-align">
-			<button class="label" ng-click="guestRequestDetail=!guestRequestDetail">Guest Room Req:</button>
+			<button class="label" ng-click="guestRequestDetail=!guestRequestDetail">Guest Room Requests:</button>
 			<label>{{guestRoomRequests.length}}</label>
-			<button class="plus"
-							ng-click="addGuestRequest(bookMember._id)"><span class="glyphicon glyphicon-plus"></span></button>
+
 		</div>
 		<div class="form-group expander" ng-show="guestRequestDetail">
+			<div class="form-group h-box">
+				<div class="full-width"></div>
+				<button class="plus"
+								ng-click="addGuestRequest(bookMember._id)"><span class="glyphicon glyphicon-plus"></span></button>
+			</div>
 			<div class="v-box" ng-repeat="grq in guestRoomRequests">
 				<div class="h-box">
 					<label class="popup-label">For:</label>
@@ -149,12 +153,15 @@
 									ng-options="person._id as person.firstname + ' ' + person.lastname for person in allPersons track by personid">
 						<option disabled value="">Please choose a person</option>
 					</select>
-					<label>Count:</label>
-					<div rn-stepper ng-model="grq.guestCount" min="0" max="15"></div>
+
+					<label class="popup-label">Count:</label>
+					<div class="popup-label" rn-stepper ng-model="grq.guestCount" min="0" max="15"></div>
 				</div>
 				<div class="h-box">
+					<label class="popup-label">Room:</label>
+					<label type="text" class="popup-value" ng-model="grq.roomid"></label>
 					<label class="popup-label">Note:</label>
-					<input type="text" ng-model="grq.note">
+					<input type="text" class="popup-value full-width" ng-model="grq.note">
 				</div>
 			</div>
 		</div>

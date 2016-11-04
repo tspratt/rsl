@@ -108,7 +108,7 @@ button:focus {
   color: #245580;
 }
 
-input[type="text"], input[type="password"] {
+div.login-input > input[type="text"], input[type="password"] {
   display: block;
 }
 
@@ -927,6 +927,9 @@ div.toolbar .tool.delete {
 .h-box > label {
   flex-basis: auto;
 }
+.h-box input[type=text].full-width {
+  width: 100%;
+}
 .h-box > *:not(:first-child) {
   margin-left: 0.25em;
 }
@@ -942,6 +945,17 @@ div.toolbar .tool.delete {
 
 .h-box.left-align {
   justify-content: flex-start;
+}
+
+.expander .h-box > label:first-child {
+  width: 2rem;
+}
+.expander .h-box .full-width {
+  width: 100%;
+}
+.expander .h-box .h-filler {
+  display: inline-block;
+  width: 100%;
 }
 
 div.borders {

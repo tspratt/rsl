@@ -111,7 +111,7 @@ button:focus {
 }
 
 
-input[type="text"], input[type="password"] {
+div.login-input > input[type="text"], input[type="password"] {
 	display: block;
 }
 
@@ -935,6 +935,11 @@ div.toolbar {
 	&> label {
 		flex-basis: auto;
 	}
+	& input[type=text] {
+		&.full-width {
+			width: 100%;
+		}
+	}
 	&> *:not(:first-child) {
 		margin-left: 0.25em;
 		&.form-checkbox {
@@ -950,6 +955,19 @@ div.toolbar {
 }
 .h-box.left-align {
 	justify-content: flex-start;
+}
+
+.expander .h-box {
+	&> label:first-child {
+		width: 2rem;
+	}
+	& .full-width {
+		width: 100%;
+	}
+	& .h-filler {
+		display: inline-block;
+		width: 100%;
+	}
 }
 
 div.borders {

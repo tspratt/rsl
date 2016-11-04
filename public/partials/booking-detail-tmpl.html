@@ -42,11 +42,10 @@
 				<textarea id="taNotes" ng-model="bookingSelected.note" readonly></textarea>
 			</div>
 		</div>
-		<div class="form-group">
-			<span class="col-xs-3 popup-label">Guests:</span>
-			<span class="col-xs-1 popup-value">{{bookingSelected.guestCount}}</span>
-			<span class="col-xs-6 popup-value">Room Requests: {{bookingSelected.guestRoomRequestCount}}</span>
+		<div class="h-box borders">
+			<label class="popup-label">Room Requests:</label> {{bookingSelected.guestRoomRequests.length}}</span>
+			<div class="h-filler"></div>
+			<button class="label button" ng-click="showGuestBooking(bookingSelected._id, $event)">Volunteer Guest Room</button>
 		</div>
-		<button class="label button" ng-click="showGuestBooking(bookingSelected, bookingSelected.member)">Volunteer Guest Room</button>
 	</form>
 </div>
