@@ -405,7 +405,7 @@ button.module-menu-item {
   width: 50px;
   min-width: 4.0em;
   font-size: 1.2em;
-  margin: 0.2em;
+  margin: 0;
 }
 
 button[disabled] {
