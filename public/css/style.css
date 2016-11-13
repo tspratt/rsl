@@ -153,10 +153,12 @@ hr.paginator {
   margin-bottom: 0.2em;
 }
 
-.header-link-bar {
-  position: absolute;
-  top: 0;
-  right: 20px;
+.header {
+  font-size: large;
+}
+
+.header-label {
+  font-family: "Bodoni MT Black", sans-serif;
 }
 
 .header-link {
@@ -243,17 +245,6 @@ div.login-input > input[type=checkbox] {
 .horiz-menu li:hover {
   color: rgba(0, 0, 0, 0.75);
   opacity: 0.60;
-}
-
-.header {
-  font-size: large;
-}
-
-.header-label {
-  font-family: "Bodoni MT Black", sans-serif;
-  position: relative;
-  top: 1.0em;
-  left: 10px;
 }
 
 .description {
