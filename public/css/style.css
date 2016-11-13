@@ -374,7 +374,7 @@ button.paginator:focus {
 
 div.module-menu {
   overflow: hidden;
-  height: 4.0em;
+  height: 3.0em;
   width: 100%;
   max-width: 400px;
   display: flex;
@@ -401,7 +401,7 @@ div.menu-buttons {
 }
 
 button.module-menu-item {
-  height: 3.0em;
+  height: 100%;
   width: 50px;
   min-width: 4.0em;
   font-size: 1.2em;
