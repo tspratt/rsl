@@ -55,6 +55,7 @@ angular.module('rsl')
 							if ($scope.initialData.mode === 'new') {
 								$scope.bookMemberId = $scope.initialData.memberid;			//there will always be a memberid if we are launched from the booking schedule
 								$scope.dtArrive = new Date($scope.initialData.arrive);
+								$scope.guestRoomRequests = [];
 							}
 							else if ($scope.initialData.mode === 'change') {
 								$scope.booking = $scope.initialData.booking;
@@ -174,6 +175,22 @@ angular.module('rsl')
 						collapseOthers('whoDetail');
 					}
 				});
+
+				$scope.getPersonById = function (personId) {
+					var oReturn;
+					for (var i = 0; i < $scope.allPersons.length; i++) {
+						if ($scope.allPersons[i]._id === personId) {
+							oReturn = $scope.allPersons[i];
+							break;
+						}
+					}
+					return oReturn;
+				};
+
+				$scope.getPersonNameById = function (personId) {
+					var oPerson = $scope.getPersonById(personId);
+					return oPerson.firstname + ' ' + oPerson.lastname;
+				};
 
 				$scope.getDateTimeLabel = function (momentDt) {
 					if (momentDt) {
@@ -409,7 +426,7 @@ angular.module('rsl')
 
 				$scope.addGuestRequest = function (memberId) {
 					$scope.guestRequestDetail = true;
-					$scope.guestRoomRequests.push({memberid: memberId, roomid: null, personid: null, guestCount: 1,note:''});
+					$scope.guestRoomRequests.push({memberid: memberId, roomid: null, personid: null, guestCount: 1,note:'x'});
 				};
 
 

@@ -100,13 +100,6 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-xs-2">Guests:</label>
-			<div class="col-xs-4">
-				<div rn-stepper ng-model="guestCount" min="0" max="15"></div>
-			</div>
-		</div>
-
-		<div class="form-group">
 			<div class="col-xs-12">
 				<button class="label" ng-click="whoDetail=!whoDetail">Who:</button>
 				<span class="book-who" ng-repeat="person in booking.who">{{person.firstname}}&nbsp;</span>
@@ -135,22 +128,22 @@
 
 
 		<div class="form-group h-box left-align">
-			<button class="label" ng-click="guestRequestDetail=!guestRequestDetail">Guest Room Requests:</button>
+			<button class="label" ng-click="guestRequestDetail=!guestRequestDetail">Guests:</button>
 			<label>{{guestRoomRequests.length}}</label>
 
 		</div>
 		<div class="form-group expander" ng-show="guestRequestDetail">
 			<div class="form-group h-box">
-				<div class="full-width"></div>
+				<div class="full-width">Room Requests:</div>
 				<button class="plus"
 								ng-click="addGuestRequest(bookMember._id)"><span class="glyphicon glyphicon-plus"></span></button>
 			</div>
 			<div class="v-box" ng-repeat="grq in guestRoomRequests">
 				<div class="h-box">
-					<label class="popup-label">For:</label>
+					<label class="popup-label">For: </label>
 					<select class="popup-label"
 									ng-model="grq.personid"
-									ng-options="person._id as person.firstname + ' ' + person.lastname for person in allPersons track by personid">
+									ng-options="person._id as person.firstname + ' ' + person.lastname for person in allPersons">
 						<option disabled value="">Please choose a person</option>
 					</select>
 
