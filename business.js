@@ -494,7 +494,7 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	var j = 0;
 
 	var oResidence;
-	var memberCur = {};
+	var roomCur = {};
 	fieldSpec = fieldSpec || {};																							//send an empty object if parameter not provided
 	model.listBookings(filterSpec, dateSpec, null, fieldSpec, function (err, aBookings) {
 		var oBooking;
@@ -524,7 +524,7 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 					firstDaySec = utils.getDaySection(dtArrive);
 					while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
 						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-						oResidence.members = new EmptyMembersArray();
+						oResidence.rooms = new EmptyRoomsArray();
 						aResidenceSchedule.push(oResidence);
 						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 					}
@@ -539,10 +539,11 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						else {
 							sResidenceType = 'resident';
 						}
-						memberCur = new ResidentMember(oBooking, sResidenceType);
+						roomCur = new ResidentRoom(oBooking, sResidenceType);
 						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-						oResidence.members = new EmptyMembersArray();
-						oResidence.members[oBooking.member.order] = memberCur;
+						oResidence.rooms = new EmptyRoomsArray();
+
+						oResidence.rooms[oBooking.room.order] = roomCur;
 						oResidence.guestRoomRequestCount = guestRoomRequestCount;
 						aResidenceSchedule.push(oResidence);
 
@@ -581,7 +582,8 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 
 						while (dCur.isBefore(dArrive) || (dCur.equals(dArrive) && idxDaySection < utils.getDaySection(dtArrive).index)) {
 							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-							oResidence.members = new EmptyMembersArray();
+							oResidence.rooms = new EmptyRoomsArray();
+
 							aResidenceSchedule.push(oResidence);
 
 
@@ -603,10 +605,10 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						else {
 							sResidenceType = 'resident';
 						}
-						memberCur = new ResidentMember(oBooking, sResidenceType);
+						roomCur = new ResidentRoom(oBooking, sResidenceType);
 
 						if (idxResidenceElement < aResidenceSchedule.length) {													//find an existing element
-							oResidenceElement.members[oBooking.member.order] = memberCur;
+							oResidenceElement.rooms[oBooking.room.order] = roomCur;
 							idxResidenceElement++;
 							if (aResidenceSchedule[idxResidenceElement]) {
 								idxDaySection = aResidenceSchedule[idxResidenceElement].daySection.index;
@@ -622,8 +624,9 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						}
 						else {																																	//need to start adding new residence elements
 							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-							oResidence.members = new EmptyMembersArray();
-							oResidence.members[oBooking.member.order] = memberCur;
+							oResidence.rooms = new EmptyRoomsArray();
+
+							oResidence.rooms[oBooking.room.order] = roomCur;
 							oResidence.guestRoomRequestCount = guestRoomRequestCount;
 							aResidenceSchedule.push(oResidence);
 
@@ -657,7 +660,8 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 			var dtNext = dCur.clone().add(2).days();
 			while (dCur.isBefore(dtNext)) {
 				oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-				oResidence.members = new EmptyMembersArray();
+				oResidence.rooms = new EmptyRoomsArray();
+
 				aResidenceSchedule.push(oResidence);
 
 
@@ -705,6 +709,7 @@ var DaySectionResidence = function (index, dt, daySection) {
 	// this.roomRequest = 0;
 };
 
+/*
 var EmptyMembersArray = function () {
 	var aMembers = [];
 	var aMemberData = [
@@ -774,13 +779,167 @@ var EmptyMembersArray = function () {
 	}
 	return aMembers;
 };
+*/
 
-var ResidentMember = function (oBooking, residenceType) {
+//TODO: make this function dynamic from DB.
+var EmptyRoomsArray = function () {
+	var aRooms = [];
+	var aRoomData = [
+		{room: {
+			"_id": "564b6721cd6016d444f89427",
+			"defaultmember": {"id": "563c2368bad73ad4191aed0b", "abr2": "TR"},
+			"order": 0,
+			"number": "11",
+			"unit": "A",
+			"description": "Corner, back, HCA",
+			"capacity": 2,
+			"expandable": 1,
+			"displayName": "Lakemont A11",
+			"images": [
+				"images/rooms/lakemonta11-1.jpg"
+			],
+			"member": {}
+		}},
+		{room:{
+			"_id": "564b6504a334a3844463d1dd",
+			"defaultmember": {"id": "563c2368bad73ad4191aed0a", "abr2": "CR"},
+			"order": 1,
+			"number": "22",
+			"unit": "A",
+			"description": "Corner, lake",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont A22",
+			"images": [
+				"images/rooms/lakemonta22-1.jpg"
+			]
+		}},
+		{room: {
+			"_id": "564b65b0ac59dc8844320d9d",
+			"defaultmember": {"id": "563c2368bad73ad4191aed08", "abr2": "AR"},
+			"order": 2,
+			"number": "23",
+			"unit": "A",
+			"description": "Corner, back",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont A23",
+			"images": [
+				"images/rooms/lakemonta23-1.jpg"
+			]
+		}},
+		{room: {
+			"_id": "564b64e46d33b1544559562b",
+			"defaultmember": {"id": "563c2368bad73ad4191aed0c", "abr2": "MR"},
+			"order": 3,
+			"number": "21",
+			"unit": "A",
+			"description": "Center, lake",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont A21",
+			"images": [
+				"images/rooms/lakemonta21-1.jpg"
+			]
+		}},
+		{room:{
+			"_id": "564b65ec80fba5103bfc4954",
+			"defaultmember": {"id": "563c2368bad73ad4191aed09", "abr2": "AE"},
+			"order": 4,
+			"number": "24",
+			"unit": "A",
+			"description": "Center, back",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont A24",
+			"images": [
+				"images/rooms/lakemonta24-1.jpg"
+			]
+		}},
+		{room:{
+			"_id": "564b61fd040132ec46e5cf79",
+			"defaultmember": {"id": "563c2368bad73ad4191aed11", "abr2": "TS"},
+			"order": 5,
+			"number": "21",
+			"unit": "B",
+			"description": "Center, lake",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont B21",
+			"images": [
+				"images/rooms/lakemontb21-1.jpg"
+			]
+		}},
+		{room:{
+			"_id": "564b67488011bbec3c2f2c8b",
+			"defaultmember": {"id": "563c2368bad73ad4191aed0e", "abr2": "JS"},
+			"order": 6,
+			"number": "11",
+			"unit": "B",
+			"description": "Corner, back, HCA",
+			"capacity": 2,
+			"expandable": 1,
+			"displayName": "Lakemont B11",
+			"images": [
+				"images/rooms/lakemontb11-1.jpg"
+			]
+		}},
+		{room:{
+			"_id": "564b653a26c164dc46485a07",
+			"defaultmember": {"id": "563c2368bad73ad4191aed0d", "abr2": "GS"},
+			"order": 7,
+			"number": "22",
+			"unit": "B",
+			"description": "Corner, lake",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont B22",
+			"images": [
+				"images/rooms/lakemontB22-1.jpg"
+			]
+		}},
+		{room: {
+			"_id": "564b656fc237cae83cedf336",
+			"defaultmember": {"id": "563c2368bad73ad4191aed10", "abr2": "MM"},
+			"order": 8,
+			"number": "23",
+			"unit": "B",
+			"description": "Corner, back",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont B23",
+			"images": [
+				"images/rooms/lakemontB23-1.jpg"
+			]
+		}},
+		{room: {
+			"_id": "564b661754257f1446c32aa3",
+			"defaultmember": {"id": "563c2368bad73ad4191aed0f", "abr2": "JG"},
+			"order": 9,
+			"number": "24",
+			"unit": "B",
+			"description": "Center, back",
+			"capacity": 2,
+			"expandable": 0,
+			"displayName": "Lakemont B24",
+			"images": [
+				"images/rooms/lakemontb24-1.jpg"
+			]
+		}}
+	];
+	for (var i = 0; i < aRoomData.length; i++) {
+		aRooms.push(new ResidentRoom(aRoomData[i]));
+	}
+	return aRooms;
+};
+
+
+var ResidentRoom = function (oBooking, residenceType) {
 	this.bookingid = oBooking._id;
-	this.member = (oBooking) ? oBooking.member : null;
+	this.room = (oBooking) ? oBooking.room : null;
 	this.residenceType = residenceType || '';
 	if (this.residenceType === 'arrive') {
-		this.guestRoomRequestCount = oBooking.guestRoomRequestCount;
+		this.guestRoomRequestCount = oBooking.guestRoomRequests.length;
 	}
 	if (this.residenceType === 'depart') {
 		this.whoCount = oBooking.whoCount;

@@ -76,6 +76,8 @@ var mgSchema = {
 	}, {collection: 'units'})
 			.plugin(deepPopulate, {}),
 	Room: new Schema({
+		defaultmember: {type: Schema.ObjectId, ref: 'Member'},
+		order: Number,
 		number: String,
 		unitid: Schema.ObjectId,
 		unit: String,
@@ -91,12 +93,21 @@ var mgSchema = {
 		room: {type: Schema.ObjectId, ref: 'Room'},
 		who: [{type: Schema.ObjectId, ref: 'Person'}],
 		whoCount: Number,
-		guestRoomRequests: [{memberid:Schema.ObjectId, roomid:Schema.ObjectId, personid:Schema.ObjectId, guestCount:Number, note:String}],
+		guestRoomRequests: [{type: Schema.ObjectId, ref: 'GuestBooking'}],
 		arrive: Date,
 		depart: Date,
-		note: String
+		note: String,
+		guestBooking: {type: Schema.ObjectId, ref: 'GuestBooking'},
 	}, {collection: 'bookings'})
 			.plugin(deepPopulate, {}),
+	GuestBooking: {
+		responsibleMember: {type: Schema.ObjectId, ref: 'Member'},
+		grantingMember: {type: Schema.ObjectId, ref: 'Member'},
+		room:{type: Schema.ObjectId, ref: 'Room'},
+		person: {type: Schema.ObjectId, ref: 'person'},
+		guestCount:Number,
+		note:String
+	},
 	Residence: new Schema({
 		index: Number,
 		dt: Date,
@@ -121,7 +132,8 @@ var mgSchema = {
 			{
 				residenceType: String,
 				bookingid: {type: Schema.ObjectId},
-				room: {type: Schema.ObjectId, ref: 'Room'}
+				room: {type: Schema.ObjectId, ref: 'Room'},
+				member: {type: Schema.ObjectId, ref: 'Member'}
 			}
 		]
 	}, {collection: 'residenceSchedule'})

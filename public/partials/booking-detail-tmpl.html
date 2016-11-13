@@ -42,7 +42,7 @@
 				<textarea id="taNotes" ng-model="bookingSelected.note" readonly></textarea>
 			</div>
 		</div>
-		<div class="h-box borders">
+		<div class="h-box borders" ng-if="bookingSelected.guestRoomRequests.length>0">
 			<label class="popup-label">Room Requests:</label> {{bookingSelected.guestRoomRequests.length}}</span>
 			<div class="h-filler"></div>
 			<button class="label button" ng-click="showGuestBooking(bookingSelected._id, $event)">Volunteer Guest Room</button>

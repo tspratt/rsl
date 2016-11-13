@@ -426,7 +426,8 @@ angular.module('rsl')
 
 				$scope.addGuestRequest = function (memberId) {
 					$scope.guestRequestDetail = true;
-					$scope.guestRoomRequests.push({memberid: memberId, roomid: null, personid: null, guestCount: 1,note:'x'});
+					var gb = new GuestBooking(memberId);
+					$scope.guestRoomRequests.push(gb);
 				};
 
 
@@ -448,14 +449,14 @@ angular.module('rsl')
 
 				//$scope.popoverTemplate = '';
 
-				$scope.showBookingDetail = function (residence, resMember, event) {
+				$scope.showBookingDetail = function (residence, resRoom, event) {
 					event.stopImmediatePropagation();
-					$scope.bookingSelected = getBookingById(resMember.bookingid);
+					$scope.bookingSelected = getBookingById(resRoom.bookingid);
 					if ($scope.bookingSelected) {
 						$scope.bookingDetailShow = true;
 					}
 					else {
-						$state.go('book', {data: {mode: 'new', memberid: resMember.member._id, arrive: residence.dt}});
+						$state.go('book', {data: {mode: 'new', memberid: resRoom.room.defaultmember, arrive: residence.dt}});
 					}
 				};
 
@@ -481,6 +482,7 @@ angular.module('rsl')
 				}
 
 				$scope.confirmGuestBooking = function (guestRoomRequest) {
+					$scope.guestBookingShow = false;
 					var oGuestBooking = {};
 					oGuestBooking.room = guestRoomRequest.roomid;
 					oGuestBooking.member = guestRoomRequest.memberid;
@@ -497,6 +499,7 @@ angular.module('rsl')
 					oGuestBooking.note = 'Guest room request confirmed by: ' + appData.loggedInUser.person.member.llcname;
 					oGuestBooking.who = [];
 					oGuestBooking.whoCount = guestRoomRequest.guestCount;
+					oGuestBooking.guest = guestRoomRequest;
 
 					bookingData.bookRoom('new', oGuestBooking)
 							.then(function (res) {
@@ -511,6 +514,15 @@ angular.module('rsl')
 								}
 							});
 				};
+
+				function GuestBooking (memberId) {
+					this.responsibleMember = memberId;
+					this.grantingMember = '';
+					this.room = '';
+					this.person = '';
+					this.guestCount = 1;
+					this.note = '';
+				}
 
 				$scope.bookingDetailClose = function (sMode, oBooking) {
 					$scope.bookingDetailShow = false;

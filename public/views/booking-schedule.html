@@ -10,8 +10,8 @@
 		</div>
 		<div class="col-xs-10">
 			<div class="residence-day-section header"
-					 ng-repeat="resMember in residenceSchedule[0].members track by resMember.member._id">
-				<span class="res-day-section-content">{{resMember.member.abr2}}</span>
+					 ng-repeat="resRoom in residenceSchedule[0].rooms">
+				<span class="res-day-section-content">{{resRoom.room.defaultmember.abr2}}</span>
 			</div>
 		</div>
 	</div>
@@ -30,16 +30,16 @@
 				</div>
 				<div class="col-xs-10">
 					<div class="residence-day-section"
-							 ng-repeat="resMember in residence.members track by $index"
-							 ng-class="resMember.residenceType"
-							 ng-click="showBookingDetail(residence, resMember, $event)" ng-attribute="">
-						<div class="res-day-section-content"
-								 ng-if="resMember.residenceType.length>0">
+							 ng-repeat="resRoom in residence.rooms track by $index"
+							 ng-class="resRoom.residenceType"
+							 ng-click="showBookingDetail(residence, resRoom, $event)" ng-attribute="">
+						<div class="res-day-section-content" ng-class="{'guest-booking':resRoom.isGuest}"
+								 ng-if="resRoom.residenceType.length>0">
 							<div class="room-req-count"
-									 ng-if="resMember.guestRoomRequestCount&&resMember.guestRoomRequestCount>0"
-									 ng-click="showGuestBooking(resMember.bookingid, $event)">{{resMember.guestRoomRequestCount}}
+									 ng-if="resRoom.guestRoomRequestCount&&resRoom.guestRoomRequestCount>0"
+									 ng-click="showGuestBooking(resRoom.bookingid, $event)">{{resRoom.guestRoomRequestCount}}
 							</div>
-							<div class="who-count" ng-if="resMember.whoCount">{{resMember.whoCount}}</div>
+							<div class="who-count" ng-if="resRoom.whoCount">{{resRoom.whoCount}}</div>
 						</div>
 					</div>
 				</div>
