@@ -345,12 +345,7 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.personsForMember = res.data.data;
-									for (var i = 0; i < $scope.personsForMember.length; i++) {
-										if ($scope.personsForMember[i].member._id === memberid) {
-											$scope.personsForMember[i].selected = true;
-											break;
-										}
-									}
+									//get history from local storage
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -384,7 +379,7 @@ angular.module('rsl')
 								$scope.dtArriveTimeConfig = appConstants.AFTERNOON;
 								break;
 						}
-						$scope.dtArrive = moment().day(aDays[0] + 7);
+						$scope.dtArrive = nextDayOfWeek(moment(), aDays[0]);
 						switch (aDays[1]) {
 							case 5:	//departing sat
 							case 6:
@@ -394,10 +389,17 @@ angular.module('rsl')
 								$scope.dtDepartTimeConfig = appConstants.AFTERNOON;
 								break;
 						}
-						$scope.dtDepart = $scope.dtArrive.clone().day(aDays[1] + 7);
+						$scope.dtDepart = nextDayOfWeek($scope.dtArrive, aDays[1]);
 					}
-
 				};
+
+				function nextDayOfWeek (mFrom, iDayOfWeek) {
+					var dtReturn = mFrom.clone();
+					while (dtReturn.weekday() !== iDayOfWeek){
+						dtReturn.add(1, 'day');
+					}
+					return dtReturn;
+				}
 
 				$scope.bookRoom = function () {
 					if ($scope.bookingMode === 'new') {
