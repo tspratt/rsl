@@ -284,6 +284,14 @@ angular.module('rsl')
 							});
 				}
 
+				$scope.getResDaySecClass = function (resRoom) {
+					var sReturn = resRoom.residenceType;
+					if (resRoom.isGuest) {
+						sReturn += ' guest';
+					}
+					return sReturn;
+				};
+
 				function getRooms() {
 					bookingData.getRooms(null, null, 'unit', null, null)
 							.then(function (res) {
@@ -484,28 +492,47 @@ angular.module('rsl')
 				$scope.confirmGuestBooking = function (guestRoomRequest) {
 					$scope.guestBookingShow = false;
 					var oGuestBooking = {};
-					oGuestBooking.room = guestRoomRequest.roomid;
-					oGuestBooking.member = guestRoomRequest.memberid;
+					oGuestBooking.room = guestRoomRequest.roomId;
+					oGuestBooking.member = $scope.bookMember._id;
+					guestRoomRequest.grantingMemberId = $scope.bookMember._id;
 
+					//update the requesting booking
+					var guestRoomRequestCount = 0;
 					for (var i = 0; i < $scope.bookingSelected.guestRoomRequests.length; i++) {
 						var grq = $scope.bookingSelected.guestRoomRequests[i];
-						if (grq.roomid === oGuestBooking.room) {
-							$scope.bookingSelected.guestRoomRequests.splice(i, 1);
+						if (grq.roomId === guestRoomRequest.roomId) {
+							$scope.bookingSelected.guestRoomRequests[i].roomId = guestRoomRequest.roomId;
+						}
+						else {
+							if ($scope.bookingSelected.guestRoomRequests[i].roomId.length === 0) {
+								guestRoomRequestCount ++;
+							}
 						}
 					}
+					$scope.bookingSelected.guestRoomRequestCount = guestRoomRequestCount;
+					bookingData.bookRoom('change', $scope.bookingSelected)
+							.then(function (res) {
+								if (res.status >= 200 && res.status < 300) {
+									console.log('booking updated');
+									//any need to wait here?
+								}
+								else {
+									console.log('HTTP Error: ' + res.statusText);
+								}
+							});
+
 
 					oGuestBooking.arrive = $scope.bookingSelected.arrive;
 					oGuestBooking.depart = $scope.bookingSelected.depart;
-					oGuestBooking.note = 'Guest room request confirmed by: ' + appData.loggedInUser.person.member.llcname;
+					oGuestBooking.note = guestRoomRequest.note;
 					oGuestBooking.who = [];
 					oGuestBooking.whoCount = guestRoomRequest.guestCount;
-					oGuestBooking.guest = guestRoomRequest;
+					oGuestBooking.guestPersonId = guestRoomRequest.personId;
 
 					bookingData.bookRoom('new', oGuestBooking)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									//update selectedbooking
-
 									getBookings();
 									getResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
 								}
@@ -516,10 +543,10 @@ angular.module('rsl')
 				};
 
 				function GuestBooking (memberId) {
-					this.responsibleMember = memberId;
-					this.grantingMember = '';
-					this.room = '';
-					this.person = '';
+					this.responsibleMemberId = memberId;
+					this.grantingMemberId = '';
+					this.roomId = '';
+					this.personId = '';
 					this.guestCount = 1;
 					this.note = '';
 				}
@@ -542,6 +569,7 @@ angular.module('rsl')
 
 				$scope.deleteBooking = function (oBooking) {
 					$scope.bookings = [];
+					//if guest booking, we need to update the parent record.
 					bookingData.deleteBooking(oBooking._id)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {

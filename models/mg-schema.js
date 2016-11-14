@@ -93,11 +93,19 @@ var mgSchema = {
 		room: {type: Schema.ObjectId, ref: 'Room'},
 		who: [{type: Schema.ObjectId, ref: 'Person'}],
 		whoCount: Number,
-		guestRoomRequests: [{type: Schema.ObjectId, ref: 'GuestBooking'}],
+		guestRoomRequests: [
+				{responsibleMemberId: String,
+					grantingMemberId: String,
+					roomId: String,
+					personId: String,
+					guestCount:Number,
+					note:String}
+				],
+		guestRoomRequestCount: Number,
 		arrive: Date,
 		depart: Date,
 		note: String,
-		guestBooking: {type: Schema.ObjectId, ref: 'GuestBooking'},
+		guestPersonId: String,
 	}, {collection: 'bookings'})
 			.plugin(deepPopulate, {}),
 	GuestBooking: {

@@ -16,16 +16,16 @@
 		<div class="v-box borders" ng-repeat="grq in bookingSelected.guestRoomRequests">
 
 			<div class="h-box">
-				<label class="popup-value">For: {{getPersonNameById(grq.personid)}}</label>
+				<label class="popup-value">For: {{getPersonNameById(grq.personId)}}</label>
 				<select class="popup-label"
-								ng-model="grq.roomid"
-								ng-options="room as room.unit + ': ' + room.description for room in rooms track by room._id">
+								ng-model="grq.roomId"
+								ng-options="room._id as room.unit + ': ' + room.description for room in rooms track by room._id">
 					<option disabled value="">Please choose a room</option>
 				</select>
 
 			</div>
 			<div class="h-box">
-				<label class="popup-label">Booking by: {{bookMember.llcname}}</label>
+				<label class="popup-label">Granted by: {{bookMember.llcname}}</label>
 				<button class="label button" ng-click="confirmGuestBooking(grq)">Book</button>
 			</div>
 			<div class="h-box">

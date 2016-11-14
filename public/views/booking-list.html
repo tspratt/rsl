@@ -7,7 +7,7 @@
 			<table>
 				<tr  ng-repeat="booking in bookings" class="booking-list-item">
 					<td class="member">{{booking.member.llcname}}</td>
-					<td class="room">Unit: {{booking.room.unit}}<br>{{booking.room.description}}</td>
+					<td class="room" ng-class="{guest:booking.guestPersonId.length>0}">Unit: {{booking.room.unit}}<br>{{booking.room.description}}</td>
 					<td class="date">{{booking.arrive | date: 'MM/dd/yy'}}<br>{{booking.arrive | date: 'HH:mm'}}</td>
 					<td class="date">{{booking.depart | date: 'MM/dd/yy'}}<br>{{booking.depart | date: 'HH:mm'}}</td>
 					<td><button ng-click="deleteBooking(booking)"><i class="glyphicon glyphicon-remove booking"></i> </button></td>

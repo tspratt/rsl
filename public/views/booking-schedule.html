@@ -31,9 +31,9 @@
 				<div class="col-xs-10">
 					<div class="residence-day-section"
 							 ng-repeat="resRoom in residence.rooms track by $index"
-							 ng-class="resRoom.residenceType"
-							 ng-click="showBookingDetail(residence, resRoom, $event)" ng-attribute="">
-						<div class="res-day-section-content" ng-class="{'guest-booking':resRoom.isGuest}"
+							 ng-class="getResDaySecClass(resRoom)"
+							 ng-click="showBookingDetail(residence, resRoom, $event)">
+						<div class="res-day-section-content"
 								 ng-if="resRoom.residenceType.length>0">
 							<div class="room-req-count"
 									 ng-if="resRoom.guestRoomRequestCount&&resRoom.guestRoomRequestCount>0"

@@ -10,15 +10,26 @@
 				<button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
 			</div>
 		</div>
-		<hr class="header">
-		<div class="form-group">
-			<span class="col-xs-3 popup-label">Member:</span>
-			<span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
+		<hr class="header" ng-class="{guest: bookingSelected.guestPersonId.length>0}">
+
+		<div class="form-group" ng-if="bookingSelected.guestPersonId.length>0">
+			<span class="col-xs-3 popup-label guest">Guest:</span>
+			<span
+					class="col-xs-9 popup-value">{{getPersonNameById(bookingSelected.guestPersonId)}}</span>
 		</div>
 		<div class="form-group">
 			<span class="col-xs-3 popup-label">Room:</span>
 			<span
 					class="col-xs-9 popup-value">{{bookingSelected.room.displayName}}: {{bookingSelected.room.description}}</span>
+		</div>
+		<div class="form-group" ng-if="bookingSelected.guestPersonId.length>0">
+			<span class="col-xs-3 popup-label">Grantor:</span>
+			<span
+					class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
+		</div>
+		<div class="form-group" ng-if="bookingSelected.guestPersonId.length===0">
+			<span class="col-xs-3 popup-label">Member:</span>
+			<span class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
 		</div>
 		<div class="form-group">
 			<span class="col-xs-3 popup-label">Arrive:</span>

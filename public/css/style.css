@@ -138,11 +138,14 @@ a {
 
 hr.header {
   width: 100%;
-  color: rgba(0, 0, 0, 0.75);
   opacity: 0.60;
   border: 2px solid darkslateblue;
   margin-top: 0.2em;
   margin-bottom: 0.2em;
+}
+hr.header.guest {
+  opacity: 1.0;
+  border: 2px solid yellow;
 }
 
 hr.paginator {
@@ -528,6 +531,10 @@ button.plus {
   background: linear-gradient(to right, steelblue, lightgray, steelblue);
   opacity: 1;
 }
+.resident.guest {
+  border-left: dashed 2px yellow;
+  border-right: dashed 2px yellow;
+}
 
 .depart {
   border-top: none;
@@ -564,12 +571,10 @@ button.plus {
 }
 
 .room-req-count {
-  color: red;
+  color: black;
   font-weight: bold;
-  background-color: white;
   padding: 1px;
-  margin: 2px;
-  border: 1px solid white;
+  border: 2px solid yellow;
   border-radius: 5px;
 }
 
@@ -603,6 +608,9 @@ button.plus {
   font-size: 14px;
   font-weight: normal;
 }
+.popup-label.guest {
+  color: yellow;
+}
 
 .popup-value {
   font-size: 14px;
@@ -623,7 +631,6 @@ button.plus {
 .booking-list {
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
   overflow-x: hidden;
   font-size: 12px;
   font-weight: normal;
@@ -647,6 +654,9 @@ button.plus {
 .booking-list-item .room {
   width: 25%;
   text-overflow: ellipsis;
+}
+.booking-list-item .room.guest {
+  background-color: yellow;
 }
 
 .booking-list-item .date {
