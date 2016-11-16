@@ -507,20 +507,19 @@ button.plus {
 	display: block;
 	float: left;
 	height: 24px;
-	width: 26px;
+	width: 25px;
 	margin-left: 2px;
 	background-color: white;
 	opacity: 0.2;
 	overflow: hidden;
 	text-align: center;
-}
-
-.residence-day-section.header {
-	border: none;
-	background-color: unset;
-	opacity: 1;
-	font-size: 12px;
-	font-weight: bold;
+	&.header {
+		border: none;
+		background-color: unset;
+		opacity: 1;
+		font-size: 12px;
+		font-weight: bold;
+	}
 }
 
 .arrive {
