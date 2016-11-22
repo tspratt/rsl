@@ -4,11 +4,10 @@
 	<form class="form-horizontal book-form">
 		<div class="popup-title">Booking detail</div>
 		<div class="form-group">
-			<div class="col-xs-10">
-				<button class="label button" ng-click="bookingDetailClose('change', bookingSelected)">Change</button>
-				<button class="label button" ng-click="bookingDetailClose('delete', bookingSelected)">Delete</button>
-				<button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
-			</div>
+			<button class="label button" ng-click="bookingDetailClose('change', bookingSelected)">Change</button>
+			<button class="label button" ng-click="bookingDetailClose('delete', bookingSelected)">Delete</button>
+			<button class="label button" ng-click="bookingDetailClose('new', bookingSelected)">New</button>
+			<button class="button" style="width: 30px" ng-click="rebuildResidenceSchedule()">Rz</button>
 		</div>
 		<hr class="header" ng-class="{guest: bookingSelected.guestPersonId.length>0}">
 
@@ -22,8 +21,9 @@
 			<span
 					class="col-xs-9 popup-value">{{bookingSelected.room.displayName}}: {{bookingSelected.room.description}}</span>
 		</div>
-		<div class="form-group" ng-if="bookingSelected.guestPersonId.length>0">
-			<span class="col-xs-3 popup-label">Grantor:</span>
+		<div class="form-group">
+			<span class="col-xs-3 popup-label" ng-if="bookingSelected.guestPersonId.length>0">Grantor:</span>
+			<span class="col-xs-3 popup-label" ng-if="!bookingSelected.guestPersonId || bookingSelected.guestPersonId.length===0">Member:</span>
 			<span
 					class="col-xs-9 popup-value">{{bookingSelected.member.llcname}}</span>
 		</div>

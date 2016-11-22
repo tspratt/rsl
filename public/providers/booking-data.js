@@ -20,14 +20,25 @@ angular.module('rsl')
 
 			bookingData.getResidenceSchedule = function (oQuerySpec, oDateSpec, oFieldspec) {
 				var oQueryParams = {querySpec: oQuerySpec, dateSpec: oDateSpec, fieldSpec: null};
-
 				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'residence-schedule',
 						{params : oQueryParams})
 						.then(function (res) {
 							return res;
 						})
 						.catch(function (res) {
-							console.error('getBookings', res.status, res.data);
+							return res;
+						});
+				return promise;
+			};
+
+			bookingData.rebuildResidenceSchedule = function (oQuerySpec, oDateSpec, oFieldspec) {
+				var oQueryParams = {querySpec: oQuerySpec, dateSpec: oDateSpec, fieldSpec: null};
+				var promise = $http.get(envConfig.SERVICE_URL_BASE + 'rebuild-residence-schedule',
+						{params : oQueryParams})
+						.then(function (res) {
+							return res;
+						})
+						.catch(function (res) {
 							return res;
 						});
 				return promise;

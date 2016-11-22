@@ -93,7 +93,17 @@ angular.module('rsl')
         });
 
       $scope.goView = function (state, oParams) {
-        $state.go(state, oParams);
+        var forceReload = false;
+        if (state === $scope.activeState) {
+          forceReload = true;
+          if (oParams) {
+            oParams.rebuildSched = true;
+          }
+          else {
+            oParams = {rebuildSched: true}
+          }
+        }
+        $state.go(state, oParams, {relaod: forceReload});
       };
 
       function getMembers() {

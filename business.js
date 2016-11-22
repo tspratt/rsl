@@ -978,6 +978,7 @@ exports.updateBooking = updateBooking;
 exports.deleteBooking = deleteBooking;
 exports.listBookings = listBookings;
 exports.getResidenceSchedule = getResidenceSchedule;
+exports.rebuildResidenceSchedule = rebuildResidenceSchedule;
 //exports.insertCollection = insertCollection;
 exports.checkBookingOverlap = checkBookingOverlap;
 

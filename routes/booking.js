@@ -138,6 +138,12 @@ router.get('/residence-schedule', function (req, res, next) {
 	})
 });
 
+router.get('/rebuild-residence-schedule', function (req, res, next) {
+	business.rebuildResidenceSchedule(null, null, null, function (err, statusResponse) {
+		res.send(statusResponse);
+	})
+});
+
 router.get('/check-booking-overlap', function (req, res, next) {
     var roomId = req.query.roomid;
 	var dtArrive = moment(req.query.arrive, 'YYYY-MM-DDTHH:mm:ss.SSSZ').toDate();    //"2016-08-19T21:59:00.000Z"

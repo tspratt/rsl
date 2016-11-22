@@ -34,7 +34,7 @@
 			<label class="control-label col-xs-2">Detail Book:</label>
 			<div class="col-xs-10">
 				<button class="label"
-								ng-disabled="bookingIncomplete || !canBook"
+								ng-disabled="!canBook"
 						ng-click="bookRoom()"><span ng-class="{blink: !bookingIncomplete && canBook}">Click when ready to {{((bookingMode==='new')?'book':'update')}}</span></button>
 			</div>
 		</div>
@@ -120,7 +120,7 @@
 				<label class="control-label col-xs-2" for="taNotes">Notes:</label>
 			</div>
 			<div class="col-xs-10">
-				<textarea id="taNotes" ng-value="note"></textarea>
+				<textarea id="taNotes" ng-model="note"></textarea>
 			</div>
 		</div>
 

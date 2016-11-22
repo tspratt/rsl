@@ -515,8 +515,8 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-				it('should return an array of residence records', function (done) {
-					business.getResidenceSchedule(null, null, null,
+				it.only('should generate and return an array of residence records', function (done) {
+					business.rebuildResidenceSchedule(null, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;

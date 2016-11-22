@@ -74,7 +74,13 @@ angular.module('rsl')
 						}
 					}
 					else if ($state.$current.name === 'booking-schedule') {
-						getResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
+						if ($stateParams.forceRebuild) {
+							rebuildResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
+						}
+						else {
+							getResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
+						}
+
 					}
 
 					if ($scope.members.length === 0) {
@@ -281,6 +287,20 @@ angular.module('rsl')
 									console.log('HTTP Error: ' + res.statusText);
 								}
 
+							});
+				}
+
+				$scope.rebuildResidenceSchedule = function () {
+					rebuildResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
+					$scope.bookingDetailShow = false;
+				};
+
+				function rebuildResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec) {
+					$scope.residenceSchedule = null;
+					$scope.selectedId = '';
+					bookingData.rebuildResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec)
+							.then(function (res) {
+								getResidenceSchedule(oQuerySpec, oDateSpec, oFieldSpec);
 							});
 				}
 
