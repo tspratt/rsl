@@ -147,16 +147,14 @@ angular.module('rsl')
 					}
 				});
 
-				$scope.$watch('personsForMember', function (newValue) {
+				$scope.updateWho = function () {
 					$scope.booking.who = [];
 					for (var i = 0; i < $scope.personsForMember.length; i++) {
 						if ($scope.personsForMember[i].selected) {
 							$scope.booking.who.push($scope.personsForMember[i]);
 						}
 					}
-					$scope.whoCount = $scope.personsForMember.length;
-					// checkBooking();
-				}, true);
+				};
 
 				$scope.$watch('arriveDetail', function (newValue) {
 					if (newValue === true) {
@@ -365,7 +363,19 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.personsForMember = res.data.data;
-									//get history from local storage
+									if ($scope.booking && $scope.booking.who.length > 0) {
+										var oPerson;
+										var oWho;
+										for (var i = 0; i < $scope.personsForMember.length; i++) {
+											oPerson = $scope.personsForMember[i];
+											oWho = $scope.booking.who.find(function(who){
+												return (who._id === oPerson._id)});
+											if (oWho) {
+												oPerson.selected = true;
+											}
+										}
+									}
+
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);

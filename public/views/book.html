@@ -100,14 +100,16 @@
 		<div class="form-group">
 			<div class="col-xs-12">
 				<button class="label" ng-click="whoDetail=!whoDetail">Who:</button>
-				<span class="book-who" ng-repeat="person in booking.who">{{person.firstname}}&nbsp;</span>
+				<span class="book-who" ng-repeat="who in booking.who">{{who.firstname}}&nbsp;</span>
 			</div>
 		</div>
 		<div class="form-group expander" ng-show="whoDetail">
 			<div class="col-xs-12">
 				<label class="btn btn-primary" style="margin:0.2em"
 							 ng-repeat="person in personsForMember"
-							 ng-model="person.selected" uib-btn-checkbox>{{person.firstname}}</label>
+							 ng-model="person.selected"
+							 ng-click="updateWho()"
+							 uib-btn-checkbox>{{person.firstname}}</label>
 				<button class="plus"
 								ng-click="addingPerson=true"><span class="glyphicon glyphicon-plus"></span></button>
 			</div>
