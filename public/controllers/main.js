@@ -1,13 +1,12 @@
 angular.module('rsl')
-  .controller('MainCtrl', ['$rootScope','$scope', '$state', '$localStorage', 'appData', 'alertService', 'PersonData',
-    function ($rootScope, $scope, $state, $localStorage, appData, alertService, PersonData) {
+  .controller('MainCtrl', ['$rootScope','$scope', '$state', 'appData', 'alertService', 'PersonData',
+    function ($rootScope, $scope, $state, appData, alertService, PersonData) {
       $scope.vm = this;
       $scope.activeState = 'sign-in';
       $scope.isLoggedIn = false;
       $scope.vm.username = '';    //'Tracy';
       $scope.vm.password = '';    //'gabboob';
       $scope.vm.rememberMe = true;
-      $scope.storage = $localStorage;
       $scope.isFormValid = false;
       $scope.showLogo = true;
       $scope.loggedInUser = {};
@@ -15,11 +14,13 @@ angular.module('rsl')
       $scope.systemMessage = '';
       $scope.vm.permsMaster = [];
 
+      appData.loadPreferences();
+
       $scope.$watch('vm.rememberMe', function (newValue) {
-        $scope.storage.rememberMe = $scope.vm.rememberMe;
+        appData.setPreference('rememberMe', $scope.vm.rememberMe);
         if ($scope.vm.rememberMe === false) {
-          $scope.storage.username = '';
-          $scope.storage.password = '';
+          appData.preferences.username = '';
+          appData.preferences.password = '';
         }
       });
 
@@ -46,8 +47,8 @@ angular.module('rsl')
         }
         else {
           if ($scope.vm.rememberMe) {
-            $scope.storage.username = $scope.vm.username;
-            $scope.storage.password = $scope.vm.password;
+            appData.setPreference('username', $scope.vm.username);
+            appData.setPreference('password', $scope.vm.password);
           }
           PersonData.loginUser($scope.vm.username, $scope.vm.password)
               .then(function (res) {
@@ -203,13 +204,19 @@ angular.module('rsl')
 
       /****  Initilaize **/
       getRoles();
-      $scope.vm.rememberMe = $scope.storage.rememberMe;
+      $scope.vm.rememberMe = appData.preferences.rememberMe;
       if ($scope.vm.rememberMe) {
-        $scope.vm.username = $scope.storage.username;
-        $scope.vm.password = $scope.storage.password;
+        $scope.vm.username = appData.preferences.username;
+        $scope.vm.password = appData.preferences.password;
+        $scope.validateForm();
       }
 
-      $scope.validateForm();
+      if ($scope.vm.rememberMe && appData.getPreference('defaultPrevState')) {
+        var sPrevState = appData.getPreference('prevState');
+        if (sPrevState &&sPrevState.length > 0) {
+          $scope.logIn(appData.getPreference('prevState'))
+        }
+      }
 
     }])
     .directive('menuNav', function () {

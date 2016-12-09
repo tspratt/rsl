@@ -65,7 +65,7 @@ angular
 						controller: 'personCtrl'
 					})
 		})
-		.run(['$rootScope', '$state', function ($rootScope, $state) {
+		.run(['$rootScope', '$state', 'appData', function ($rootScope, $state, appData) {
 			$rootScope.$state = $state;
 
 			$rootScope.$on("$locationChangeStart", function (event, next, current) {
@@ -78,6 +78,12 @@ angular
 				else {
 					$state.go('log-in');
 				}
+			});
+			$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+				if (toState.name !== 'log-in') {
+					appData.setPreference('prevState', toState.name);
+				}
+
 			});
 
 		}])

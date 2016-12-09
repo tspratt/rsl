@@ -29,6 +29,19 @@
                 ng-click="updateSelf(vm.self)">Save Changes
         </button>
       </div>
+
+      <div class="v-box borders">
+        <span class="setting-label">Preferences</span>
+        <div>
+          <input type="checkbox" ng-model="vm.rememberMe"> Remember me on this device
+        </div>
+        <div >
+          <input type="checkbox"
+                 ng-model="vm.defaultPrevState"
+                 ng-click="vm.setPreference('defaultPrevState')">
+          Open previous view on start
+        </div>
+      </div>
     </div>
 
   </div>

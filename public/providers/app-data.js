@@ -1,6 +1,7 @@
 'use strict';
 angular.module('rsl')
-  .factory('appData', ['$http', 'envConfig', function ($http, envConfig) {
+  .factory('appData', ['$http', '$localStorage', 'envConfig', function ($http, $localStorage, envConfig) {
+    var storage = $localStorage;
     var appData = {};
 
     appData.loggedInUser = {};
@@ -19,6 +20,22 @@ angular.module('rsl')
         sReturn = 'afternoon';
       }
       return sReturn;
+    };
+
+    appData.loadPreferences = function () {
+      for (var preference in storage) {
+        if (storage.hasOwnProperty(preference) && typeof storage[preference] !== 'function') {
+          appData.preferences[preference] = storage[preference];
+        }
+      }
+    };
+    appData.preferences = {rememberMe:false, username:'', password:'', defaultPrevState:true, prevState:''};
+    appData.setPreference = function (sPreferenceName, value) {
+      appData.preferences[sPreferenceName] = value;
+      storage[sPreferenceName] = value;
+    };
+    appData.getPreference = function (sPreferenceName) {
+      return appData.preferences[sPreferenceName] || '';
     };
 
     return appData;

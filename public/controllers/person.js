@@ -185,6 +185,10 @@ angular.module('rsl')
 							});
 				};
 
+				$scope.vm.setPreference = function(sPrefName,value) {
+					appData.setPreference(sPrefName, value);
+				};
+
 				initModule();
 
 			}]);
