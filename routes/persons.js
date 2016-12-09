@@ -10,7 +10,7 @@ router.get('/isAlive', function (req, res, next) {
   });
 });
 
-router.get('/persons', function (req, res, next) {
+router.get('/persons', business.authenticate, function (req, res, next) {
   var sQuery = req.query.query;
 	var oQuery = (sQuery)? JSON.parse(sQuery):{};
 	var filterSpec = null;

@@ -7,12 +7,18 @@ var utils = require('./lib/utils');
 var model = require('./models/model');
 var appConstants = require('./lib/appConstants');
 require('datejs');														//extends the native Date object
+var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 function isAlive(callback) {
 	var oData = {};
 	var statusResponse = new StatusResponse('success', 'isAlive', '', 'business', oData);
 	callback(null, statusResponse);
 
+}
+
+function authenticate (req, res,next) {
+	var sToken = req.headers.authorization;
+	next();
 }
 
 function loginUser(userid, password, callback) {
@@ -29,6 +35,8 @@ function loginUser(userid, password, callback) {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
 					delete user.passwordHash;                                           //remove these from the response
 					delete user.salt;
+					var token = jwt.sign({foo:'bar'}, 'gabboob');
+					user.token = token;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
 				}
 				else {
@@ -958,6 +966,7 @@ function insertCollection(sCollection, callback) {
 }
 
 exports.isAlive = isAlive;
+exports.authenticate = authenticate;
 exports.loginUser = loginUser;
 exports.setPassword = setPassword;
 exports.resetPassword = resetPassword;

@@ -1,6 +1,6 @@
 angular.module('rsl')
-  .controller('MainCtrl', ['$rootScope','$scope', '$state', 'appData', 'alertService', 'PersonData',
-    function ($rootScope, $scope, $state, appData, alertService, PersonData) {
+  .controller('MainCtrl', ['$rootScope','$scope', '$state', '$http', 'appData', 'alertService', 'PersonData',
+    function ($rootScope, $scope, $state, $http, appData, alertService, PersonData) {
       $scope.vm = this;
       $scope.activeState = 'sign-in';
       $scope.isLoggedIn = false;
@@ -55,6 +55,7 @@ angular.module('rsl')
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
+                    $http.defaults.headers.common.Authorization = appData.loggedInUser.token;
                     getMembers();
                     getPermissions();
                     getAllPersons();
