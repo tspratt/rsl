@@ -29,7 +29,7 @@ angular.module('rsl')
         }
       }
     };
-    appData.preferences = {rememberMe:false, username:'', password:'', defaultPrevState:true, prevState:''};
+    appData.preferences = {rememberMe:false, username:'', password:'', defaultPrevState:false, prevState:''};
     appData.setPreference = function (sPreferenceName, value) {
       appData.preferences[sPreferenceName] = value;
       storage[sPreferenceName] = value;

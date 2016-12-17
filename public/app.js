@@ -7,6 +7,18 @@ angular
 			'luegg.directives',
 			'angular-scroll-animate'
 		])
+		.service('authInterceptor', function($rootScope, $q) {
+			var service = this;
+			service.responseError = function(response) {
+				if (response.status == 401){
+					$rootScope.$emit('http-unauthorized');
+				}
+				return $q.reject(response);
+			};
+		})
+		.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.interceptors.push('authInterceptor');
+		}])
 		.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider) {
 			$sceDelegateProvider.resourceUrlWhitelist([
 				'self'                                                   // Allow same origin resource loads.
@@ -68,6 +80,10 @@ angular
 		.run(['$rootScope', '$state', 'appData', function ($rootScope, $state, appData) {
 			$rootScope.$state = $state;
 
+			$rootScope.$on('http-unauthorized', () => {
+				//$state.transitionTo('log-in');
+				$rootScope.isLoggedIn = false;
+			});
 			$rootScope.$on("$locationChangeStart", function (event, next, current) {
 				console.log('location cur: ', current, 'next:', next);
 				if ($rootScope.isLoggedIn) {
@@ -83,7 +99,6 @@ angular
 				if (toState.name !== 'log-in') {
 					appData.setPreference('prevState', toState.name);
 				}
-
 			});
 
 		}])

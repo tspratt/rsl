@@ -56,14 +56,14 @@ router.get('/persons', business.authenticate, function (req, res, next) {
   }
 });
 
-router.get('/persons/:oid', function (req, res, next) {
+router.get('/persons/:oid', business.authenticate, function (req, res, next) {
   var sOId = req.params.oid || '';
   business.getPerson(sOId, function(err, statusResponse) {
     res.send(statusResponse);
   });
 });
 
-router.put('/person', function (req, res, next) {
+router.put('/person', business.authenticate, function (req, res, next) {
   var oUpdate = req.body.update;
 	var sId = oUpdate._id;
   business.updatePerson(sId, oUpdate, function(err, statusResponse) {
@@ -71,28 +71,28 @@ router.put('/person', function (req, res, next) {
   });
 });
 
-router.delete('/persons/:oid', function (req, res, next) {
+router.delete('/persons/:oid', business.authenticate, function (req, res, next) {
   var sOId = req.params.oid || '';
   business.deletePerson(sOId, function(err, statusResponse) {
     res.send(statusResponse);
   });
 });
 
-router.post('/person', function (req, res, next) {
+router.post('/person', business.authenticate, function (req, res, next) {
 	var oPerson = req.body.person;
 	business.insertPerson(oPerson, function(err, statusResponse) {
 		res.send(statusResponse);
 	});
 });
 
-router.get('/permissions', function (req, res, next) {
+router.get('/permissions', business.authenticate, function (req, res, next) {
   var orderBy = req.query.orderBy;
   business.listPermissions(orderBy, function(err, statusResponse) {
     res.send(statusResponse);
   });
 });
 
-router.get('/roles', function (req, res, next) {
+router.get('/roles', business.authenticate, function (req, res, next) {
   business.listRoles(function(err, statusResponse) {
     res.send(statusResponse);
   });

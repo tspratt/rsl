@@ -11,7 +11,7 @@ angular.module('rsl')
             return res;
           })
           .catch(function(res) {
-            console.error('loginUser', res.status, res.data);
+            //console.error('loginUser', res.status, res.data);
             return res;
           });
       return promise;
@@ -25,7 +25,7 @@ angular.module('rsl')
 						return res;
 					})
 					.catch(function(res) {
-						console.error('setpassword', res.status, res.data);
+						//console.error('setpassword', res.status, res.data);
 						$rootScope.$emit('system-message', {source: 'person-data.js', level: 'service-error', message: 'Service error setting password'});
 						return res;
 					});
@@ -43,7 +43,7 @@ angular.module('rsl')
           return res;
         })
         .catch(function(res) {
-          console.error('getPersons', res.status, res.data);
+          //console.error('getPersons', res.status, res.data);
           return res;
         });
       return promise;
@@ -58,7 +58,7 @@ angular.module('rsl')
           return res;
         })
         .catch(function(res) {
-          console.error('getPersonsByNameMatch', res.status, res.data);
+          //console.error('getPersonsByNameMatch', res.status, res.data);
           return res;
         });
       return promise;
@@ -72,7 +72,7 @@ angular.module('rsl')
           return res;
         })
         .catch(function(res) {
-          console.error('getPerson', res.status, res.data);
+          //console.error('getPerson', res.status, res.data);
           return res;
         });
       return promise;
@@ -85,7 +85,7 @@ angular.module('rsl')
 						return res;
 					})
 					.catch(function(res) {
-						console.error('savePerson', res.status, res.data);
+						//console.error('savePerson', res.status, res.data);
 						return res;
 					});
 			return promise;
@@ -99,7 +99,7 @@ angular.module('rsl')
 						return res;
 					})
 					.catch(function(res) {
-						console.error('getPerson', res.status, res.data);
+						//console.error('getPerson', res.status, res.data);
 						return res;
 					});
 			return promise;
@@ -111,7 +111,7 @@ angular.module('rsl')
 						return res;
 					})
 					.catch(function(res) {
-						console.error('getPerson', res.status, res.data);
+						//console.error('getPerson', res.status, res.data);
 						return res;
 					});
 			return promise;
@@ -124,7 +124,7 @@ angular.module('rsl')
 						return res;
 					})
 					.catch(function(res) {
-						console.error('getPerson', res.status, res.data);
+						//console.error('getPerson', res.status, res.data);
 						return res;
 					});
 			return promise;

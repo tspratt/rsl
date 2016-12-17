@@ -17,8 +17,17 @@ function isAlive(callback) {
 }
 
 function authenticate (req, res,next) {
+	var statusResponse;
 	var sToken = req.headers.authorization;
-	next();
+	jwt.verify(sToken, 'gabboob', function (err, decoded) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'authenticate', '', 'business', err);
+			res.send(401, statusResponse);
+		}
+		else {
+			next();
+		}
+	});
 }
 
 function loginUser(userid, password, callback) {
@@ -35,7 +44,7 @@ function loginUser(userid, password, callback) {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
 					delete user.passwordHash;                                           //remove these from the response
 					delete user.salt;
-					var token = jwt.sign({foo:'bar'}, 'gabboob');
+					var token = jwt.sign({userid: userid}, 'gabboob',{expiresIn: 30});
 					user.token = token;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
 				}

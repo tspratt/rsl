@@ -13,7 +13,7 @@ router.post('/loginUser', function (req, res, next) {
 			});
 });
 
-router.post('/setpassword', function (req, res, next) {
+router.post('/setpassword', business.authenticate, function (req, res, next) {
 	var userid = req.body.userid;
 	var oldPassword = req.body.password;
 	var newPassword = req.body.newPassword;

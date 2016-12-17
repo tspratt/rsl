@@ -3,6 +3,7 @@ angular.module('rsl')
 			function ($rootScope, $scope, $state, $timeout, $anchorScroll, appConstants, appData, PersonData) {
 				$scope.vm = {};
 				$scope.vm.self = appData.loggedInUser.person;
+				$scope.vm.self.preferences = appData.preferences;
 				$scope.vm.matchString = '';
 				$scope.vm.auth = appData.auth;
 				$scope.vm.permsMaster = appData.permsMaster;

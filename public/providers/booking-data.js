@@ -12,7 +12,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('getBookings', res.status, res.data);
+							//console.error('getBookings', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -52,7 +52,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('checkBookingOverlap', res.status, res.data);
+							//console.error('checkBookingOverlap', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -66,7 +66,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('getBooking', res.status, res.data);
+							//console.error('getBooking', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -85,7 +85,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('getPersons', res.status, res.data);
+							//console.error('getPersons', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -98,7 +98,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('loginUser', res.status, res.data);
+							//console.error('loginUser', res.status, res.data);
 							return res;
 						});
 				return promise;
@@ -112,7 +112,7 @@ angular.module('rsl')
 							return res;
 						})
 						.catch(function (res) {
-							console.error('deleteBooking', res.status, res.data);
+							//console.error('deleteBooking', res.status, res.data);
 							return res;
 						});
 				return promise;

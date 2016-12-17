@@ -33,12 +33,15 @@
       <div class="v-box borders">
         <span class="setting-label">Preferences</span>
         <div>
-          <input type="checkbox" ng-model="vm.rememberMe"> Remember me on this device
+          <input type="checkbox"
+                 ng-model="vm.self.preferences.rememberMe"
+                 ng-click="vm.setPreference('defaultPrevState',vm.self.preferences.rememberMe)">
+          Remember me on this device
         </div>
         <div >
           <input type="checkbox"
-                 ng-model="vm.defaultPrevState"
-                 ng-click="vm.setPreference('defaultPrevState')">
+                 ng-model="vm.self.preferences.defaultPrevState"
+                 ng-click="vm.setPreference('defaultPrevState',vm.self.preferences.defaultPrevState)">
           Open previous view on start
         </div>
       </div>

@@ -5,7 +5,7 @@ var moment = require('moment');
 var business = require('../business');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 
-router.get('/rooms', function (req, res, next) {
+router.get('/rooms', business.authenticate, function (req, res, next) {
 	var filterSpec = null;
 	var pageSpec = null;
 	var field = req.query.field;
@@ -43,7 +43,7 @@ router.get('/rooms', function (req, res, next) {
 
 });
 
-router.post('/book-room', function (req, res, next) {
+router.post('/book-room', business.authenticate, function (req, res, next) {
 	var sAction = req.body.action || 'insert';
 	var oBooking = req.body.booking;
 	business.bookRoom(sAction, oBooking, function(err, statusResponse) {
@@ -51,7 +51,7 @@ router.post('/book-room', function (req, res, next) {
 	})
 });
 
-router.get('/bookings', function (req, res, next) {
+router.get('/bookings', business.authenticate, function (req, res, next) {
 	var filterSpec = null;
 	var dateSpec = null;
 	var field = req.query.field;
@@ -98,7 +98,7 @@ router.get('/bookings', function (req, res, next) {
 
 });
 
-router.get('/residence-schedule', function (req, res, next) {
+router.get('/residence-schedule', business.authenticate, function (req, res, next) {
 	var filterSpec = null;
 	var dateSpec = null;
 	var field = req.query.field;
@@ -138,7 +138,7 @@ router.get('/residence-schedule', function (req, res, next) {
 	})
 });
 
-router.get('/rebuild-residence-schedule', function (req, res, next) {
+router.get('/rebuild-residence-schedule', business.authenticate, function (req, res, next) {
 	business.rebuildResidenceSchedule(null, null, null, function (err, statusResponse) {
 		res.send(statusResponse);
 	})
@@ -153,7 +153,7 @@ router.get('/check-booking-overlap', function (req, res, next) {
 	})
 });
 
-router.delete('/bookings/:oid', function (req, res, next) {
+router.delete('/bookings/:oid', business.authenticate, function (req, res, next) {
 	var sOId = req.params.oid || '';
 	business.deleteBooking(sOId, function(err, statusResponse) {
 		res.send(statusResponse);

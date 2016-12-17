@@ -21,6 +21,7 @@ angular.module('rsl')
         if ($scope.vm.rememberMe === false) {
           appData.preferences.username = '';
           appData.preferences.password = '';
+          appData.setPreference('defaultPrevState', false);
         }
       });
 
@@ -35,7 +36,12 @@ angular.module('rsl')
         }
       });
 
+      $rootScope.$on('http-unauthorized', function () {
+        $scope.isLoggedIn = false
+      });
+
       $scope.logIn = function (sState) {
+        $scope.isLoggedIn = true;                 //to fix up the ui immediately. if login fails, we will reset then
         if ($scope.vm.password === 'demo') {
           $scope.isLoggedIn = true;
           if (sState === 'book') {
@@ -56,6 +62,7 @@ angular.module('rsl')
                   if (res.data.status === 'success') {
                     appData.loggedInUser = res.data.data;
                     $http.defaults.headers.common.Authorization = appData.loggedInUser.token;
+                    getRoles();
                     getMembers();
                     getPermissions();
                     getAllPersons();
@@ -142,20 +149,7 @@ angular.module('rsl')
               }
             });
       }
-/*
-      function getRooms() {
-        bookingData.getRooms(null, null, 'unit', null, null)
-            .then(function (res) {
-              if (res.status >= 200 && res.status < 300) {
-                $scope.rooms = res.data.data;
-                setDefaultRoom();
-              }
-              else {
-                console.log('HTTP Error: ' + res.statusText);
-              }
-            });
-      }
-*/
+
       function getRoles () {
         PersonData.getRoles()
             .then (function (res) {
@@ -204,7 +198,6 @@ angular.module('rsl')
       }
 
       /****  Initilaize **/
-      getRoles();
       $scope.vm.rememberMe = appData.preferences.rememberMe;
       if ($scope.vm.rememberMe) {
         $scope.vm.username = appData.preferences.username;
@@ -218,7 +211,6 @@ angular.module('rsl')
           $scope.logIn(appData.getPreference('prevState'))
         }
       }
-
     }])
     .directive('menuNav', function () {
       return {
@@ -236,5 +228,4 @@ angular.module('rsl')
           });
         }
       }
-
-    } );
+    });
