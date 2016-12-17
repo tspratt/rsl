@@ -44,7 +44,7 @@ function loginUser(userid, password, callback) {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
 					delete user.passwordHash;                                           //remove these from the response
 					delete user.salt;
-					var token = jwt.sign({userid: userid}, 'gabboob',{expiresIn: 30});
+					var token = jwt.sign({userid: userid}, 'gabboob',{expiresIn: '1d'});
 					user.token = token;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
 				}

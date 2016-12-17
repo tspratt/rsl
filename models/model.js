@@ -86,13 +86,15 @@ function insertChatMessage (message, callback) {
 function listChatMessages (dateSpec, callback) {
 	var oQuery = {};
 	if (dateSpec) {
-		var dtFrom = new Date(dateSpec.from);
-		oQuery.dt = {$gte : dtFrom};
+		oQuery['message.dt'] = {};
+		if (dateSpec.hasOwnProperty('from')) {
+			oQuery['message.dt'].$gte = dateSpec.from;
+		}
 		if (dateSpec.hasOwnProperty('to')) {
-			var dtTo = new Date(dateSpec.to);
-			oQuery.dt = {$lte : dtTo};
+			oQuery['message.dt'].$lte = dateSpec.to;
 		}
 	}
+	console.log(JSON.stringify(oQuery));
 	_db.collection('chatMessages', {safe : true},
 			function (err, collection) {
 				collection.find(oQuery, {sort:{"message.dt": 1}})

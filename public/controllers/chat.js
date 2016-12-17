@@ -105,7 +105,7 @@ angular.module('rsl')
 				}
 				function getChatMessages () {
 					console.log('requesting message list');
-					ChatSocket.emit('command', {cmdType: 'get', cmd: 'message-list', from: $scope.vm.dtFrom, socketId:ChatSocket.id});
+					ChatSocket.emit('command', {cmdType: 'get', cmd: 'message-list', from: $scope.vm.dtFrom.toISOString(), socketId:ChatSocket.id});
 				}
 
 				function buildMsgDisplayList () {

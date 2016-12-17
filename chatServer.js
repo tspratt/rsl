@@ -37,14 +37,14 @@ var handleMessage = function (socket, oData) {
 };
 
 var handleCommand = function (socket, oData) {
-	var dateSpec = null;
+	var dateSpec = {};
 	var aMessages = [];
 	switch (oData.cmdType) {
 		case 'get':
 			logger.info('cmdType: ', oData.cmdType, 'cmd:', oData.cmd);
 				switch (oData.cmd) {
 					case 'message-list':
-						if (oData.dtFrom) {
+						if (oData.from) {
 							dateSpec.from = oData.from;
 						}
 						model.listChatMessages(dateSpec, function (err, data) {
