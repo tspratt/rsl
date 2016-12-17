@@ -1,9 +1,9 @@
 angular.module('rsl')
-  .controller('MainCtrl', ['$rootScope','$scope', '$state', '$http', 'appData', 'alertService', 'PersonData',
-    function ($rootScope, $scope, $state, $http, appData, alertService, PersonData) {
+  .controller('MainCtrl', ['$rootScope','$scope', '$state', '$http', '$timeout', 'appData', 'alertService', 'PersonData',
+    function ($rootScope, $scope, $state, $http, $timeout, appData, alertService, PersonData) {
       $scope.vm = this;
       $scope.activeState = 'sign-in';
-      $scope.isLoggedIn = false;
+      $scope.vm.isLoggedIn = false;
       $scope.vm.username = '';    //'Tracy';
       $scope.vm.password = '';    //'gabboob';
       $scope.vm.rememberMe = true;
@@ -29,21 +29,20 @@ angular.module('rsl')
         $scope.isFormValid = ($scope.vm.password.length > 0 || $scope.vm.password.length > 0)
       };
 
-      $scope.$watch('isLoggedIn', function(){
-        $rootScope.isLoggedIn = $scope.isLoggedIn;
-        if ($scope.isLoggedIn === false) {
+      $scope.$watch('vm.isLoggedIn', function(){
+        $rootScope.isLoggedIn = $scope.vm.isLoggedIn;
+        if ($scope.vm.isLoggedIn === false) {
           $scope.goView('log-in');
         }
       });
 
       $rootScope.$on('http-unauthorized', function () {
-        $scope.isLoggedIn = false
+        $scope.vm.isLoggedIn = false
       });
 
       $scope.logIn = function (sState) {
-        $scope.isLoggedIn = true;                 //to fix up the ui immediately. if login fails, we will reset then
         if ($scope.vm.password === 'demo') {
-          $scope.isLoggedIn = true;
+          $scope.vm.isLoggedIn = true;
           if (sState === 'book') {
             $rootScope.$emit('system-message',
                 {source: 'main.js', level: 'warning', message: 'Demo users cannot book, showing schedule'});
@@ -60,13 +59,14 @@ angular.module('rsl')
               .then(function (res) {
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.status === 'success') {
+                    $scope.vm.isLoggedIn = true;
                     appData.loggedInUser = res.data.data;
                     $http.defaults.headers.common.Authorization = appData.loggedInUser.token;
                     getRoles();
                     getMembers();
                     getPermissions();
                     getAllPersons();
-                    $scope.isLoggedIn = true;
+                    $scope.vm.isLoggedIn = true;
                     $scope.loggedInUser = appData.loggedInUser;
                     if (sState === 'book' && appData.loggedInUser.person.memberrelationship !== 'self') {
                       $rootScope.$emit('system-message',
@@ -83,12 +83,16 @@ angular.module('rsl')
                 }
                 else {
                   console.log('HTTP Error: ' + res.statusText);
-                  $scope.isLoggedIn = false;
+                  $scope.vm.isLoggedIn = false;
                   alertService.add('Login Failed', '');
                 }
               })
         }
       };
+
+      function loginInit() {
+
+      }
 
       $rootScope.$on('$stateChangeStart',
         function(event, toState, toParams, fromState, fromParams){
@@ -99,6 +103,9 @@ angular.module('rsl')
         function(event, data){
           $scope.systemMessage = data.message;
           $scope.showSystemMessage = true;
+          if (data.autoClose && data.autoClose > 0) {
+            $timeout(()=>{$scope.showSystemMessage = false;},data.autoClose);
+          }
         });
 
       $scope.goView = function (state, oParams) {

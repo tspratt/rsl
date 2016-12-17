@@ -261,7 +261,7 @@ angular.module('rsl')
 									$scope.bookings = res.data.data;
 								}
 								else {
-									console.log('HTTP Error: ' + res.statusText);
+									//console.log('HTTP Error: ' + res.statusText);
 								}
 
 							});
@@ -282,7 +282,7 @@ angular.module('rsl')
 									$scope.residenceSchedule = res.data;
 								}
 								else {
-									console.log('HTTP Error: ' + res.statusText);
+									//console.log('HTTP Error: ' + res.statusText);
 								}
 
 							});
@@ -318,7 +318,7 @@ angular.module('rsl')
 									setDefaultRoom();
 								}
 								else {
-									console.log('HTTP Error: ' + res.statusText);
+									//console.log('HTTP Error: ' + res.statusText);
 								}
 							});
 				}
@@ -353,7 +353,7 @@ angular.module('rsl')
 									getRooms();
 								}
 								else {
-									console.log('HTTP Error: ' + res.statusText);
+									//console.log('HTTP Error: ' + res.statusText);
 								}
 							});
 				}
@@ -378,7 +378,7 @@ angular.module('rsl')
 
 								}
 								else {
-									console.log('HTTP Error: ' + res.statusText);
+									//console.log('HTTP Error: ' + res.statusText);
 								}
 
 							});

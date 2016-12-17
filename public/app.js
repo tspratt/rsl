@@ -77,11 +77,11 @@ angular
 						controller: 'personCtrl'
 					})
 		})
-		.run(['$rootScope', '$state', 'appData', function ($rootScope, $state, appData) {
+		.run(['$rootScope', '$state', '$timeout', 'appData', function ($rootScope, $state, $timeout, appData) {
 			$rootScope.$state = $state;
 
 			$rootScope.$on('http-unauthorized', () => {
-				//$state.transitionTo('log-in');
+				$rootScope.$emit('system-message',{source: 'app.js', level: 'fail', message: 'Authorization timeout, please log back in', autoClose: 2000});
 				$rootScope.isLoggedIn = false;
 			});
 			$rootScope.$on("$locationChangeStart", function (event, next, current) {
@@ -96,7 +96,7 @@ angular
 				}
 			});
 			$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-				if (toState.name !== 'log-in') {
+				if (appData && toState.name !== 'log-in') {         //why appData undefined on start?
 					appData.setPreference('prevState', toState.name);
 				}
 			});
