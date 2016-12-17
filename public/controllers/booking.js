@@ -45,6 +45,7 @@ angular.module('rsl')
 				$scope.bookingMode = 'new';
 				$scope.initialData;
 				$scope.activestate = $state.$current.name;
+				$scope.isModified = false;
 
 				function initModule() {
 					var sTmp = '';
@@ -91,6 +92,10 @@ angular.module('rsl')
 					}
 				}
 
+				$scope.setModified = function() {
+					$scope.isModified = true;
+				};
+
 				$scope.$watch('bookMember', function (member, prevMember) {
 					if (member) {
 						$scope.selectedRoom = null;				//set these so they blank out immediately on member change
@@ -125,13 +130,6 @@ angular.module('rsl')
 					}
 				});
 
-				$scope.$watch(function () {
-							return appData.allPersons;
-						},
-						function (newValue) {
-							$scope.allPersons = newValue;
-						});
-
 				$scope.$watch('dtDepart', function (newValue, oldValue) {
 					if (newValue) {
 						if (!newValue._isAMomentObject) {
@@ -146,6 +144,29 @@ angular.module('rsl')
 						$scope.bookingIncomplete = true;
 					}
 				});
+
+				$scope.$watch('dtArriveTimeConfig', function () {
+					if ($scope.dtArrive) {
+						$scope.dtArrive.set($scope.dtArriveTimeConfig);
+						$scope.dtArriveLabel = $scope.getDateTimeLabel($scope.dtArrive);
+						// checkBooking();
+					}
+				});
+
+				$scope.$watch('dtDepartTimeConfig', function () {
+					if ($scope.dtDepart) {
+						$scope.dtDepart.set($scope.dtDepartTimeConfig);
+						$scope.dtDepartLabel = $scope.getDateTimeLabel($scope.dtDepart);
+						// checkBooking();
+					}
+				});
+
+				$scope.$watch(function () {
+							return appData.allPersons;
+						},
+						function (newValue) {
+							$scope.allPersons = newValue;
+						});
 
 				$scope.updateWho = function () {
 					$scope.booking.who = [];
