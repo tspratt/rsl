@@ -4,12 +4,12 @@
 			<div class="msg-search-bar">
 				<input id="inputMatchString" type="text" class="match-string chat-msg-search"
 							 placeholder="Filter messages for..."
+							 ng-model-options="{ debounce: 500 }"
 							 ng-model="vm.matchString">
 				<i class="glyphicon glyphicon-remove-sign match-string" ng-click="clearMatchString()"></i>
 				<input type="text" readonly class="month-picker"
 							 uib-datepicker-popup="MMM-yyyy"
 							 ng-model="vm.dtFrom" is-open="vm.monthPickOpen"
-							 ng-model-options="{ debounce: 300 }"
 							 popup-placement="bottom-right"
 							 datepicker-mode="'month'"
 							 datepicker-options="dateOptions"
@@ -30,7 +30,7 @@
 				</ul>
 			</div>
 			<div class="row-chat-msg"
-					 ng-repeat="message in chatMessagesDisplay"
+					 ng-repeat="message in chatMessages"
 					 ng-class="{read: message.read}"
 					 ng-style="{'font-size':vm.msgFontSize + 'px'}"
 					 scroll-to-last

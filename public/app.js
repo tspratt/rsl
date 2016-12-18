@@ -76,8 +76,13 @@ angular
 						templateUrl: '/views/settings.html',
 						controller: 'personCtrl'
 					})
+					.state('links', {
+						url: '/links',
+						templateUrl: '/views/links.html',
+						controller: 'linksCtrl'
+					})
 		})
-		.run(['$rootScope', '$state', '$timeout', 'appData', function ($rootScope, $state, $timeout, appData) {
+		.run(['$rootScope', '$state', '$location', '$timeout', 'appData', function ($rootScope, $state, $location, $timeout, appData) {
 			$rootScope.$state = $state;
 
 			$rootScope.$on('http-unauthorized', () => {
@@ -92,7 +97,8 @@ angular
 					}
 				}
 				else {
-					$state.go('log-in');
+					$location.path('//#/log-in');
+					// $state.go('log-in');
 				}
 			});
 			$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {

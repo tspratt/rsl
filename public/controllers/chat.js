@@ -9,7 +9,6 @@ angular.module('rsl')
 				$scope.vm.chatMsgSend = '';
 				$scope.vm.matchString = '';
 				$scope.chatMessages = [];
-				$scope.chatMessagesDisplay = [];
 				$scope.vm.isFilterEmpty = false;
 				$scope.dtLastRead = $scope.storage.dtLastRead || new Date();
 				$scope.vm.dtFrom = moment().subtract('days', 30).toDate();
@@ -40,7 +39,6 @@ angular.module('rsl')
 					console.log('got a message', event.name);
 					$scope.$apply(function() {
 						$scope.chatMessages.push(oData.message);
-						buildMsgDisplayList();
 					});
 				});
 
@@ -57,7 +55,6 @@ angular.module('rsl')
 											message.read = (message.dt <= $scope.dtLastRead);
 											return message;
 										});
-										buildMsgDisplayList();
 										break;
 								}
 								break;
@@ -67,17 +64,19 @@ angular.module('rsl')
 
 				$scope.$watch('vm.matchString', function (newValue, oldValue) {
 					if (newValue.toLowerCase() !== oldValue.toLowerCase()) {
-						buildMsgDisplayList();
+						getChatMessages();
 					}
 				});
 
 				$scope.clearMatchString = function () {
 					$scope.vm.matchString = '';
+					getChatMessages();
 				};
 
 				$scope.toggleMonthPicker = function () {
 					$scope.vm.monthPickOpen=!$scope.vm.monthPickOpen;
 				};
+
 				$scope.$watch('vm.dtFrom', function () {
 					getChatMessages();
 				});
@@ -89,31 +88,22 @@ angular.module('rsl')
 
 				};
 
-
 				$scope.sendChatMessage = function () {
 					var message = {msg: $scope.vm.chatMsgSend, dt: new Date(), person: appData.loggedInUser.person};
 					$scope.chatMessages.push(message);
-					buildMsgDisplayList();
 					ChatSocket.emit('message', {msgType: 'chat', message:message, socketId:ChatSocket.id});
 					$scope.vm.chatMsgSend = '';
 					// $scope.vm.focusInput = true;                    //does not work
 					// $document.find('#chatMsgInput').focus();     //todo: fix directive
 				};
+
 				function sendInfo () {
 					console.log('sending Info');
 					ChatSocket.emit('message', {msgType: 'info', user: appData.loggedInUser.person });
 				}
 				function getChatMessages () {
 					console.log('requesting message list');
-					ChatSocket.emit('command', {cmdType: 'get', cmd: 'message-list', from: $scope.vm.dtFrom.toISOString(), socketId:ChatSocket.id});
-				}
-
-				function buildMsgDisplayList () {
-					$scope.chatMessagesDisplay = $scope.chatMessages;
-					$scope.chatMessagesDisplay = $scope.chatMessagesDisplay.filter(function (message) {
-						return ((message.msg + message.dt).toLowerCase().indexOf($scope.vm.matchString.toLowerCase()) > -1);
-					});
-					$scope.vm.isFilterEmpty = ($scope.chatMessagesDisplay.length === 0);
+					ChatSocket.emit('command', {cmdType: 'get', cmd: 'message-list', search: $scope.vm.matchString, from: $scope.vm.dtFrom.toISOString(), socketId:ChatSocket.id});
 				}
 
 				$scope.$on("$locationChangeStart", function(event, next, current) {

@@ -83,17 +83,30 @@ function insertChatMessage (message, callback) {
 			});
 }
 
-function listChatMessages (dateSpec, callback) {
+function listChatMessages (dateSpec, searchString, callback) {
 	var oQuery = {};
-	if (dateSpec) {
-		oQuery['message.dt'] = {};
-		if (dateSpec.hasOwnProperty('from')) {
-			oQuery['message.dt'].$gte = dateSpec.from;
-		}
-		if (dateSpec.hasOwnProperty('to')) {
-			oQuery['message.dt'].$lte = dateSpec.to;
+	if (searchString && searchString.length > 0) {
+		oQuery = {
+			"$or": [
+				{"message.msg": {"$regex": searchString, $options: 'gi'}},
+				{"message.dt": {"$regex": searchString}},
+				{"message.person.firstname": {"$regex": searchString, $options: 'gi'}},
+				{"message.person.lastname": {"$regex": searchString, $options: 'gi'}}
+			]
 		}
 	}
+	else {
+		if (dateSpec) {
+			oQuery['message.dt'] = {};
+			if (dateSpec.hasOwnProperty('from')) {
+				oQuery['message.dt'].$gte = dateSpec.from;
+			}
+			if (dateSpec.hasOwnProperty('to')) {
+				oQuery['message.dt'].$lte = dateSpec.to;
+			}
+		}
+	}
+
 	console.log(JSON.stringify(oQuery));
 	_db.collection('chatMessages', {safe : true},
 			function (err, collection) {

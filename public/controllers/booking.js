@@ -92,8 +92,10 @@ angular.module('rsl')
 					}
 				}
 
-				$scope.setModified = function() {
-					$scope.isModified = true;
+				$scope.setModified = function(bClear) {
+					if (!bClear) {
+						$scope.isModified = true;
+					}
 				};
 
 				$scope.$watch('bookMember', function (member, prevMember) {
@@ -149,7 +151,6 @@ angular.module('rsl')
 					if ($scope.dtArrive) {
 						$scope.dtArrive.set($scope.dtArriveTimeConfig);
 						$scope.dtArriveLabel = $scope.getDateTimeLabel($scope.dtArrive);
-						// checkBooking();
 					}
 				});
 
@@ -157,7 +158,6 @@ angular.module('rsl')
 					if ($scope.dtDepart) {
 						$scope.dtDepart.set($scope.dtDepartTimeConfig);
 						$scope.dtDepartLabel = $scope.getDateTimeLabel($scope.dtDepart);
-						// checkBooking();
 					}
 				});
 
@@ -489,6 +489,10 @@ angular.module('rsl')
 					$scope.guestRequestDetail = true;
 					var gb = new GuestBooking(memberId);
 					$scope.guestRoomRequests.push(gb);
+				};
+
+				$scope.removeGuestRequest = function (index) {
+					$scope.guestRoomRequests.splice(index,1);
 				};
 
 

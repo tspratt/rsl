@@ -48,6 +48,11 @@
 									ng-disabled="false">Chat
 					</button>
 					<button class="module-menu-item"
+									ng-class="{'selected':'links' === activeState}"
+									ng-click="goView('links')"
+									ng-disabled="false">Links
+					</button>
+					<button class="module-menu-item"
 									ng-class="{'selected':'booking-list' === activeState}"
 									ng-click="goView('booking-list')"
 									ng-disabled="false">List
@@ -85,6 +90,7 @@
 <script src="controllers/main.js"></script>
 <script src="controllers/person.js"></script>
 <script src="controllers/chat.js"></script>
+<script src="controllers/links.js"></script>
 <script src="controllers/name-search.js"></script>
 <script src="controllers/field-filter.js"></script>
 <script src="controllers/paginator.js"></script>

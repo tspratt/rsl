@@ -36,7 +36,7 @@
 				<button class="label"
 								ng-disabled="!canBook"
 								ng-click="bookRoom()">
-					<span ng-class="{blink: (!bookingIncomplete && canBook) || (bookingMode==='update' && isModified)}">
+					<span ng-class="{blink: (bookingMode==='new' && !bookingIncomplete && canBook) || (bookingMode==='update' && isModified)}">
 						Click when ready to {{((bookingMode==='new')?'book':'update')}}</span>
 				</button>
 			</div>
@@ -57,9 +57,9 @@
 				<div class="btn-group">
 					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" on-model-change="setModified()"
 								 uib-btn-radio="appConstants.MORNING">Morning</label>
-					<label class="btn btn-primary" ng-model="dtArriveTimeConfig"
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" on-model-change="setModified()"
 								 uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
-					<label class="btn btn-primary" ng-model="dtArriveTimeConfig"
+					<label class="btn btn-primary" ng-model="dtArriveTimeConfig" on-model-change="setModified()"
 								 uib-btn-radio="appConstants.EVENING">Evening</label>
 				</div>
 
@@ -85,11 +85,11 @@
 			<div class="col-xs-12 expander">
 				<button class="close" ng-click="arriveDetail=false"><i class="glyphicon glyphicon-remove"></i></button>
 				<div class="btn-group">
-					<label class="btn btn-primary" ng-model="dtDepartTimeConfig"
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" on-model-change="setModified()"
 								 uib-btn-radio="appConstants.MORNING">Morning</label>
-					<label class="btn btn-primary" ng-model="dtDepartTimeConfig"
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" on-model-change="setModified()"
 								 uib-btn-radio="appConstants.AFTERNOON">Afternoon</label>
-					<label class="btn btn-primary" ng-model="dtDepartTimeConfig"
+					<label class="btn btn-primary" ng-model="dtDepartTimeConfig" on-model-change="setModified()"
 								 uib-btn-radio="appConstants.EVENING">Evening</label>
 				</div>
 				<div style="display:inline-block; min-height:290px;">
@@ -124,7 +124,7 @@
 				<label class="control-label col-xs-2" for="taNotes">Notes:</label>
 			</div>
 			<div class="col-xs-10">
-				<textarea id="taNotes" ng-model="note"></textarea>
+				<textarea id="taNotes" ng-model="note" on-model-change="setModified()"></textarea>
 			</div>
 		</div>
 
@@ -144,12 +144,12 @@
 				<div class="h-box">
 					<label class="popup-label">For: </label>
 					<select class="popup-label"
-									ng-model="grq.personId"
+									ng-model="grq.personId" on-model-change="setModified()"
 									ng-options="person._id as person.firstname + ' ' + person.lastname for person in allPersons">
 						<option disabled value="">Please choose a person</option>
 					</select>
 
-					<label class="popup-label">Count:</label>
+					<label class="popup-label">Person Count:</label>
 					<div class="popup-label" rn-stepper ng-model="grq.guestCount" min="0" max="15"></div>
 				</div>
 				<div class="h-box">
@@ -157,6 +157,7 @@
 					<label type="text" class="popup-value" ng-model="grq.roomid"></label>
 					<label class="popup-label">Note:</label>
 					<input type="text" class="popup-value full-width" ng-model="grq.note">
+					<button class="close" ng-click="removeGuestRequest($index)"><i class="glyphicon glyphicon-remove"></i></button>
 				</div>
 			</div>
 		</div>

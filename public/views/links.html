@@ -1,0 +1,30 @@
+<div>
+  <div class="container v-box ">
+    <div class="v-box borders">
+      <p ng-repeat="link in vm.links"
+         new-window="{{link.url}}">{{link.label}}</p>
+
+
+      <div class="v-box borders">
+        <div class="form-group h-box left-align">
+          <button class="label"
+                  ng-disabled="true"
+                  ng-click="vm.addLinkDetail=!vm.addLinkDetail">Add Link:</button>
+        </div>
+        <div class="form-group expander" ng-show="vm.addLinkDetail">
+          <div>
+            <input type="text" class="form-control" placeholder="Label"
+                   ng-model="vm.label">
+            <input type="text" class="form-control" placeholder="url"
+                   ng-model="vm.url">
+          </div>
+          <div class="toolbar">
+            <button class="tool"
+                    ng-click="addLink()">Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

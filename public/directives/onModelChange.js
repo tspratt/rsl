@@ -5,7 +5,6 @@ angular.module('rsl')
 						require: 'ngModel',
 						scope: {callback: '&onModelChange'},
 						link: function (scope, elem, attrs, ngModel) {
-							var callback = $parse(attrs.onModelChange);
 							scope.$watch(function () {
 								return ngModel.$modelValue;
 							}, function (newValue, oldValue) {
