@@ -17,37 +17,37 @@
 			</div>
 		</div>
 	</div>
-	<div class="view-content double-header">
-		<div class="container">
-			<div class="res-sched-section"
-					 ng-class="residence.daySection.lclabel"
-					 ng-repeat="residence in residenceSchedule track by $index">
-				<div class="date-col">
-					<span class="day-label"
-								ng-show="residence.daySection.index%4===0"
-								ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'EEEE'}}</span>
-					<span class="daypart-label"
-								ng-show="residence.daySection.index%4===1"
-								ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'MMM-d'}}</span>
-				</div>
-				<div class="rooms-cols">
-					<div class="residence-day-section"
-							 ng-repeat="resRoom in residence.rooms track by $index"
-							 ng-class="getResDaySecClass(resRoom)"
-							 ng-click="showBookingDetail(residence, resRoom, $event)">
-						<div class="res-day-section-content"
-								 ng-if="resRoom.residenceType.length>0">
-							<div class="room-req-count"
-									 ng-if="resRoom.guestRoomRequestCount&&resRoom.guestRoomRequestCount>0"
-									 ng-click="showGuestBooking(resRoom.bookingid, $event)">{{resRoom.guestRoomRequestCount}}
-							</div>
-							<div class="who-count" ng-if="resRoom.whoCount">{{resRoom.whoCount}}</div>
+
+	<div class="container">
+		<div class="res-sched-section"
+				 ng-class="residence.daySection.lclabel"
+				 ng-repeat="residence in residenceSchedule track by $index">
+			<div class="date-col">
+				<span class="day-label"
+							ng-show="residence.daySection.index%4===0"
+							ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'EEEE'}}</span>
+				<span class="daypart-label"
+							ng-show="residence.daySection.index%4===1"
+							ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'MMM-d'}}</span>
+			</div>
+			<div class="rooms-cols">
+				<div class="residence-day-section"
+						 ng-repeat="resRoom in residence.rooms track by $index"
+						 ng-class="getResDaySecClass(resRoom)"
+						 ng-click="showBookingDetail(residence, resRoom, $event)">
+					<div class="res-day-section-content"
+							 ng-if="resRoom.residenceType.length>0">
+						<div class="room-req-count"
+								 ng-if="resRoom.guestRoomRequestCount&&resRoom.guestRoomRequestCount>0"
+								 ng-click="showGuestBooking(resRoom.bookingid, $event)">{{resRoom.guestRoomRequestCount}}
 						</div>
+						<div class="who-count" ng-if="resRoom.whoCount">{{resRoom.whoCount}}</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<div class="center-content">
 		<div ng-include="'partials/booking-detail-tmpl.html'"></div>
 		<div ng-include="'partials/guest-booking-tmpl.html'"></div>

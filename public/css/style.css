@@ -1,3 +1,8 @@
+@media (max-width: 321px) {
+  .date-col {
+    width: 33px;
+  }
+}
 .nav, .pagination, .carousel, .panel-title a {
   /*for bootstrap*/
   cursor: pointer;
@@ -561,6 +566,8 @@ div.res-sched-section {
 }
 div.res-sched-section > div.date-col {
   flex-grow: 1;
+  overflow: hidden;
+  text-overflow: clip;
 }
 div.res-sched-section > div.rooms-cols {
   width: 270px;
@@ -863,11 +870,13 @@ form.chat-msg-footer {
 
 .datepicker.booking {
   margin-top: 5px;
+  height: 290px;
+  width: 100%;
 }
 
 .datepicker.booking > table {
-  width: 300px;
-  height: 250px;
+  width: 100%;
+  height: 100%;
 }
 
 /***** direectives *************/

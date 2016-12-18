@@ -31,7 +31,7 @@ function authenticate (req, res,next) {
 }
 
 function loginUser(userid, password, callback) {
-	model.getUser({userid : userid}, function (err, user) {
+	model.getUser({"$text": {"$search": userid}}, function (err, user) {
 		var statusResponse;
 		if (err) {
 			statusResponse = new StatusResponse('error', 'loginUser', '', 'business', err);
