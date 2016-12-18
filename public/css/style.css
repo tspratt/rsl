@@ -218,7 +218,7 @@ div.login-input > input[type=checkbox] {
 }
 
 .view-content.double-header {
-  top: 155px;
+  top: 12.5rem;
 }
 
 .horiz-menu {
@@ -546,28 +546,46 @@ button.plus {
   opacity: 1;
 }
 
-.row.res-sched-section {
+div.res-sched-section {
   margin-left: 3px;
   margin-right: 0;
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
   font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+div.res-sched-section > div.date-col {
+  flex-grow: 1;
+}
+div.res-sched-section > div.rooms-cols {
+  width: 270px;
+}
+div.res-sched-section > div.unit-header {
+  width: 270px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.row.res-sched-section.night {
+div.res-sched-section.night {
   background: linear-gradient(black, grey);
 }
 
-.row.res-sched-section.morning {
+div.res-sched-section.morning {
   background: linear-gradient(gray, yellow);
 }
 
-.row.res-sched-section.afternoon {
+div.res-sched-section.afternoon {
   background: linear-gradient(yellow, orange);
 }
 
-.row.res-sched-section.evening {
+div.res-sched-section.evening {
   background: linear-gradient(orange, black);
 }
 

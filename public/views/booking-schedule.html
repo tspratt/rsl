@@ -1,14 +1,16 @@
 <div>
-	<div class="row res-sched-section">
-		<div class="col-xs-2">
+	<div class="res-sched-section">
+		<div class="date-col">
 		</div>
-		<div class="col-xs-5">Unit A (Richards)</div>
-		<div class="col-xs-5">Unit B (Spratt)</div>
+		<div class="unit-header">
+			<div class="">Unit A (Richards)</div>
+			<div class="">Unit B (Spratt)</div>
+		</div>
 	</div>
-	<div class="row res-sched-section">
-		<div class="col-xs-2">
+	<div class="res-sched-section">
+		<div class="date-col">
 		</div>
-		<div class="col-xs-10">
+		<div class="rooms-cols">
 			<div class="residence-day-section header"
 					 ng-repeat="resRoom in residenceSchedule[0].rooms">
 				<span class="res-day-section-content">{{resRoom.room.defaultmember.abr2}}</span>
@@ -17,10 +19,10 @@
 	</div>
 	<div class="view-content double-header">
 		<div class="container">
-			<div class="row res-sched-section"
+			<div class="res-sched-section"
 					 ng-class="residence.daySection.lclabel"
 					 ng-repeat="residence in residenceSchedule track by $index">
-				<div class="col-xs-2">
+				<div class="date-col">
 					<span class="day-label"
 								ng-show="residence.daySection.index%4===0"
 								ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'EEEE'}}</span>
@@ -28,7 +30,7 @@
 								ng-show="residence.daySection.index%4===1"
 								ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'MMM-d'}}</span>
 				</div>
-				<div class="col-xs-10">
+				<div class="rooms-cols">
 					<div class="residence-day-section"
 							 ng-repeat="resRoom in residence.rooms track by $index"
 							 ng-class="getResDaySecClass(resRoom)"
