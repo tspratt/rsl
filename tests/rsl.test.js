@@ -5,6 +5,7 @@ var packageJson = require('../package.json');
 var model = require('../models/model');
 var ObjectId = require('mongodb').ObjectID;
 var business = require('../business');
+var smsClient = require('../smsClient');
 var StatusResponse = require('../lib/statusResponse').StatusResponse;
 var prevValue = '';
 
@@ -59,6 +60,38 @@ describe('Setup tests', function () {
 									expect(err).to.not.exist;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+			}
+	);
+
+	describe('Test SMS Messaging',
+			function () {
+				it('should send a text to 7706331912', function (done) {
+					var toNumber = '7706331912';
+					smsClient.sendMessage(toNumber, 'this is a test message from the RSL application',
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+									expect(statusResponse.data.toNumber).to.exist;
+									expect(statusResponse.data.toNumber).to.equal(toNumber);
+								});
+							}
+					);
+				});
+				it('should send a text to 7706331912 and 11', function (done) {
+					var toNumbers = ['7706331912','7706331911'];
+					smsClient.sendMessages(toNumbers, 'this is a test message from the RSL application, sent to ' + toNumbers.join(' | '),
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data.responses).to.exist;
+									expect(statusResponse.data.responses.length).to.equal(2);
 								});
 							}
 					);
@@ -515,7 +548,7 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-				it.only('should generate and return an array of residence records', function (done) {
+				it('should generate and return an array of residence records', function (done) {
 					business.rebuildResidenceSchedule(null, null, null,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
