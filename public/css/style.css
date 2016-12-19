@@ -864,7 +864,7 @@ form.chat-msg-footer {
 .settings-section .setting-label {
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 30%;
+  flex-basis: 35%;
   text-align: right;
 }
 
