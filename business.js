@@ -48,11 +48,13 @@ function loginUser(userid, password, callback) {
 					var token = jwt.sign({userid: userid}, 'gabboob',{expiresIn: '1d'});
 					user.token = token;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
-					smsClient.sendMessage('7706331912', '\ndmin Notification:\nUser Login:' + userid, function (err, statusResponse) {
-						if (statusResponse.status !== 'success') {
-							console.log(statusResponse.message);
-						}
-					});
+					if (user.person.phone !== '770-633-1912') {
+						smsClient.sendMessage('770-633-1912', '\ndmin Notification:\nUser Login:' + userid, function (err, statusResponse) {
+							if (statusResponse.status !== 'success') {
+								console.log(statusResponse.message);
+							}
+						});
+					}
 				}
 				else {
 					statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message : 'incorrect password for ' + userid});
