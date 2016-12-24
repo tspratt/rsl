@@ -1,10 +1,11 @@
 angular.module('rsl')
-		.controller('bookingCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', '$localStorage', 'appConstants', 'appData', 'bookingData', 'PersonData',
-			function ($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, $localStorage, appConstants, appData, bookingData, personData) {
+		.controller('bookingCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', '$localStorage', '$timeout', 'appConstants', 'appData', 'bookingData', 'PersonData',
+			function ($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, $localStorage, $timeout, appConstants, appData, bookingData, personData) {
 				var storage = $localStorage;
 				$scope.rooms = [];
 				$scope.bookings = [];
 				$scope.residenceSchedule = [];
+				$scope.scrollToDate;
 				$scope.booking = {};
 				$scope.canBook = (appData.loggedInUser.role !== 'demo');
 				$scope.bookMember = appData.loggedInUser.person.member;
@@ -305,6 +306,7 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									$scope.residenceSchedule = res.data;
+									$scope.scrollToDate = moment().format('YYYY-MM-DD');
 								}
 								else {
 									//console.log('HTTP Error: ' + res.statusText);
@@ -689,4 +691,18 @@ angular.module('rsl')
 
 				initModule();
 
-			}]);
+			}])
+		.directive('scrollToDate', function ($timeout) {
+			return function(scope, eleContainer, attrs) {
+				scope.$watch(attrs.scrollToDate, function(newValue, oldValue) {
+					var scrollContainerTop = eleContainer[0].offsetTop;
+					if (newValue && (newValue !== oldValue)) {
+						var sElementId = '#dt-' + newValue;
+						$timeout(function () {
+							var eleDate = angular.element(eleContainer[0].querySelector(sElementId));
+							eleContainer.animate({scrollTop: eleDate.offset().top - scrollContainerTop}, "slow");
+						},100);
+					}
+				});
+			}
+		});

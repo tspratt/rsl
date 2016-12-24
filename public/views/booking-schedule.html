@@ -18,14 +18,15 @@
 		</div>
 	</div>
 
-	<div class="container">
+	<div id="res-schedule" class="container scrolling" scroll-to-date="scrollToDate">
 		<div class="res-sched-section"
 				 ng-class="residence.daySection.lclabel"
 				 ng-repeat="residence in residenceSchedule track by $index">
 			<div class="date-col">
 				<span class="day-label"
 							ng-show="residence.daySection.index%4===0"
-							ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'EEEE'}}</span>
+							ng-class="{'today': isToday(residence.dt)}"
+							ng-attr-id="{{'dt-' + residence.dt.substr(0,10)}}">{{residence.dt | date:'EEEE'}}</span>
 				<span class="daypart-label"
 							ng-show="residence.daySection.index%4===1"
 							ng-class="{'today': isToday(residence.dt)}">{{residence.dt | date:'MMM-d'}}</span>

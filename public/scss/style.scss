@@ -276,6 +276,10 @@ div.login-input {
 	/*we never want this element to float*/
 	padding-right: 0.2em;
 	padding-left: 0.2em;
+	&.scrolling {
+		height:100%;
+		overflow-y:scroll;
+	}
 }
 
 .person-list-heading {
@@ -575,13 +579,13 @@ div.res-sched-section {
 	font-size: 12px;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 	align-items: center;
 	width: 100%;
 	&> div.date-col {
 		flex-grow: 1;
 		overflow: hidden;
 		text-overflow: clip;
+		max-width: 4.5em;
 	}
 	&> div.rooms-cols {
 		width: 270px;

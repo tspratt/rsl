@@ -270,6 +270,10 @@ div.login-input > input[type=checkbox] {
   padding-right: 0.2em;
   padding-left: 0.2em;
 }
+.container.scrolling {
+  height: 100%;
+  overflow-y: scroll;
+}
 
 .person-list-heading {
   height: 35px;
@@ -568,7 +572,6 @@ div.res-sched-section {
   font-size: 12px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
@@ -576,6 +579,7 @@ div.res-sched-section > div.date-col {
   flex-grow: 1;
   overflow: hidden;
   text-overflow: clip;
+  max-width: 4.5em;
 }
 div.res-sched-section > div.rooms-cols {
   width: 270px;
