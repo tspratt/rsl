@@ -1,14 +1,9 @@
 <div>
   <div class="container v-box ">
     <div class="v-box borders">
-      <p ng-repeat="link in vm.links"
-         new-window="{{link.url}}">{{link.label}}</p>
-
-
       <div class="v-box borders">
         <div class="form-group h-box left-align">
           <button class="label"
-                  ng-disabled="true"
                   ng-click="vm.addLinkDetail=!vm.addLinkDetail">Add Link:</button>
         </div>
         <div class="form-group expander" ng-show="vm.addLinkDetail">
@@ -24,6 +19,10 @@
             </button>
           </div>
         </div>
+      </div>
+      <div class="h-box" ng-repeat="link in vm.links">
+        <div new-window="{{link.url}}">{{link.label}}</div>
+        <button ng-click="deleteLink(link)"><i class="glyphicon glyphicon-remove booking"></i> </button>
       </div>
     </div>
   </div>

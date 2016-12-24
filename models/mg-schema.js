@@ -155,7 +155,11 @@ var mgSchema = {
 		label: String,
 		action: String,
 		context: String
-	}, {collection: 'permissions'})
+	}, {collection: 'permissions'}),
+	Link: new Schema({
+		label: String,
+		url: String
+	}, {collection: 'links'})
 
 };
 

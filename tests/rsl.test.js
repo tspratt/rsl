@@ -67,6 +67,81 @@ describe('Setup tests', function () {
 			}
 	);
 
+	describe.only('Test Link functionality',
+			function () {
+				var iLinkCount = 0;
+				var sIdTmp = '';
+
+				it('should List links link', function (done) {
+					business.listLinks(
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data.length).to.be.greaterThan(0);
+									iLinkCount = statusResponse.data.length;
+								});
+							}
+					);
+				});
+
+				it('should save a link', function (done) {
+					var sLabel = 'Test Link label';
+					var sUrl = 'https://www.google.com/';
+					business.saveLink(sLabel, sUrl,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+									sIdTmp = statusResponse.data._doc._id.toString()
+								});
+							}
+					);
+				});
+				it('should List links, including test link', function (done) {
+					var sLabel = 'Test Link label';
+					var sUrl = 'https://www.google.com/';
+					business.listLinks(
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data.length).to.be.greaterThan(iLinkCount);
+								});
+							}
+					);
+				});
+				it('should delete a link', function (done) {
+					var sUrl = 'https://www.google.com/';
+					business.deleteLink(sIdTmp,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.status).to.equal('success');
+								});
+							}
+					);
+				});
+				it('should List links, expecting original count', function (done) {
+					var sLabel = 'Test Link label';
+					var sUrl = 'https://www.google.com/';
+					business.listLinks(
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data.length).to.be.equal(iLinkCount);
+								});
+							}
+					);
+				});
+
+			}
+	);
+
+
 	describe('Test SMS Messaging',
 			function () {
 				it('should send a text to 7706331912', function (done) {
@@ -92,6 +167,33 @@ describe('Setup tests', function () {
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data.responses).to.exist;
 									expect(statusResponse.data.responses.length).to.equal(2);
+								});
+							}
+					);
+				});
+				it('should return an array of phone numbers', function (done) {
+					var sAction = 'login_app';
+					model.listSMSNumbers(sAction,
+							function (err, aData) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(aData).to.exist;
+									expect(aData).to.be.an.array;
+									expect(aData.length).to.be.greaterThan(0);
+								});
+							}
+					);
+				});
+				it('should send a text to persons with SMS action_login_app', function (done) {
+					var sAction = 'login_app';
+					var userid = 'Tracy';
+					smsClient.sendActionMessages(sAction, userid,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data.responses).to.exist;
+									expect(statusResponse.data.responses.length).to.equal(1);
 								});
 							}
 					);
@@ -600,7 +702,7 @@ describe('Setup tests', function () {
 	 describe.only('set a property',
 	 function () {
 	 it('should return an schema object', function (done) {
-	 model.setProperty(
+	 setProperty(
 	 function (err, sItemJson) {
 	 asyncAssertionCheck(done, function () {
 	 expect(err).to.not.exist;

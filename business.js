@@ -414,6 +414,45 @@ function listBookings(filterSpec, dateSpec, sortSpec, fieldSpec, callback) {
 	});
 }
 
+function listLinks(callback) {
+	var statusResponse;
+	model.listLinks(function (err, aLinks) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'listLinks', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'listLinks', '', 'business', aLinks);
+		}
+		callback(err, statusResponse);
+	});
+}
+
+function insertLink(sLabel, sUrl, callback) {
+	var statusResponse;
+	model.insertLink({"label": sLabel, "url": sUrl}, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'insertLink', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'insertLink', '', 'business', result);
+		}
+		callback(err, statusResponse);
+	});
+}
+
+function deleteLink(sId, callback) {
+	var statusResponse;
+	model.deleteLink(sId, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'deleteLink', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'deleteLink', '', 'business', result);
+		}
+		callback(err, statusResponse);
+	});
+}
+
 /*function updateResidenceSchedule (oBooking) {
 	var statusResponse;
 	var aResidenceSchedule = [];
@@ -1005,4 +1044,7 @@ exports.getResidenceSchedule = getResidenceSchedule;
 exports.rebuildResidenceSchedule = rebuildResidenceSchedule;
 //exports.insertCollection = insertCollection;
 exports.checkBookingOverlap = checkBookingOverlap;
+exports.listLinks = listLinks;
+exports.insertLink = insertLink;
+exports.deleteLink = deleteLink;
 

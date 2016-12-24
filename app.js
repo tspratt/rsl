@@ -15,6 +15,7 @@ var bodyParser = require('body-parser');
 var persons = require('./routes/persons');
 var users = require('./routes/users');
 var booking = require('./routes/booking');
+var info = require('./routes/info');
 var model = require('./models/model');
 var chatServer = require('./chatServer');
 
@@ -32,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(users);     //returns router to handle user requests
 app.use(booking);     //returns router to handle user requests
 app.use(persons);
-
+app.use(info);
 
 var server = http.createServer(app);
 var io = require('socket.io')(server);

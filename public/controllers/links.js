@@ -2,30 +2,47 @@
  * Created by Tracy on 9/19/2016.
  */
 angular.module('rsl')
-		.controller('linksCtrl', ['$scope', '$state','appConstants', 'appData',
-			function ($scope, $state, appConstants, appData) {
+		.controller('linksCtrl', ['$scope', '$state','appConstants', 'appData', 'InfoData',
+			function ($scope, $state, appConstants, appData, InfoData ) {
 				$scope.vm = {};
 				$scope.vm.addLinkDetail = false;
 				$scope.vm.links = [];
 				$scope.vm.label = '';
 				$scope.vm.url = '';
 				$scope.addLink = function () {
-					$scope.vm.links.push({label: $scope.vm.label, url:$scope.vm.url})
+					if ($scope.vm.label.length > 0 && $scope.vm.url.length > 0) {
+
+					}
+					InfoData.saveLink( $scope.vm.label, $scope.vm.url)
+							.then(function (statusResponse) {
+								if(statusResponse.status === 'success') {
+									$scope.vm.addLinkDetail = false;
+									listLinks();
+								}
+								else {
+									$rootScope.$emit('system-message',
+											{source: 'links.js', level: 'error', message: 'Save Url failed: ' + statusResponse.data});
+								}
+
+							});
+				};
+
+				function listLinks () {
+					InfoData.listLinks()
+							.then (function (statusResponse) {
+								$scope.vm.links = statusResponse.data;
+							})
+				}
+
+				$scope.deleteLink = function (oLink) {
+					InfoData.deleteLink( oLink._id)
+							.then(function (statusResponse) {
+								listLinks();
+							});
 				};
 
 				function init () {
-					$scope.vm.links = [
-						{label:'Lake Rabun', url:'http://www.lakerabun.com/'},
-						{label:'LRA', url:'http://www.lakerabun.org/'},
-						{label:'Lake Rabun Hotel', url:'http://www.lakerabunhotel.com/'},
-						{label:'GPC Lake Levels', url:'https://lakes.southernco.com/'},
-						{label:'GPC North Georgia Lakes', url:'https://georgiapowerlakes.com/northgeorgialakes/'},
-						{label:'Burton/Rabun on Facebook', url:'https://www.facebook.com/burtonrabun/'},
-						{label:'Rabun Ramble', url:'http://rabunramble.com/'},
-						{label:'Explore Rabun', url:'http://explorerabun.com/'},
-						{label:'GPC Account', url:'https://customerservice.southerncompany.com/NonSecure/LoginFrames.aspx?ReturnUrl=%2fMyAccount.aspx%3fmnuOpco%3dgpc%26rhp%3dlm_my_account_login&mnuOpco=gpc&rhp=lm_my_account_login'},
-						{label:'TruVista Bill Pay', url:'https://billpay.truvista.net/esp/security/login?ReturnUrl=https%3a%2f%2fbillpay.truvista.net%2fesp'}
-					]
+					listLinks();
 				}
 
 				init();

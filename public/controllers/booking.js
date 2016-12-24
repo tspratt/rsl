@@ -1,6 +1,7 @@
 angular.module('rsl')
-		.controller('bookingCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', 'appConstants', 'appData', 'bookingData', 'PersonData',
-			function ($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, appConstants, appData, bookingData, personData) {
+		.controller('bookingCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location', '$anchorScroll', '$localStorage', 'appConstants', 'appData', 'bookingData', 'PersonData',
+			function ($rootScope, $scope, $state, $stateParams, $location, $anchorScroll, $localStorage, appConstants, appData, bookingData, personData) {
+				var storage = $localStorage;
 				$scope.rooms = [];
 				$scope.bookings = [];
 				$scope.residenceSchedule = [];
@@ -72,6 +73,8 @@ angular.module('rsl')
 						else {
 							$scope.bookMember = appData.loggedInUser.person.member;
 							$scope.bookMemberId = appData.loggedInUser.person.member._id;
+							$scope.booking.who = storage.bookingWho || [];
+							$scope.whoCount = $scope.booking.whoCount;
 						}
 					}
 					else if ($state.$current.name === 'booking-schedule') {
@@ -175,6 +178,7 @@ angular.module('rsl')
 							$scope.booking.who.push($scope.personsForMember[i]);
 						}
 					}
+					storage.bookingWho = $scope.booking.who;
 				};
 
 				$scope.$watch('arriveDetail', function (newValue) {

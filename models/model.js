@@ -107,7 +107,6 @@ function listChatMessages (dateSpec, searchString, callback) {
 		}
 	}
 
-	console.log(JSON.stringify(oQuery));
 	_db.collection('chatMessages', {safe : true},
 			function (err, collection) {
 				collection.find(oQuery, {sort:{"message.dt": 1}})
@@ -201,6 +200,35 @@ function listPermissions(oSort, callback) {
 					callback(null, persons);
 				}
 			});
+}
+
+
+function listLinks( callback) {
+	mongoose.model('Link').find()
+			.sort({"label": 1})
+			.lean()
+			.exec(function (err, links) {
+				if (err) {
+					callback(err, null);
+				} else {
+					callback(null, links);
+				}
+			});
+}
+
+function insertLink(oLink, callback) {
+	var Link = mongoose.model('Link');
+	var link = new Link(oLink);
+	link.save(function (err, result) {
+		callback(err, result);
+	})
+}
+
+
+function deleteLink(sId, callback) {
+	mongoose.model('Link').findOneAndRemove({_id : ObjectId(sId)}, function (err, result) {
+		callback(err, result);
+	});
 }
 /**
  * run only once for a new collection!
@@ -510,6 +538,21 @@ function updateMember(sId, oUpdate, callback) {
 	});
 }
 
+function listSMSNumbers(sAction, callback) {
+	var oQuery = {"smsActions": sAction};
+	_db.collection('persons', {safe : true},
+			function (err, collection) {
+				collection.find(oQuery, {"phone":1})
+						.toArray(function (err, data) {
+							if (err) {
+								callback(err, null);
+							} else {
+								callback(null, data);
+							}
+						});
+			});
+}
+
 /*
  function insertItem(callback) {
  var ItemModel = mongoose.model('Unit');
@@ -585,3 +628,7 @@ exports.setProperty = setProperty;
 exports.checkBookingOverlap = checkBookingOverlap;
 exports.insertChatMessage = insertChatMessage;
 exports.listChatMessages = listChatMessages;
+exports.listSMSNumbers = listSMSNumbers;
+exports.listLinks = listLinks;
+exports.insertLink = insertLink;
+exports.deleteLink = deleteLink;
