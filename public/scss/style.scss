@@ -220,23 +220,6 @@ div.login-input {
 	padding: 0.2em;
 }
 
-.view-content {
-	position: absolute;
-	top: 105px;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow-y: scroll;
-}
-
-.view-content.single-header {
-	top: 125px;
-}
-
-.view-content.double-header {
-	top: 12.5rem;
-}
-
 .horiz-menu {
 	list-style-type: none;
 	margin: 0;
@@ -292,10 +275,10 @@ div.login-input {
 	padding-left: 0.2em;
 }
 
-.person-list-heading button.new-user {
+.flex-v-header button.add-item {
 	height: 2.5em;
 	width: 4em;
-	margin-left: 20px;
+	margin-right: 20px;
 }
 .person-list-heading button > i.glyphicon.glyphicon-plus {
 	font-size: 25px;
@@ -714,6 +697,7 @@ div.res-sched-section.evening {
 	font-size: 12px;
 }
 
+.search-bar,
 .msg-search-bar {
 	height: 35px;
 	display: flex;
@@ -995,6 +979,10 @@ div.toolbar {
 			height: 3em;
 			width: 3em;
 		}
+	}
+	&.links {
+		font-size: 18px;
+		padding: 2px 0 2px 0;
 	}
 }
 

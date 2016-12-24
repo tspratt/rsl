@@ -7,6 +7,8 @@ angular.module('rsl')
 				$scope.vm = {};
 				$scope.vm.addLinkDetail = false;
 				$scope.vm.links = [];
+				$scope.vm.matchString = '';
+				$scope.vm.linksDisplay = [];
 				$scope.vm.label = '';
 				$scope.vm.url = '';
 				$scope.addLink = function () {
@@ -31,6 +33,7 @@ angular.module('rsl')
 					InfoData.listLinks()
 							.then (function (statusResponse) {
 								$scope.vm.links = statusResponse.data;
+								filterLinks();
 							})
 				}
 
@@ -40,6 +43,24 @@ angular.module('rsl')
 								listLinks();
 							});
 				};
+
+				$scope.$watch('vm.matchString', function (newValue, oldValue) {
+					if (newValue.toLowerCase() !== oldValue.toLowerCase()) {
+						filterLinks();
+					}
+				});
+
+				$scope.clearMatchString = function () {
+					$scope.vm.matchString = '';
+					filterLinks();
+				};
+
+				function filterLinks () {
+					$scope.vm.linksDisplay = $scope.vm.links.concat();
+					$scope.vm.linksDisplay = $scope.vm.linksDisplay.filter(function (link) {
+						return ((link.label + link.url).toLowerCase().indexOf($scope.vm.matchString.toLowerCase()) > -1);
+					});
+				}
 
 				function init () {
 					listLinks();

@@ -9,7 +9,6 @@ angular.module('rsl')
 				$scope.vm.chatMsgSend = '';
 				$scope.vm.matchString = '';
 				$scope.chatMessages = [];
-				$scope.vm.isFilterEmpty = false;
 				$scope.dtLastRead = $scope.storage.dtLastRead || new Date();
 				$scope.vm.dtFrom = moment().subtract('days', 30).toDate();
 				$scope.vm.monthPickOpen = false;

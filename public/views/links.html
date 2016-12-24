@@ -1,26 +1,35 @@
 <div>
   <div class="container v-box ">
-    <div class="v-box borders">
-      <div class="v-box borders">
-        <div class="form-group h-box left-align">
-          <button class="label"
-                  ng-click="vm.addLinkDetail=!vm.addLinkDetail">Add Link:</button>
-        </div>
-        <div class="form-group expander" ng-show="vm.addLinkDetail">
-          <div>
-            <input type="text" class="form-control" placeholder="Label"
-                   ng-model="vm.label">
-            <input type="text" class="form-control" placeholder="url"
-                   ng-model="vm.url">
-          </div>
-          <div class="toolbar">
-            <button class="tool"
-                    ng-click="addLink()">Add
-            </button>
-          </div>
-        </div>
+    <div class="flex-v-header">
+      <div class="search-bar">
+        <button class="add-item">
+          <i class="glyphicon glyphicon-plus person-header"
+             ng-click="vm.addLinkDetail=!vm.addLinkDetail"></i>
+        </button>
+        <input id="inputMatchString" type="text" class="match-string chat-msg-search"
+               placeholder="Filter links"
+               ng-model-options="{ debounce: 200 }"
+               ng-model="vm.matchString">
+        <i class="glyphicon glyphicon-remove-sign match-string" ng-click="clearMatchString()"></i>
       </div>
-      <div class="h-box" ng-repeat="link in vm.links">
+    </div>
+    <div class="form-group expander" ng-show="vm.addLinkDetail">
+      <div>
+        <input type="text" class="form-control" placeholder="Label"
+               ng-model="vm.label">
+        <input type="text" class="form-control" placeholder="url"
+               ng-model="vm.url">
+      </div>
+      <div class="toolbar">
+        <button class="tool"
+                ng-click="addLink()">Add
+        </button>
+      </div>
+    </div>
+
+
+    <div class="v-box">
+      <div class="h-box links" ng-repeat="link in vm.linksDisplay">
         <div new-window="{{link.url}}">{{link.label}}</div>
         <button ng-click="deleteLink(link)"><i class="glyphicon glyphicon-remove booking"></i> </button>
       </div>

@@ -1,14 +1,16 @@
-<div class="view-content">
-	<div class="person-list-heading">
-		<input id="inputMatchString" type="text" class="match-string"
-					 placeholder="Filter Persons for..."
-					 ng-model="vm.matchString"
-					 focus-me>
-		<i class="glyphicon glyphicon-remove-sign match-string" ng-click="clearMatchString()"></i>
-		<button class="new-user">
-			<i class="glyphicon glyphicon-plus person-header"
-				 ng-click="newPerson()"></i>
-		</button>
+<div >
+	<div class="flex-v-header">
+		<div class="search-bar">
+			<button class="add-item">
+				<i class="glyphicon glyphicon-plus person-header"
+					 ng-click="newPerson()"></i>
+			</button>
+			<input id="inputMatchString" type="text" class="match-string"
+						 placeholder="Filter Persons for..."
+						 ng-model="vm.matchString"
+						 focus-me>
+			<i class="glyphicon glyphicon-remove-sign match-string" ng-click="clearMatchString()"></i>
+		</div>
 	</div>
 	<div class="container">
 		<uib-accordion close-others="true">
