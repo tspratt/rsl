@@ -253,7 +253,8 @@ div.login-input > input[type=checkbox] {
   padding-right: 0.2em;
   padding-left: 0.2em;
 }
-.container.scrolling {
+
+.scrolling {
   height: 100%;
   overflow-y: scroll;
 }
@@ -490,6 +491,7 @@ button.plus {
   float: right;
   color: white;
   font-style: italic;
+  margin-right: 2px;
 }
 
 .day-label.today,
@@ -547,7 +549,6 @@ button.plus {
 }
 
 div.res-sched-section {
-  margin-left: 3px;
   margin-right: 0;
   margin-top: 0;
   margin-bottom: 0;
