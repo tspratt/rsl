@@ -17,7 +17,7 @@ function isAlive(callback) {
 
 }
 
-function authenticate (req, res,next) {
+function authenticate(req, res, next) {
 	var statusResponse;
 	var sToken = req.headers.authorization;
 	jwt.verify(sToken, 'gabboob', function (err, decoded) {
@@ -39,13 +39,13 @@ function loginUser(userid, password, callback) {
 		}
 		else {
 			if (!user) {
-				statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message : 'user not found'});
+				statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message: 'user not found'});
 			}
 			else {
 				if (utils.compareHash(password, user.salt, user.passwordHash)) {
 					delete user.passwordHash;                                           //remove these from the response
 					delete user.salt;
-					var token = jwt.sign({userid: userid}, 'gabboob',{expiresIn: '1d'});
+					var token = jwt.sign({userid: userid}, 'gabboob', {expiresIn: '1d'});
 					user.token = token;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
 					if (user.person.phone !== '770-633-1912') {
@@ -57,7 +57,7 @@ function loginUser(userid, password, callback) {
 					}
 				}
 				else {
-					statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message : 'incorrect password for ' + userid});
+					statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message: 'incorrect password for ' + userid});
 				}
 			}
 		}
@@ -65,8 +65,8 @@ function loginUser(userid, password, callback) {
 	});
 }
 
-function setPassword (userid, oldPassword, newPassword, callback) {
-	model.getUser({userid : userid}, function (err, user) {
+function setPassword(userid, oldPassword, newPassword, callback) {
+	model.getUser({userid: userid}, function (err, user) {
 		var statusResponse;
 		if (err) {
 			statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
@@ -74,13 +74,13 @@ function setPassword (userid, oldPassword, newPassword, callback) {
 		}
 		else {
 			if (!user) {
-				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'user not found'});
+				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message: 'user not found'});
 				callback(err, statusResponse);
 			}
 			else {
 				if (utils.compareHash(oldPassword, user.salt, user.passwordHash)) {
 					var newHash = utils.buildHash(newPassword, user.salt);
-					var oUpdate = {$set:{"passwordHash": newHash}};
+					var oUpdate = {$set: {"passwordHash": newHash}};
 					var sId = user._id.toString();
 					model.updateUser(sId, oUpdate, function (err, result) {
 						if (err) {
@@ -93,7 +93,7 @@ function setPassword (userid, oldPassword, newPassword, callback) {
 					});
 				}
 				else {
-					statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'incorrect original password for ' + userid});
+					statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message: 'incorrect original password for ' + userid});
 					callback(err, statusResponse);
 				}
 			}
@@ -101,9 +101,9 @@ function setPassword (userid, oldPassword, newPassword, callback) {
 	});
 }
 
-function resetPassword (userid, callback) {
+function resetPassword(userid, callback) {
 	var tempPassword = 'gabboob';
-	model.getUser({userid : userid}, function (err, user) {
+	model.getUser({userid: userid}, function (err, user) {
 		var statusResponse;
 		if (err) {
 			statusResponse = new StatusResponse('error', 'setPassword', '', 'business', err);
@@ -111,12 +111,12 @@ function resetPassword (userid, callback) {
 		}
 		else {
 			if (!user) {
-				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message : 'user not found'});
+				statusResponse = new StatusResponse('fail', 'setPassword', '', 'business', {message: 'user not found'});
 				callback(err, statusResponse);
 			}
 			else {
 				var newHash = utils.buildHash(tempPassword, user.salt);
-				var oUpdate = {$set:{"passwordHash": newHash}};
+				var oUpdate = {$set: {"passwordHash": newHash}};
 				var sId = user._id.toString();
 				model.updateUser(sId, oUpdate, function (err, result) {
 					if (err) {
@@ -456,78 +456,78 @@ function deleteLink(sId, callback) {
 }
 
 /*function updateResidenceSchedule (oBooking) {
-	var statusResponse;
-	var aResidenceSchedule = [];
-	var idxResidenceElement = -1;
-	var oResidenceElement;
-	var sResidenceType = '';
-	var dtFirstArrival = null;
-	var firstDaySec;
-	var dtArrive;			//full date time
-	var dtDepart;
-	var dArrive;			//H,M,S set to 0, for use in compare
-	var dDepart;
-	var dCur;
-	var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
-	var idxDaySection = 0;
-	var j = 0;
+ var statusResponse;
+ var aResidenceSchedule = [];
+ var idxResidenceElement = -1;
+ var oResidenceElement;
+ var sResidenceType = '';
+ var dtFirstArrival = null;
+ var firstDaySec;
+ var dtArrive;			//full date time
+ var dtDepart;
+ var dArrive;			//H,M,S set to 0, for use in compare
+ var dDepart;
+ var dCur;
+ var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
+ var idxDaySection = 0;
+ var j = 0;
 
-	var oResidence;
-	var memberCur = {};
+ var oResidence;
+ var memberCur = {};
 
-	oBooking.index = 0;
-	dtArrive = oBooking.arrive;
-	dtDepart = oBooking.depart;
-	dArrive = dtArrive.clone();
-	dArrive.setHours(0);
-	dArrive.setMinutes(0);
-	dDepart = dtDepart.clone();
-	dDepart.setHours(0);
-	dDepart.setMinutes(0);
-	if (true) {
-		idxDaySection = 0;
-		dtFirstArrival = dtArrive;
-		dCur = dtFirstArrival.clone();
-		dCur.setHours(0);
-		dCur.setMinutes(0);
-		firstDaySec = utils.getDaySection(dtArrive);
-		while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
-			oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-			oResidence.members = new EmptyMembersArray();
- 			oResidence.guestRoomRequestCount = oBooking.guestRoomRequestCount;
-			aResidenceSchedule.push(oResidence);
+ oBooking.index = 0;
+ dtArrive = oBooking.arrive;
+ dtDepart = oBooking.depart;
+ dArrive = dtArrive.clone();
+ dArrive.setHours(0);
+ dArrive.setMinutes(0);
+ dDepart = dtDepart.clone();
+ dDepart.setHours(0);
+ dDepart.setMinutes(0);
+ if (true) {
+ idxDaySection = 0;
+ dtFirstArrival = dtArrive;
+ dCur = dtFirstArrival.clone();
+ dCur.setHours(0);
+ dCur.setMinutes(0);
+ firstDaySec = utils.getDaySection(dtArrive);
+ while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
+ oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+ oResidence.members = new EmptyMembersArray();
+ oResidence.guestRoomRequestCount = oBooking.guestRoomRequestCount;
+ aResidenceSchedule.push(oResidence);
 
-			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-		}
-		sResidenceType = '';
-		while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
-			if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
-				sResidenceType = 'arrive';
-			}
-			else if (dCur.equals(dDepart) && idxDaySection === utils.getDaySection(dtDepart).index) {
-				sResidenceType = 'depart';
-			}
-			else {
-				sResidenceType = 'resident';
-			}
-			memberCur = new ResidentMember(oBooking, sResidenceType);
-			oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-			oResidence.members = new EmptyMembersArray();
-			oResidence.members[oBooking.member.order] = memberCur;
- 			oResidence.guestRoomRequestCount = oBooking.guestRoomRequestCount;
-			aResidenceSchedule.push(oResidence);
+ idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+ }
+ sResidenceType = '';
+ while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
+ if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
+ sResidenceType = 'arrive';
+ }
+ else if (dCur.equals(dDepart) && idxDaySection === utils.getDaySection(dtDepart).index) {
+ sResidenceType = 'depart';
+ }
+ else {
+ sResidenceType = 'resident';
+ }
+ memberCur = new ResidentMember(oBooking, sResidenceType);
+ oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+ oResidence.members = new EmptyMembersArray();
+ oResidence.members[oBooking.member.order] = memberCur;
+ oResidence.guestRoomRequestCount = oBooking.guestRoomRequestCount;
+ aResidenceSchedule.push(oResidence);
 
-			idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-			if (idxDaySection === 0) {																		//change days, reset vars
-				dCur = dCur.add(1).days();
-			}
-		}
-		model.saveResidenceSchedule(aResidenceSchedule, function (err, result) {
-			logger.info('here');
-		})
-	}
+ idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+ if (idxDaySection === 0) {																		//change days, reset vars
+ dCur = dCur.add(1).days();
+ }
+ }
+ model.saveResidenceSchedule(aResidenceSchedule, function (err, result) {
+ logger.info('here');
+ })
+ }
 
-}*/
+ }*/
 
 function getResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	model.getResidenceSchedule(dateSpec, callback);
@@ -553,7 +553,7 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	var dArrive;			//H,M,S set to 0, for use in compare
 	var dDepart;
 	var dCur;
-	var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
+	//var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
 	var idxDaySection = 0;
 	var j = 0;
 
@@ -566,6 +566,7 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 			statusResponse = new StatusResponse('error', 'listBookings', '', 'business', err);
 		}
 		else {
+			aResidenceSchedule = buildEmptySchedule(aBookings);
 			for (var i = 0; i < aBookings.length; i++) {
 				idxDaySection = 0;
 				oBooking = aBookings[i];
@@ -579,123 +580,51 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 				dDepart = dtDepart.clone();
 				dDepart.setHours(0);
 				dDepart.setMinutes(0);
-				if (dtFirstArrival === null) {																												//this is the first booking record
-					idxDaySection = 0;
-					dtFirstArrival = dtArrive;
-					dCur = dtFirstArrival.clone();
-					dCur.setHours(0);
-					dCur.setMinutes(0);
-					firstDaySec = utils.getDaySection(dtArrive);
-					while (firstDaySec.index !== idxDaySection) {	//create elements so that we always start with the night section
-						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-						oResidence.rooms = new EmptyRoomsArray();
-						aResidenceSchedule.push(oResidence);
-						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-					}
-					sResidenceType = '';
-					while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
-						if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
-							sResidenceType = 'arrive';
-						}
-						else if (dCur.equals(dDepart) && idxDaySection === utils.getDaySection(dtDepart).index) {
-							sResidenceType = 'depart';
-						}
-						else {
-							sResidenceType = 'resident';
-						}
-						roomCur = new ResidentRoom(oBooking, sResidenceType);
-						oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-						oResidence.rooms = new EmptyRoomsArray();
 
-						oResidence.rooms[oBooking.room.order] = roomCur;
-						oResidence.guestRoomRequestCount = guestRoomRequestCount;
-						aResidenceSchedule.push(oResidence);
-
-						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-						if (idxDaySection === 0) {																		//change days, reset vars
-							dCur = dCur.add(1).days();
-						}
+				dCur = dtArrive.clone();
+				dCur.setHours(0);
+				dCur.setMinutes(0);
+				idxDaySection = utils.getDaySection(dtArrive).index;
+				idxResidenceElement = aResidenceSchedule.length;
+				oResidenceElement = null;
+				for (j = 0; j < aResidenceSchedule.length; j++) {														//find the first overlapping residence record index
+					if (aResidenceSchedule[j].dt.equals(dCur)
+							&& aResidenceSchedule[j].daySection.index === idxDaySection) {
+						idxResidenceElement = j;
+						oResidenceElement = aResidenceSchedule[idxResidenceElement];
+						dCur = oResidenceElement.dt.clone();
+						break;
 					}
 				}
-				else {																																				//handle additional booking records
-					dCur = dtArrive.clone();
-					dCur.setHours(0);
-					dCur.setMinutes(0);
-					idxDaySection = utils.getDaySection(dtArrive).index;
-					idxResidenceElement = aResidenceSchedule.length;
-					oResidenceElement = null;
-					for (j = 0; j < aResidenceSchedule.length; j++) {														//find the first overlapping residence record index
-						if (aResidenceSchedule[j].dt.equals(dCur)
-								&& aResidenceSchedule[j].daySection.index === idxDaySection) {
-							idxResidenceElement = j;
+
+				sResidenceType = '';
+
+
+				//Start incrementing daySections and days (dCur), updating the appropriate room with a residence status.
+				if (oBooking.member.abr2 === 'AR') {
+					console.log('stop');
+				}
+				while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
+					if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
+						sResidenceType = 'arrive';
+					}
+					else if (dCur.equals(dDepart) && idxDaySection === utils.getDaySection(dtDepart).index) {
+						sResidenceType = 'depart';
+					}
+					else {
+						sResidenceType = 'resident';
+					}
+					roomCur = new ResidentRoom(oBooking, sResidenceType);
+
+					if (idxResidenceElement < aResidenceSchedule.length) {													//find an existing element
+						oResidenceElement.rooms[oBooking.room.order] = roomCur;
+						idxResidenceElement++;
+						if (aResidenceSchedule[idxResidenceElement]) {
+							idxDaySection = aResidenceSchedule[idxResidenceElement].daySection.index;
 							oResidenceElement = aResidenceSchedule[idxResidenceElement];
-							dCur = oResidenceElement.dt.clone();
-							break;
-						}
-					}
-
-					//If thereis no overlap, then create empty elements until we reach this booking's first residence element
-					if (!oResidenceElement) {
-						oResidenceElement = aResidenceSchedule[aResidenceSchedule.length - 1];	//get the last element in the schedule
-						dCur = oResidenceElement.dt.clone();
-						idxDaySection = oResidenceElement.daySection.index;
-						idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;					//increment daysection
-						if (idxDaySection === 0) {																							//if morning, increment day
-							dCur = dCur.add(1).days();
-						}
-
-						while (dCur.isBefore(dArrive) || (dCur.equals(dArrive) && idxDaySection < utils.getDaySection(dtArrive).index)) {
-							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-							oResidence.rooms = new EmptyRoomsArray();
-
-							aResidenceSchedule.push(oResidence);
-
-
-							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-							if (idxDaySection === 0) {																							//if morning, increment day
-								dCur = dCur.add(1).days();
-							}
-						}
-						idxResidenceElement = aResidenceSchedule.length;
-					}
-					sResidenceType = '';
-					while (dCur.isBefore(dDepart) || (dCur.equals(dDepart) && idxDaySection <= utils.getDaySection(dtDepart).index)) {
-						if (dCur.equals(dArrive) && idxDaySection === utils.getDaySection(dtArrive).index) {
-							sResidenceType = 'arrive';
-						}
-						else if (dCur.equals(dDepart) && idxDaySection === utils.getDaySection(dtDepart).index) {
-							sResidenceType = 'depart';
+							dCur = oResidenceElement.dt;
 						}
 						else {
-							sResidenceType = 'resident';
-						}
-						roomCur = new ResidentRoom(oBooking, sResidenceType);
-
-						if (idxResidenceElement < aResidenceSchedule.length) {													//find an existing element
-							oResidenceElement.rooms[oBooking.room.order] = roomCur;
-							idxResidenceElement++;
-							if (aResidenceSchedule[idxResidenceElement]) {
-								idxDaySection = aResidenceSchedule[idxResidenceElement].daySection.index;
-								oResidenceElement = aResidenceSchedule[idxResidenceElement];
-								dCur = oResidenceElement.dt;
-							}
-							else {
-								idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-								if (idxDaySection === 0) {																		//change days, reset vars
-									dCur = dCur.add(1).days();
-								}
-							}
-						}
-						else {																																	//need to start adding new residence elements
-							oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-							oResidence.rooms = new EmptyRoomsArray();
-
-							oResidence.rooms[oBooking.room.order] = roomCur;
-							oResidence.guestRoomRequestCount = guestRoomRequestCount;
-							aResidenceSchedule.push(oResidence);
-
-
-							idxResidenceElement++;
 							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
 							if (idxDaySection === 0) {																		//change days, reset vars
 								dCur = dCur.add(1).days();
@@ -703,41 +632,11 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 						}
 					}
 				}
-
-			}
-
-			/*Now add some empty day records*/
-			oResidenceElement = aResidenceSchedule[aResidenceSchedule.length - 1];	//get the last element in the schedule
-			if (oResidenceElement) {
-				dCur = oResidenceElement.dt.clone();
-				idxDaySection = oResidenceElement.daySection.index;
-				idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;					//increment daysection
-				if (idxDaySection === 0) {																							//if morning, increment day
-					dCur = dCur.add(1).days();
-				}
-			}
-			else {
-				dCur = new Date();
-				idxDaySection = 0;
-			}
-
-			var dtNext = dCur.clone().add(2).days();
-			while (dCur.isBefore(dtNext)) {
-				oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
-				oResidence.rooms = new EmptyRoomsArray();
-
-				aResidenceSchedule.push(oResidence);
-
-
-				idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-				if (idxDaySection === 0) {																							//if morning, increment day
-					dCur = dCur.add(1).days();
-				}
-			}
-			idxResidenceElement = aResidenceSchedule.length;
+			}//for (var i = 0; i < aBookings.length
 
 			statusResponse = new StatusResponse('success', 'listBookings', '', 'business', aResidenceSchedule);
 		}
+
 		model.saveResidenceSchedule(aResidenceSchedule, function (err, results) {
 			console.log('residence schedule UPDATED');
 			callback(err, statusResponse);
@@ -746,7 +645,44 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 	});
 }
 
-function saveResidenceElement (oResidence) {
+function buildEmptySchedule(aBookings) {
+	var aResidenceSchedule = [];
+	var dtFirstArrival;
+	var dtLastDepart = new Date(0);
+	var oResidence;
+	var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
+
+	if (!aBookings || aBookings.length === 0) {
+		dtFirstArrival = new Date();
+		dtLastDepart = new Date(dtFirstArrival).add(1).days();
+	}
+	else {
+		dtFirstArrival = new Date(aBookings[0].arrive);
+		aBookings.forEach(function (oBooking) {
+			if (oBooking.depart.isAfter(dtLastDepart)) {
+				dtLastDepart = oBooking.depart;
+			}
+		});
+		dtLastDepart = dtLastDepart.add(1).days();
+	}
+	var dCur = dtFirstArrival.clone();
+	dCur.setHours(0);
+	dCur.setMinutes(0);
+	var idxDaySection = 0;
+
+	while (dCur.isBefore(dtLastDepart)) {
+		oResidence = new DaySectionResidence(aResidenceSchedule.length, dCur, aSections[idxDaySection]);
+		oResidence.rooms = new EmptyRoomsArray();
+		aResidenceSchedule.push(oResidence);
+		idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+		if (idxDaySection === 0) {																							//if morning, increment day
+			dCur = dCur.add(1).days();
+		}
+	}
+	return aResidenceSchedule;
+}
+
+function saveResidenceElement(oResidence) {
 	model.saveResidence(oResidence, function (err, result) {
 		if (err) {
 			//statusResponse = new StatusResponse('error', 'bookRoom', '', 'business', err);
@@ -774,222 +710,242 @@ var DaySectionResidence = function (index, dt, daySection) {
 };
 
 /*
-var EmptyMembersArray = function () {
-	var aMembers = [];
-	var aMemberData = [
-		{member: {
-			"_id": "563c2368bad73ad4191aed0b",
-			"llcname": "Gertrude S. Richards",
-			"abr2": "TR",
-			"abr3": "GSR"
-		}},
-		{member:{
-			"_id": "563c2368bad73ad4191aed0a",
-			"llcname": "Charles P. Richards, Jr.",
-			"abr2": "CR",
-			"abr3": "CPR"
-		}},
-		{member: {
-			"_id": "563c2368bad73ad4191aed08",
-			"llcname": "Alice E. Richards",
-			"abr2": "AR",
-			"abr3": "AE"
-		}},
-		{member: {
-			"_id": "563c2368bad73ad4191aed0c",
-			"llcname": "Martha C. Richards",
-			"abr2": "MR",
-			"abr3": "MCR"
-		}},
-		{member:{
-			"_id": "563c2368bad73ad4191aed09",
-			"llcname": "Amy Ethridge",
-			"abr2": "AE",
-			"abr3": "AE"
-		}},
-		{member:{
-			"_id": "563c2368bad73ad4191aed11",
-			"llcname": "Nelson T. Spratt, III",
-			"abr2": "TS",
-			"abr3": "NTS"
-		}},
-		{member:{
-			"_id": "563c2368bad73ad4191aed0e",
-			"llcname": "Jacquelita J. Spratt",
-			"abr2": "LS",
-			"abr3": "JJS"
-		}},
-		{member:{
-			"_id": "563c2368bad73ad4191aed0d",
-			"llcname": "Gwendolyn Spratt",
-			"abr2": "GS",
-			"abr3": "GDS"
-		}},
-		{member: {
-			"_id": "563c2368bad73ad4191aed10",
-			"llcname": "Melinda S. McKinnon",
-			"abr2": "MS",
-			"abr3": "MSM"
-		}},
-		{member: {
-			"_id": "563c2368bad73ad4191aed0f",
-			"llcname": "Jorgine S. Gentry",
-			"abr2": "JG",
-			"abr3": "JSG"
-		}}
-	];
-	for (var i = 0; i < aMemberData.length; i++) {
-		aMembers.push(new ResidentMember(aMemberData[i]));
-	}
-	return aMembers;
-};
-*/
+ var EmptyMembersArray = function () {
+ var aMembers = [];
+ var aMemberData = [
+ {member: {
+ "_id": "563c2368bad73ad4191aed0b",
+ "llcname": "Gertrude S. Richards",
+ "abr2": "TR",
+ "abr3": "GSR"
+ }},
+ {member:{
+ "_id": "563c2368bad73ad4191aed0a",
+ "llcname": "Charles P. Richards, Jr.",
+ "abr2": "CR",
+ "abr3": "CPR"
+ }},
+ {member: {
+ "_id": "563c2368bad73ad4191aed08",
+ "llcname": "Alice E. Richards",
+ "abr2": "AR",
+ "abr3": "AE"
+ }},
+ {member: {
+ "_id": "563c2368bad73ad4191aed0c",
+ "llcname": "Martha C. Richards",
+ "abr2": "MR",
+ "abr3": "MCR"
+ }},
+ {member:{
+ "_id": "563c2368bad73ad4191aed09",
+ "llcname": "Amy Ethridge",
+ "abr2": "AE",
+ "abr3": "AE"
+ }},
+ {member:{
+ "_id": "563c2368bad73ad4191aed11",
+ "llcname": "Nelson T. Spratt, III",
+ "abr2": "TS",
+ "abr3": "NTS"
+ }},
+ {member:{
+ "_id": "563c2368bad73ad4191aed0e",
+ "llcname": "Jacquelita J. Spratt",
+ "abr2": "LS",
+ "abr3": "JJS"
+ }},
+ {member:{
+ "_id": "563c2368bad73ad4191aed0d",
+ "llcname": "Gwendolyn Spratt",
+ "abr2": "GS",
+ "abr3": "GDS"
+ }},
+ {member: {
+ "_id": "563c2368bad73ad4191aed10",
+ "llcname": "Melinda S. McKinnon",
+ "abr2": "MS",
+ "abr3": "MSM"
+ }},
+ {member: {
+ "_id": "563c2368bad73ad4191aed0f",
+ "llcname": "Jorgine S. Gentry",
+ "abr2": "JG",
+ "abr3": "JSG"
+ }}
+ ];
+ for (var i = 0; i < aMemberData.length; i++) {
+ aMembers.push(new ResidentMember(aMemberData[i]));
+ }
+ return aMembers;
+ };
+ */
 
 //TODO: make this function dynamic from DB.
 var EmptyRoomsArray = function () {
 	var aRooms = [];
 	var aRoomData = [
-		{room: {
-			"_id": "564b6721cd6016d444f89427",
-			"defaultmember": {"id": "563c2368bad73ad4191aed0b", "abr2": "TR"},
-			"order": 0,
-			"number": "11",
-			"unit": "A",
-			"description": "Corner, back, HCA",
-			"capacity": 2,
-			"expandable": 1,
-			"displayName": "Lakemont A11",
-			"images": [
-				"images/rooms/lakemonta11-1.jpg"
-			],
-			"member": {}
-		}},
-		{room:{
-			"_id": "564b6504a334a3844463d1dd",
-			"defaultmember": {"id": "563c2368bad73ad4191aed0a", "abr2": "CR"},
-			"order": 1,
-			"number": "22",
-			"unit": "A",
-			"description": "Corner, lake",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont A22",
-			"images": [
-				"images/rooms/lakemonta22-1.jpg"
-			]
-		}},
-		{room: {
-			"_id": "564b65b0ac59dc8844320d9d",
-			"defaultmember": {"id": "563c2368bad73ad4191aed08", "abr2": "AR"},
-			"order": 2,
-			"number": "23",
-			"unit": "A",
-			"description": "Corner, back",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont A23",
-			"images": [
-				"images/rooms/lakemonta23-1.jpg"
-			]
-		}},
-		{room: {
-			"_id": "564b64e46d33b1544559562b",
-			"defaultmember": {"id": "563c2368bad73ad4191aed0c", "abr2": "MR"},
-			"order": 3,
-			"number": "21",
-			"unit": "A",
-			"description": "Center, lake",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont A21",
-			"images": [
-				"images/rooms/lakemonta21-1.jpg"
-			]
-		}},
-		{room:{
-			"_id": "564b65ec80fba5103bfc4954",
-			"defaultmember": {"id": "563c2368bad73ad4191aed09", "abr2": "AE"},
-			"order": 4,
-			"number": "24",
-			"unit": "A",
-			"description": "Center, back",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont A24",
-			"images": [
-				"images/rooms/lakemonta24-1.jpg"
-			]
-		}},
-		{room:{
-			"_id": "564b61fd040132ec46e5cf79",
-			"defaultmember": {"id": "563c2368bad73ad4191aed11", "abr2": "TS"},
-			"order": 5,
-			"number": "21",
-			"unit": "B",
-			"description": "Center, lake",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont B21",
-			"images": [
-				"images/rooms/lakemontb21-1.jpg"
-			]
-		}},
-		{room:{
-			"_id": "564b67488011bbec3c2f2c8b",
-			"defaultmember": {"id": "563c2368bad73ad4191aed0e", "abr2": "JS"},
-			"order": 6,
-			"number": "11",
-			"unit": "B",
-			"description": "Corner, back, HCA",
-			"capacity": 2,
-			"expandable": 1,
-			"displayName": "Lakemont B11",
-			"images": [
-				"images/rooms/lakemontb11-1.jpg"
-			]
-		}},
-		{room:{
-			"_id": "564b653a26c164dc46485a07",
-			"defaultmember": {"id": "563c2368bad73ad4191aed0d", "abr2": "GS"},
-			"order": 7,
-			"number": "22",
-			"unit": "B",
-			"description": "Corner, lake",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont B22",
-			"images": [
-				"images/rooms/lakemontB22-1.jpg"
-			]
-		}},
-		{room: {
-			"_id": "564b656fc237cae83cedf336",
-			"defaultmember": {"id": "563c2368bad73ad4191aed10", "abr2": "MM"},
-			"order": 8,
-			"number": "23",
-			"unit": "B",
-			"description": "Corner, back",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont B23",
-			"images": [
-				"images/rooms/lakemontB23-1.jpg"
-			]
-		}},
-		{room: {
-			"_id": "564b661754257f1446c32aa3",
-			"defaultmember": {"id": "563c2368bad73ad4191aed0f", "abr2": "JG"},
-			"order": 9,
-			"number": "24",
-			"unit": "B",
-			"description": "Center, back",
-			"capacity": 2,
-			"expandable": 0,
-			"displayName": "Lakemont B24",
-			"images": [
-				"images/rooms/lakemontb24-1.jpg"
-			]
-		}}
+		{
+			room: {
+				"_id": "564b6721cd6016d444f89427",
+				"defaultmember": {"id": "563c2368bad73ad4191aed0b", "abr2": "TR"},
+				"order": 0,
+				"number": "11",
+				"unit": "A",
+				"description": "Corner, back, HCA",
+				"capacity": 2,
+				"expandable": 1,
+				"displayName": "Lakemont A11",
+				"images": [
+					"images/rooms/lakemonta11-1.jpg"
+				],
+				"member": {}
+			}
+		},
+		{
+			room: {
+				"_id": "564b6504a334a3844463d1dd",
+				"defaultmember": {"id": "563c2368bad73ad4191aed0a", "abr2": "CR"},
+				"order": 1,
+				"number": "22",
+				"unit": "A",
+				"description": "Corner, lake",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont A22",
+				"images": [
+					"images/rooms/lakemonta22-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b65b0ac59dc8844320d9d",
+				"defaultmember": {"id": "563c2368bad73ad4191aed08", "abr2": "AR"},
+				"order": 2,
+				"number": "23",
+				"unit": "A",
+				"description": "Corner, back",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont A23",
+				"images": [
+					"images/rooms/lakemonta23-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b64e46d33b1544559562b",
+				"defaultmember": {"id": "563c2368bad73ad4191aed0c", "abr2": "MR"},
+				"order": 3,
+				"number": "21",
+				"unit": "A",
+				"description": "Center, lake",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont A21",
+				"images": [
+					"images/rooms/lakemonta21-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b65ec80fba5103bfc4954",
+				"defaultmember": {"id": "563c2368bad73ad4191aed09", "abr2": "AE"},
+				"order": 4,
+				"number": "24",
+				"unit": "A",
+				"description": "Center, back",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont A24",
+				"images": [
+					"images/rooms/lakemonta24-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b61fd040132ec46e5cf79",
+				"defaultmember": {"id": "563c2368bad73ad4191aed11", "abr2": "TS"},
+				"order": 5,
+				"number": "21",
+				"unit": "B",
+				"description": "Center, lake",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont B21",
+				"images": [
+					"images/rooms/lakemontb21-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b67488011bbec3c2f2c8b",
+				"defaultmember": {"id": "563c2368bad73ad4191aed0e", "abr2": "JS"},
+				"order": 6,
+				"number": "11",
+				"unit": "B",
+				"description": "Corner, back, HCA",
+				"capacity": 2,
+				"expandable": 1,
+				"displayName": "Lakemont B11",
+				"images": [
+					"images/rooms/lakemontb11-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b653a26c164dc46485a07",
+				"defaultmember": {"id": "563c2368bad73ad4191aed0d", "abr2": "GS"},
+				"order": 7,
+				"number": "22",
+				"unit": "B",
+				"description": "Corner, lake",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont B22",
+				"images": [
+					"images/rooms/lakemontB22-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b656fc237cae83cedf336",
+				"defaultmember": {"id": "563c2368bad73ad4191aed10", "abr2": "MM"},
+				"order": 8,
+				"number": "23",
+				"unit": "B",
+				"description": "Corner, back",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont B23",
+				"images": [
+					"images/rooms/lakemontB23-1.jpg"
+				]
+			}
+		},
+		{
+			room: {
+				"_id": "564b661754257f1446c32aa3",
+				"defaultmember": {"id": "563c2368bad73ad4191aed0f", "abr2": "JG"},
+				"order": 9,
+				"number": "24",
+				"unit": "B",
+				"description": "Center, back",
+				"capacity": 2,
+				"expandable": 0,
+				"displayName": "Lakemont B24",
+				"images": [
+					"images/rooms/lakemontb24-1.jpg"
+				]
+			}
+		}
 	];
 	for (var i = 0; i < aRoomData.length; i++) {
 		aRooms.push(new ResidentRoom(aRoomData[i]));
@@ -1002,12 +958,12 @@ var ResidentRoom = function (oBooking, residenceType) {
 	this.bookingid = oBooking._id;
 	this.room = (oBooking) ? oBooking.room : null;
 	this.residenceType = residenceType || '';
-	this.isGuest = (oBooking.guestPersonId)? (oBooking.guestPersonId.length > 0): false;
+	this.isGuest = (oBooking.guestPersonId) ? (oBooking.guestPersonId.length > 0) : false;
 	var iTmp = 0;
 	if (this.residenceType === 'arrive') {
 		for (var i = 0; i < oBooking.guestRoomRequests.length; i++) {
-			if(oBooking.guestRoomRequests[i].roomId.length === 0) {
-				iTmp ++;
+			if (oBooking.guestRoomRequests[i].roomId.length === 0) {
+				iTmp++;
 			}
 		}
 		this.guestRoomRequestCount = iTmp;
