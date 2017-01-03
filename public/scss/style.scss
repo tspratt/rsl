@@ -126,7 +126,7 @@ div.login-input > input[type="text"], input[type="password"] {
 
 input.match-string {
 	display: inline;
-	width: 350px;
+	flex-grow: 2;
 	font-weight: bold;
 }
 
@@ -259,9 +259,16 @@ div.login-input {
 	/*we never want this element to float*/
 	padding-right: 0.2em;
 	padding-left: 0.2em;
+	width: 100%;
 	&.scrolling {
-		height:100%;
-		overflow-y:scroll;
+		height: calc(100% - 115px);
+		overflow-y: scroll;
+		&.single-header {
+			height: calc(100% - 130px);
+		}
+		&.double-header {
+			height: calc(100% - 130px);
+		}
 	}
 }
 
@@ -718,7 +725,6 @@ input.chat-msg-search {
 }
 
 i.glyphicon-remove-sign.match-string {
-	padding-right: 15px;
 	font-size: 25px;
 	color: slategray;
 }
@@ -792,7 +798,7 @@ div.empty-msg-list {
 }
 
 .full-height-view {
-	height: calc(100% - 115px);
+	height: calc(100% - 90px);
 	width: 100%;
 }
 
