@@ -730,7 +730,7 @@ i.glyphicon-calendar.month-picker {
   color: slategray;
 }
 
-.booking-list-item i.glyphicon-remove.booking {
+i.glyphicon-remove.booking {
   font-size: 25px;
   color: red;
 }
