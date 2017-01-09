@@ -1,7 +1,10 @@
 <div>
   <div class="container v-box ">
     <div class="settings-section borders">
-      <span class="setting-label">Change Password:</span><input type="text" ng-model="vm.newPassword" placeholder="Enter pwd, press Set"><button ng-click="setPassword()">Set</button>
+      <span class="setting-label">Change Password:</span>
+      <input type="text" class="full-width"
+             ng-model="vm.newPassword" placeholder="Enter pwd, press Set">
+      <button ng-click="setPassword()">Set</button>
     </div>
     <div class="v-box borders">
       <div class="h-box">
@@ -24,29 +27,37 @@
                ng-model="vm.self.phone">
       </div>
 
+      <div class="v-box borders">
+        <span class="setting-label">Send Text Notification when:</span>
+        <div ng-repeat="(action, sms) in vm.self.smsActions track by action">
+          <input type="checkbox"
+                 ng-model="sms.notify">
+          <span ng-bind="sms.label"></span>
+        </div>
+      </div>
+
       <div class="toolbar">
         <button class="tool"
                 ng-click="updateSelf(vm.self)">Save Changes
         </button>
       </div>
 
-      <div class="v-box borders">
-        <span class="setting-label">Preferences</span>
-        <div>
-          <input type="checkbox"
-                 ng-model="vm.self.preferences.rememberMe"
-                 ng-click="vm.setPreference('defaultPrevState',vm.self.preferences.rememberMe)">
-          Remember me on this device
-        </div>
-        <div >
-          <input type="checkbox"
-                 ng-model="vm.self.preferences.defaultPrevState"
-                 ng-click="vm.setPreference('defaultPrevState',vm.self.preferences.defaultPrevState)">
-          Open previous view on start
-        </div>
+    </div>
+    <div class="v-box borders">
+      <span class="setting-label">Preferences</span>
+      <div>
+        <input type="checkbox"
+               ng-model="vm.self.preferences.rememberMe"
+               ng-click="vm.setPreference('defaultPrevState',vm.self.preferences.rememberMe)">
+        Remember me on this device
+      </div>
+      <div >
+        <input type="checkbox"
+               ng-model="vm.self.preferences.defaultPrevState"
+               ng-click="vm.setPreference('defaultPrevState',vm.self.preferences.defaultPrevState)">
+        Open previous view on start
       </div>
     </div>
-
   </div>
 
 </div>

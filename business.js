@@ -48,6 +48,9 @@ function loginUser(userid, password, callback) {
 					var token = jwt.sign({userid: userid}, 'gabboob', {expiresIn: '1d'});
 					user.token = token;
 					statusResponse = new StatusResponse('success', 'loginUser', '', 'business', user);
+
+					smsClient.sendActionMessages('login_app', userid, function (){});
+					/*
 					if (user.person.phone !== '770-633-1912') {
 						smsClient.sendMessage('770-633-1912', '\ndmin Notification:\nUser Login:' + userid, function (err, statusResponse) {
 							if (statusResponse.status !== 'success') {
@@ -55,6 +58,7 @@ function loginUser(userid, password, callback) {
 							}
 						});
 					}
+					*/
 				}
 				else {
 					statusResponse = new StatusResponse('fail', 'loginUser', '', 'business', {message: 'incorrect password for ' + userid});
@@ -223,15 +227,16 @@ function bookRoom(sAction, oBooking, callback) {
 		model.insertBooking(oBooking, function (err, result) {
 			if (err) {
 				statusResponse = new StatusResponse('error', 'bookRoom', '', 'business', err);
+				callback(err, statusResponse);
 			}
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
-				//model.deleteBooking(result._doc._id);
-				//updateResidenceSchedule(result._doc);
+				rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+					callback(err, statusResponse);
+				});
+				smsClient.sendActionMessages('add_booking', oBooking.member, function (){});      //model.memberLookup[oBooking.member].firstname
 			}
-			rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
-				callback(err, statusResponse);
-			});
+
 
 		});
 	}
@@ -240,14 +245,16 @@ function bookRoom(sAction, oBooking, callback) {
 		model.updateBooking(bookingId, oBooking, function (err, result) {
 			if (err) {
 				statusResponse = new StatusResponse('error', 'bookRoom', '', 'business', err);
+				callback(err, statusResponse);
 			}
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
+				rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+					callback(err, statusResponse);
+				});
+				smsClient.sendActionMessages('edit_booking', oBooking.member, function (){});      //model.memberLookup[oBooking.member].firstname
 			}
 
-			rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
-				callback(err, statusResponse);
-			});
 		});
 
 	}
@@ -277,10 +284,11 @@ function deleteBooking(sId, callback) {
 		}
 		else {
 			statusResponse = new StatusResponse('success', 'deleteBooking', '', 'business', result);
+			rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+				callback(err, statusResponse);
+			});
+			smsClient.sendActionMessages('delete_booking', 'a member', function (){});      //model.memberLookup[oBooking.member].firstname
 		}
-		rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
-			callback(err, statusResponse);
-		});
 	});
 }
 

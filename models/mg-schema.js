@@ -21,11 +21,9 @@ var mgSchema = {
 		address: String,
 		phone: String,
 		email: String,
-		role: {
-			type: Schema.ObjectId,
-			ref: 'Role'
-		},
-		permissions: [String]
+		role: String,
+		permissions: [String],
+		smsActions: Object
 	}, {collection: 'persons'})
 			.plugin(deepPopulate, {}),
 	Member: new Schema({

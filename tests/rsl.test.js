@@ -67,7 +67,7 @@ describe('Setup tests', function () {
 			}
 	);
 
-	describe.only('Test Link functionality',
+	describe('Test Link functionality',
 			function () {
 				var iLinkCount = 0;
 				var sIdTmp = '';
@@ -142,9 +142,10 @@ describe('Setup tests', function () {
 	);
 
 
-	describe('Test SMS Messaging',
+	describe.only('Test SMS Messaging',
 			function () {
-				it('should send a text to 7706331912', function (done) {
+				var iTmp = 0;
+				it.skip('should send a text to 7706331912', function (done) {
 					var toNumber = '7706331912';
 					smsClient.sendMessage(toNumber, 'this is a test message from the RSL application',
 							function (err, statusResponse) {
@@ -158,7 +159,7 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-				it('should send a text to 7706331912 and 11', function (done) {
+				it.skip('should send a text to 7706331912 and 11', function (done) {
 					var toNumbers = ['7706331912','7706331911'];
 					smsClient.sendMessages(toNumbers, 'this is a test message from the RSL application, sent to ' + toNumbers.join(' | '),
 							function (err, statusResponse) {
@@ -180,20 +181,21 @@ describe('Setup tests', function () {
 									expect(aData).to.exist;
 									expect(aData).to.be.an.array;
 									expect(aData.length).to.be.greaterThan(0);
+									iTmp = aData.length;
 								});
 							}
 					);
 				});
 				it('should send a text to persons with SMS action_login_app', function (done) {
-					var sAction = 'login_app';
-					var userid = 'Tracy';
+					var sAction = 'send_chat';
+					var userid = 'TracyTest';
 					smsClient.sendActionMessages(sAction, userid,
 							function (err, statusResponse) {
 								asyncAssertionCheck(done, function () {
 									expect(err).to.not.exist;
 									expect(statusResponse.data).to.exist;
 									expect(statusResponse.data.responses).to.exist;
-									expect(statusResponse.data.responses.length).to.equal(1);
+									expect(statusResponse.data.responses.length).to.equal(iTmp);
 								});
 							}
 					);

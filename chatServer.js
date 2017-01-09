@@ -7,6 +7,7 @@ var io;
 var logger = require('winston');
 var model = require('./models/model');
 var appConstants = require('./lib/appConstants');
+var smsClient = require('./smsClient');
 
 var clients = {};
 
@@ -20,7 +21,6 @@ var handleMessage = function (socket, oData) {
 	switch (oData.msgType) {
 		case 'info':
 			logger.info('msgType: ', oData.msgType, ', user:', oData.user.member.llcname);
-
 			break;
 		case 'chat':
 			logger.info('msgType: ', oData.msgType, 'msg:', oData.message.msg);
@@ -30,6 +30,7 @@ var handleMessage = function (socket, oData) {
 				}
 				else {
 					socket.broadcast.emit('chat-msg', {message: oData.message, socketid: socket.id});
+					smsClient.sendActionMessages('send_chat', oData.message.person.firstname, function (){});
 				}
 			});
 			break;

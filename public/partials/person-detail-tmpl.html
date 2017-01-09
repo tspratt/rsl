@@ -23,7 +23,7 @@
 		<label class="control-label" for="role">Role:</label>
 		<select id="role" class="form-control"
 						ng-model="person.role"
-						ng-options="role._id as role.name for role in vm.auth.roles"></select>
+						ng-options="role for role in vm.auth.roles"></select>
 	</div>
 
 	<label class="control-label" for="permissions">Permisions:</label>

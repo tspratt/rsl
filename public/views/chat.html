@@ -51,15 +51,14 @@
 										required
 										ng-model="vm.chatMsgSend"></textarea>
 					<br>
-					<div style="float: left">
-						<label>Font:</label><br>
-						<div rn-stepper ng-model="vm.msgFontSize" min="8" max="20"></div>
-					</div>
-
 					<button class="chat-msg"
 									ng-enable="vm.chatMsgSend.length>0"
 									ng-click="sendChatMessage()">SEND
 					</button>
+					<div class="chat-font-set">
+						<label>Font:</label><br>
+						<div rn-stepper ng-model="vm.msgFontSize" min="8" max="20"></div>
+					</div>
 				</div>
 			</form>
 		</div>

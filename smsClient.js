@@ -16,7 +16,7 @@ function sendActionMessages (sAction, userid, callback) {
 	var statusResponse;
 	var responses = [];
 	var isError = false;
-	var sMessage = userid + ' performed action: ' + sAction;;
+	var sMessage = userid + ' performed action: ' + sAction;
 	model.listSMSNumbers(sAction, function (err, aData) {
 		if (!err) {
 			var toNumberList = aData.map(function(element){

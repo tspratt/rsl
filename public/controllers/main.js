@@ -160,8 +160,8 @@ angular.module('rsl')
       function getRoles () {
         PersonData.getRoles()
             .then (function (res) {
-              $scope.roles = res.data.data;
-              appData.auth.roles = res.data.data;
+              $scope.roles = res.data.data.map((role) => {return role.name});
+              appData.auth.roles = $scope.roles;
             });
       }
 

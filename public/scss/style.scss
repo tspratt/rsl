@@ -99,7 +99,7 @@ button.main-action {
 }
 
 button.chat-msg {
-	float: right;
+	float: left;
 	height: 3.0em;
 	width: 6.0em;
 	font-size: 1.2em;
@@ -393,7 +393,13 @@ div.module-menu {
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
+	& > div.menu-scroller {
+		overflow-x: auto;
+		overflow-y: hidden;
+	}
 }
+
+
 
 button.menu-nav {
 	width: 20px;
@@ -773,6 +779,10 @@ div.col-chat-msg {
 	flex-basis: 100%;
 }
 
+div.chat-font-set {
+	float: right;
+}
+
 div.col-msg-info {
 	flex-basis: 5.0em;
 	text-align: right;
@@ -870,14 +880,17 @@ form.chat-msg-footer {
 	&.borders {
 		border: $box-border;
 	}
+	& .setting-label {
+		flex-grow: 0;
+		flex-shrink: 0;
+		text-align: right;
+	}
+	& input.full-width {
+		flex-grow: 1;
+	}
 }
 
-.settings-section .setting-label {
-	flex-grow: 0;
-	flex-shrink: 0;
-	flex-basis: 35%;
-	text-align: right;
-}
+.settings-section
 
 .datepicker.booking {
 	margin-top: 5px;
@@ -888,6 +901,8 @@ form.chat-msg-footer {
 .datepicker.booking > table {
 	width: 100%;
 	height: 100%;
+	max-height: 200px;
+	max-width: 300px;
 }
 
 /***** direectives *************/

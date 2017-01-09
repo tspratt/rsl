@@ -25,6 +25,9 @@ var mgDb;
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({});
 
+var memberLookup = null;
+var roomLookup = null;
+
 
 function initDb(uri, callback) {
 	logger.info('model.initDb: uri', uri);
@@ -56,6 +59,7 @@ function initMgDb(uri, callback) {
 	mgDb.once('open', function () {
 		logger.info('Mongoose connected');
 		initMgModels();
+		initLookups();
 		callback(null, {});
 	});
 }
@@ -64,7 +68,26 @@ function initMgModels() {
 	for (var schema in mgSchema) {
 		mongoose.model(schema, mgSchema[schema]);
 	}
+}
 
+function initLookups () {
+	if (!memberLookup) {
+		memberLookup = {};
+		listMembers(null, null, null, function (err, data) {
+			data.forEach(function (member) {
+				memberLookup[member._id.toString()] = member;
+			});
+			console.log('here');
+		})
+	}
+	if (!roomLookup) {
+		roomLookup = {};
+		listRooms(null, null, null, function (err, data) {
+			data.forEach(function (room) {
+				roomLookup[room._id.toString()] = room;
+			});
+		})
+	}
 }
 
 function insertChatMessage (message, callback) {
@@ -539,7 +562,8 @@ function updateMember(sId, oUpdate, callback) {
 }
 
 function listSMSNumbers(sAction, callback) {
-	var oQuery = {"smsActions": sAction};
+	var sQuery = '{"smsActions.' + sAction + '.notify": true}';
+	var oQuery = JSON.parse(sQuery);
 	_db.collection('persons', {safe : true},
 			function (err, collection) {
 				collection.find(oQuery, {"phone":1})
@@ -632,3 +656,5 @@ exports.listSMSNumbers = listSMSNumbers;
 exports.listLinks = listLinks;
 exports.insertLink = insertLink;
 exports.deleteLink = deleteLink;
+exports.memberLookup = memberLookup;
+exports.roomLookup = roomLookup;
