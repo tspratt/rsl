@@ -382,15 +382,10 @@ div.module-menu {
   overflow: hidden;
   height: 3.0em;
   width: 100%;
-  max-width: 400px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-}
-div.module-menu > div.menu-scroller {
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 
 button.menu-nav {
@@ -401,7 +396,7 @@ button.menu-nav {
 }
 
 div.menu-buttons {
-  overflow-x: scroll;
+  overflow-x: auto;
   height: 100%;
   width: 100%;
   display: flex;

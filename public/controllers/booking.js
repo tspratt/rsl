@@ -11,7 +11,7 @@ angular.module('rsl')
 				$scope.bookMember = appData.loggedInUser.person.member;
 				$scope.bookMemberId = appData.loggedInUser.person.member._id;
 				$scope.selectedRoom = null;
-				$scope.isoToday = moment().toISOString().substr(0, 10);
+				$scope.isoToday = moment().format('YYYY-MM-DD');
 				$scope.dtArrive = null;
 				$scope.dtDepart = null;
 				$scope.booking.who = [];
