@@ -142,10 +142,10 @@ describe('Setup tests', function () {
 	);
 
 
-	describe.only('Test SMS Messaging',
+	describe.skip('Test SMS Messaging',
 			function () {
 				var iTmp = 0;
-				it.skip('should send a text to 7706331912', function (done) {
+				it('should send a text to 7706331912', function (done) {
 					var toNumber = '7706331912';
 					smsClient.sendMessage(toNumber, 'this is a test message from the RSL application',
 							function (err, statusResponse) {
@@ -159,7 +159,7 @@ describe('Setup tests', function () {
 							}
 					);
 				});
-				it.skip('should send a text to 7706331912 and 11', function (done) {
+				it('should send a text to 7706331912 and 11', function (done) {
 					var toNumbers = ['7706331912','7706331911'];
 					smsClient.sendMessages(toNumbers, 'this is a test message from the RSL application, sent to ' + toNumbers.join(' | '),
 							function (err, statusResponse) {
@@ -341,7 +341,7 @@ describe('Setup tests', function () {
 					);
 				});
 
-				it.skip('should return a page of persons, filtered by branch=Spratt', function (done) {
+				it('should return a page of persons, filtered by branch=Spratt', function (done) {
 					var filterSpec = {field: 'branchid', value: 'Spratt'};
 					var pageSpec = {pageLength: 50, pageNum: 0};
 					business.listPersons(null, filterSpec, pageSpec, null,
@@ -417,7 +417,7 @@ describe('Setup tests', function () {
 				});
 
 				/***************** dev only! *************************
-				 it.skip('should update multiple person documents', function (done) {
+				 it('should update multiple person documents', function (done) {
 					var id = '563c1e35ef69c27818dd916d';
 					var oQuery ={"memberrelationship":"friend"};
 					var oUpdate = {role: 'user', "permissions": ["view_persons","view_bookings","view_schedule","view_book"]};
@@ -509,7 +509,7 @@ describe('Setup tests', function () {
 				});
 			}
 	);
-	describe('Test Booking endpoints (business)',
+	describe.only('Test Booking endpoints (business)',
 			function () {
 				var aBookings;
 				var booking;
@@ -683,7 +683,7 @@ describe('Setup tests', function () {
 	);
 
 	/*
-	 describe.skip('insert item data',
+	 describe('insert item data',
 	 function () {
 	 it('should return an schema object', function (done) {
 	 model.insertItem(
@@ -719,7 +719,7 @@ describe('Setup tests', function () {
 
 	 */
 	/*
-	 describe.skip('insert item data',
+	 describe('insert item data',
 	 function () {
 	 it('should return an schema object', function (done) {
 	 model.createUsers(

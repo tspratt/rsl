@@ -59,7 +59,8 @@ angular
 					.state('booking-schedule', {
 						url: '/booking-schedule',
 						templateUrl: '/views/booking-schedule.html',
-						controller: 'bookingCtrl'
+						controller: 'bookingCtrl',
+						params: {forceRebuild: false}
 					})
 					.state('booking-list', {
 						url: '/booking-list',

@@ -100,8 +100,8 @@ var mgSchema = {
 					note:String}
 				],
 		guestRoomRequestCount: Number,
-		arrive: Date,
-		depart: Date,
+		arrive: String,
+		depart: String,
 		note: String,
 		guestPersonId: String,
 	}, {collection: 'bookings'})

@@ -231,9 +231,10 @@ function bookRoom(sAction, oBooking, callback) {
 			}
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
-				rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
-					callback(err, statusResponse);
-				});
+				callback(err, statusResponse);
+				// rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+				//
+				// });
 				smsClient.sendActionMessages('add_booking', oBooking.member, function (){});      //model.memberLookup[oBooking.member].firstname
 			}
 
@@ -249,9 +250,10 @@ function bookRoom(sAction, oBooking, callback) {
 			}
 			else {
 				statusResponse = new StatusResponse('success', 'bookRoom', '', 'business', result);
-				rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
-					callback(err, statusResponse);
-				});
+				callback(err, statusResponse);
+				// rebuildResidenceSchedule(null, {from: new Date().add(-7).days()}, null, function (err, result) {
+				//
+				// });
 				smsClient.sendActionMessages('edit_booking', oBooking.member, function (){});      //model.memberLookup[oBooking.member].firstname
 			}
 
@@ -580,8 +582,8 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 				oBooking = aBookings[i];
 				oBooking.index = i;
 				guestRoomRequestCount += oBooking.guestRoomRequestCount;
-				dtArrive = oBooking.arrive;
-				dtDepart = oBooking.depart;
+				dtArrive = new Date(oBooking.arrive);
+				dtDepart = new Date(oBooking.depart);
 				dArrive = dtArrive.clone();
 				dArrive.setHours(0);
 				dArrive.setMinutes(0);
@@ -593,9 +595,9 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 				dCur.setHours(0);
 				dCur.setMinutes(0);
 				idxDaySection = utils.getDaySection(dtArrive).index;
-				idxResidenceElement = aResidenceSchedule.length;
+				idxResidenceElement = -1;
 				oResidenceElement = null;
-				for (j = 0; j < aResidenceSchedule.length; j++) {														//find the first overlapping residence record index
+				for (j = 0; j < aResidenceSchedule.length; j++) {														//find the arrival residence section
 					if (aResidenceSchedule[j].dt.equals(dCur)
 							&& aResidenceSchedule[j].daySection.index === idxDaySection) {
 						idxResidenceElement = j;
@@ -624,20 +626,22 @@ function buildResidenceSchedule(filterSpec, dateSpec, fieldSpec, callback) {
 					}
 					roomCur = new ResidentRoom(oBooking, sResidenceType);
 
-					if (idxResidenceElement < aResidenceSchedule.length) {													//find an existing element
-						oResidenceElement.rooms[oBooking.room.order] = roomCur;
+					if (idxResidenceElement < aResidenceSchedule.length) {
+						oResidenceElement.rooms[oBooking.room.order] = roomCur;       //assign the room residence
+
+						//Get the next day section element
 						idxResidenceElement++;
 						if (aResidenceSchedule[idxResidenceElement]) {
 							idxDaySection = aResidenceSchedule[idxResidenceElement].daySection.index;
 							oResidenceElement = aResidenceSchedule[idxResidenceElement];
 							dCur = oResidenceElement.dt;
 						}
-						else {
-							idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
-							if (idxDaySection === 0) {																		//change days, reset vars
-								dCur = dCur.add(1).days();
-							}
-						}
+						// else {
+						// 	idxDaySection = (idxDaySection === 3) ? 0 : idxDaySection + 1;
+						// 	if (idxDaySection === 0) {																		//change days, reset vars
+						// 		dCur = dCur.add(1).days();
+						// 	}
+						// }
 					}
 				}
 			}//for (var i = 0; i < aBookings.length
@@ -657,6 +661,7 @@ function buildEmptySchedule(aBookings) {
 	var aResidenceSchedule = [];
 	var dtFirstArrival;
 	var dtLastDepart = new Date(0);
+	var dtDepart;
 	var oResidence;
 	var aSections = [appConstants.NIGHT, appConstants.MORNING, appConstants.AFTERNOON, appConstants.EVENING];
 
@@ -667,8 +672,9 @@ function buildEmptySchedule(aBookings) {
 	else {
 		dtFirstArrival = new Date(aBookings[0].arrive);
 		aBookings.forEach(function (oBooking) {
-			if (oBooking.depart.isAfter(dtLastDepart)) {
-				dtLastDepart = oBooking.depart;
+			dtDepart = new Date(oBooking.depart);
+			if (dtDepart.isAfter(dtLastDepart)) {
+				dtLastDepart = dtDepart;
 			}
 		});
 		dtLastDepart = dtLastDepart.add(1).days();

@@ -57,7 +57,7 @@ angular.module('rsl')
 							$scope.bookingMode = $scope.initialData.mode;
 							if ($scope.initialData.mode === 'new') {
 								$scope.bookMemberId = $scope.initialData.memberid;			//there will always be a memberid if we are launched from the booking schedule
-								$scope.dtArrive = new Date($scope.initialData.arrive);
+								$scope.dtArrive = moment($scope.initialData.arrive);		//user touched shedule day
 								$scope.guestRoomRequests = [];
 							}
 							else if ($scope.initialData.mode === 'change') {
@@ -65,7 +65,9 @@ angular.module('rsl')
 								$scope.whoCount = $scope.booking.whoCount;
 								$scope.bookMember = $scope.initialData.booking.member;
 								$scope.dtArrive = moment($scope.initialData.booking.arrive);
+								$scope.dtArriveTimeConfig = getTimeConfig($scope.dtArrive);
 								$scope.dtDepart = moment($scope.initialData.booking.depart);
+								$scope.dtDepartTimeConfig = getTimeConfig($scope.dtDepart);
 								$scope.note = $scope.initialData.booking.note;
 								$scope.bookMemberId = $scope.initialData.booking.member._id;			//there will always be a memberid if we are launched from the booking schedule
 								$scope.guestRoomRequests = $scope.initialData.booking.guestRoomRequests;
@@ -124,7 +126,7 @@ angular.module('rsl')
 								$scope.dtDepart = moment($scope.dtDepart);
 							}
 							if ($scope.dtDepart.isBefore($scope.dtArrive)) {
-								$scope.dtDepart = null;
+								$scope.dtDepart = $scope.dtArrive.clone().add(2,'day');
 							}
 						}
 						checkBooking();
@@ -245,7 +247,7 @@ angular.module('rsl')
 				}
 
 				function checkBooking() {
-					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || ($scope.whoCount === 0);
+					$scope.bookingIncomplete = !$scope.dtArrive || !$scope.dtDepart || $scope.dtDepart.isBefore($scope.dtArrive);
 					if ($scope.bookingMode === 'new' && $scope.dtArrive && $scope.dtDepart) {
 						bookingData.checkBookingOverlap($scope.selectedRoom._id, $scope.dtArrive, $scope.dtDepart)
 								.then(function (res) {
@@ -269,16 +271,6 @@ angular.module('rsl')
 					}
 				}
 
-				/*
-				 $scope.gridOptions = {
-				 data: 'bookings',
-				 columnDefs: [
-				 {field: 'member.llcname', displayName: 'member', width: 90},
-				 {field: 'room.displayName', displayName: 'Room', width: 80},
-				 {field: 'arrive', displayName: 'Arrive'}
-				 ]
-				 };
-				 */
 				function getBookings(oQuerySpec, oDateSpec, oSortSpec, oFieldSpec) {
 					$scope.selectedId = '';
 					bookingData.getBookings(oQuerySpec, oDateSpec, '{"arrive": -1}', oFieldSpec)
@@ -458,14 +450,43 @@ angular.module('rsl')
 					return dtReturn;
 				}
 
+				function getTimeConfig(dt) {
+					var oReturn;
+					if (!dt._isAMomentObject) {
+						dt = moment(dt);
+					}
+					if (dt.hours() < 6) {
+						oReturn = appConstants.NIGHT;
+					}
+					else if (dt.hours() < 12) {
+						oReturn = appConstants.MORNING;
+					}
+					else if (dt.hours() < 18) {
+						oReturn = appConstants.AFTERNOON;
+					}
+					else {
+						oReturn = appConstants.EVENING;
+					}
+					return oReturn;
+				}
+
 				$scope.bookRoom = function () {
+					if (!$scope.dtArrive || !$scope.dtDepart || $scope.dtDepart.isBefore($scope.dtArrive)) {
+						$rootScope.$emit('system-message', {
+							source: 'booking.js',
+							level: 'critical',
+							message: 'Arrive and depart dates are required and depart must be later than arrive',
+							autoHide: 3000
+						});
+						return;
+					}
 					if ($scope.bookingMode === 'new') {
 						$scope.booking = {};
 					}
 					$scope.booking.member = $scope.bookMember._id;
 					$scope.booking.room = $scope.selectedRoom._id;
-					$scope.booking.arrive = $scope.dtArrive;
-					$scope.booking.depart = $scope.dtDepart;
+					$scope.booking.arrive = $scope.dtArrive.format();
+					$scope.booking.depart = $scope.dtDepart.format();
 					$scope.booking.note = $scope.note;
 					$scope.booking.who = [];
 					$scope.booking.whoCount = 0;
@@ -482,8 +503,7 @@ angular.module('rsl')
 					bookingData.bookRoom($scope.bookingMode, $scope.booking)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-									getBookings();
-									$state.go('booking-schedule');
+									$state.go('booking-schedule', {forceRebuild: true});
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -595,9 +615,7 @@ angular.module('rsl')
 					bookingData.bookRoom('new', oGuestBooking)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-									//update selectedbooking
-									getBookings();
-									getResidenceSchedule(null, {from: $scope.dtmSchedStart.toISOString()});
+									$state.go('booking-schedule', {forceRebuild: true});
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
@@ -636,13 +654,11 @@ angular.module('rsl')
 					bookingData.deleteBooking(oBooking._id)
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
-									getBookings();
-									getResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
+									rebuildResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
 								}
-
 							});
 				};
 
@@ -700,7 +716,9 @@ angular.module('rsl')
 						var sElementId = '#dt-' + newValue;
 						$timeout(function () {
 							var eleDate = angular.element(eleContainer[0].querySelector(sElementId));
-							eleContainer.animate({scrollTop: eleDate.offset().top - scrollContainerTop}, "slow");
+							if (eleDate.offset()) {
+								eleContainer.animate({scrollTop: eleDate.offset().top - scrollContainerTop}, "slow");
+							}
 						},100);
 					}
 				});
