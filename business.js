@@ -2,6 +2,7 @@
  * Contains business logic functions for shell app
  */
 "use strict";
+var ObjectId = require('mongodb').ObjectID;
 var StatusResponse = require('./lib/statusResponse').StatusResponse;
 var utils = require('./lib/utils');
 var model = require('./models/model');
@@ -313,11 +314,28 @@ function updatePerson(sId, oUpdate, callback) {
 	model.updatePerson(sId, oUpdate, function (err, result) {
 		if (err) {
 			statusResponse = new StatusResponse('error', 'updatePerson', '', 'business', err);
+			callback(err, statusResponse);
 		}
 		else {
 			statusResponse = new StatusResponse('success', 'updatePerson', '', 'business', result);
+			var isUser = false;
+			for (var i = 0; i < oUpdate.permissions.length; i++) {
+				if (oUpdate.permissions[i] === 'login_app') {
+					isUser = true;
+					break;
+				}
+			}
+
+			if (isUser) {
+				createUserFromPerson(sId, function (statusResponse) {
+					callback(err, statusResponse);
+				})
+			}
+			else {
+				deleteUser(sId)
+				callback(err, statusResponse);
+			}
 		}
-		callback(err, statusResponse);
 	});
 }
 
@@ -342,6 +360,72 @@ function deletePerson(sId, callback) {
 		}
 		else {
 			statusResponse = new StatusResponse('success', 'deletePerson', '', 'business', result);
+		}
+		callback(err, statusResponse);
+	});
+}
+
+
+function createUserFromPerson(personId, callback) {
+	var statusResponse;
+	var oPerson;
+	model.getUser({personid: ObjectId(personId)}, function (err, oUser) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'getUser', '', 'business', err);
+			callback(err, statusResponse);
+		}
+		else {
+			if (!oUser) {
+				model.getPerson(personId, function (err, oPerson) {
+					if (err) {
+						statusResponse = new StatusResponse('error', 'getPerson', '', 'business', err);
+						callback(err, statusResponse);
+					}
+					else {
+						var salt = utils.generateSalt();
+						var oUser = {person: oPerson._id,
+							userid: oPerson.firstname,
+							passwordHash: utils.buildHash('gabboob',salt),
+							salt: salt};
+						model.insertUser(oUser, function (err, result) {
+							if (err) {
+								statusResponse = new StatusResponse('error', 'insertUser', '', 'business', err);
+							}
+							else {
+								statusResponse = new StatusResponse('success', 'insertUser', '', 'business', result);
+							}
+							callback(err, statusResponse);
+						});
+					}
+				});
+			}
+		}
+	});
+}
+
+function getUserById(sId, callback) {
+	var statusResponse;
+	var oQuery = {_id : ObjectId(sId)};
+	model.getUser(oQuery, function (err, aUsers) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'getUser', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'getUser', '', 'business', aUsers);
+		}
+
+		callback(err, statusResponse);
+	});
+}
+
+function deleteUser(sId, callback) {
+	var statusResponse;
+	model.deleteUser(sId, function (err, result) {
+		if (err) {
+			statusResponse = new StatusResponse('error', 'deleteUser', '', 'business', err);
+		}
+		else {
+			statusResponse = new StatusResponse('success', 'deleteUser', '', 'business', result);
 		}
 		callback(err, statusResponse);
 	});
@@ -999,6 +1083,9 @@ exports.resetPassword = resetPassword;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;
+exports.createUserFromPerson = createUserFromPerson;
+exports.getUserById = getUserById;
+exports.deleteUser = deleteUser;
 exports.listMembers = listMembers;
 exports.listRooms = listRooms;
 exports.bookRoom = bookRoom;

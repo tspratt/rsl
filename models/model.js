@@ -293,8 +293,23 @@ function getUser(oQuery, callback) {
 			});
 }
 
+function insertUser(oUser, callback) {
+	var User = mongoose.model('User');
+	var user = new User(oUser);
+	user.save(function (err, result) {
+		callback(err, result);
+	})
+
+}
+
 function updateUser(sId, oUpdate, callback) {
 	mongoose.model('User').update({_id : ObjectId(sId)}, oUpdate, {multi : false}, function (err, result) {
+		callback(err, result);
+	});
+}
+
+function deleteUser (sId, callback) {
+	mongoose.model('User').findOneAndRemove({_id : ObjectId(sId)}, function (err, result) {
 		callback(err, result);
 	});
 }
@@ -620,9 +635,10 @@ function setProperty(callback) {
 	}
 }
 
-
+exports.insertUser = insertUser;
 exports.getUser = getUser;
 exports.updateUser = updateUser;
+exports.deleteUser = deleteUser;
 exports.getPerson = getPerson;
 exports.filterPersonsByName = filterPersonsByName;
 exports.listPersons = listPersons;

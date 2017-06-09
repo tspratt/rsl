@@ -465,6 +465,64 @@ describe('Setup tests', function () {
 			}
 	);
 
+	describe.only('Test User methods (business)',
+			function () {
+				it('should create a user from a person', function (done) {
+					var personId = '565541adcdba9a58074181a3';
+					business.createUserFromPerson(personId,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.data.person.toString()).to.equal(personId);  //make sure our match string is in our result somewhere
+									prevValue = statusResponse.data._id.toString();
+								});
+							}
+					);
+				});
+
+				it('should get a user by id', function (done) {
+					var userId = prevValue;
+					business.getUserById(userId,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.be.an.object;
+									expect(statusResponse.data._id.toString()).to.equal(userId);  //make sure our match string is in our result somewhere
+								});
+							}
+					);
+				});
+
+				it('should delete a user by id', function (done) {
+					var userId = prevValue;
+					business.deleteUser(userId,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+								});
+							}
+					);
+				});
+
+				it('should fail to find a user by id', function (done) {
+					var userId = prevValue;
+					business.getUserById(userId,
+							function (err, statusResponse) {
+								asyncAssertionCheck(done, function () {
+									expect(err).to.not.exist;
+									expect(statusResponse.data).to.exist;
+									expect(statusResponse.data).to.equal('');
+								});
+							}
+					);
+				});
+			}
+	);
+
 	describe('Test Roles and Permissions',
 			function () {
 				it('should return a list of all Roles', function (done) {
@@ -509,7 +567,7 @@ describe('Setup tests', function () {
 				});
 			}
 	);
-	describe.only('Test Booking endpoints (business)',
+	describe('Test Booking endpoints (business)',
 			function () {
 				var aBookings;
 				var booking;
