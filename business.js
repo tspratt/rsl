@@ -1055,6 +1055,7 @@ var EmptyRoomsArray = function () {
 var ResidentRoom = function (oBooking, residenceType) {
 	this.bookingid = oBooking._id;
 	this.room = (oBooking) ? oBooking.room : null;
+	this.room.defaultmember = oBooking.room.defaultmember;
 	this.residenceType = residenceType || '';
 	this.isGuest = (oBooking.guestPersonId) ? (oBooking.guestPersonId.length > 0) : false;
 	var iTmp = 0;

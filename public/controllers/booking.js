@@ -23,7 +23,7 @@ angular.module('rsl')
 				$scope.departDisabled = true;
 				$scope.dtArriveTimeConfig = appConstants.AFTERNOON;
 				$scope.dtDepartTimeConfig = appConstants.EVENING;
-				$scope.dtmSchedStart = moment().subtract(20, 'days');
+				$scope.dtmSchedStart = moment().subtract(3, 'days');
 				$scope.appConstants = appConstants;
 				$scope.arriveDaySection = 'Afternoon';
 				$scope.departDaySection = 'Evening';
@@ -655,6 +655,7 @@ angular.module('rsl')
 							.then(function (res) {
 								if (res.status >= 200 && res.status < 300) {
 									rebuildResidenceSchedule(null, {from: moment().subtract(1, 'days').toISOString()});
+									getBookings();
 								}
 								else {
 									console.log('HTTP Error: ' + res.statusText);
