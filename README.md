@@ -1,22 +1,22 @@
-#Richards-Spratt Lakemont LLC
-##A mobile-first application for family members to notify each other of their plans to be at the lake
+# Richards-Spratt Lakemont LLC
+## A mobile-first application for family members to notify each other of their plans to be at the lake
 And additional functionality as identified!
 
-##Under Development!
+## Under Development!
 
-###Primary Technologies:
-####Back-end:
+### Primary Technologies:
+#### Back-end:
 * Mongo Db
 * Mongoose ORM
 * DateJs
 
-####Front-end:
+#### Front-end:
 * Angular JS
 * Bootstrap
 * Angular-Bootstrap component directives
 
 
-###Demo (best viewed on a phone)
+### Demo (best viewed on a phone)
 The demo login is a real user identity, but cannot save a booking or otherwise update any data.
 
 * The "Book" view allows input of arrival, departure and "who". Note the "Quick Book" feature
@@ -29,7 +29,7 @@ Password: demo
 
 [Demo App: https://rslllc.herokuapp.com/](https://rslllc.herokuapp.com/)
 
-##Proposed Enhancements (no particular order):
+## Proposed Enhancements (no particular order):
 * Fix overlap issues. Overlaps corrupt the Bookings display (bug)
 * Clean up "back key" behavior. Tab should close when user hits "back" from login screen. Currently attempts to load local history.
 * Implement "Remember Me" functionality
