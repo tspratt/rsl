@@ -72,7 +72,7 @@ app.use(function(err, req, res, next) {
 });
 */
 
-var uri = process.env.MONGOLAB_URI;
+var uri = process.env.ATLAS_URI;
 logger.info('uri:', uri);
 model.initDb(uri, function(err, db){
   if (err) {
