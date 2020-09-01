@@ -21,7 +21,7 @@ function asyncAssertionCheck(done, f) {
 describe('Setup tests', function () {
 	this.timeout(0);
 	before(function (done) {
-		var uri = process.env.MONGOLAB_URI;
+		var uri = process.env.ATLAS_URI;
 		model.initDb(uri,
 				function (err) {
 					if (err) {

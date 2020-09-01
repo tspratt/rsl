@@ -22,7 +22,7 @@
   font-weight: normal;
   width: 1em;
   height: 1em;
-  margin: 0 .25em 0 2em;
+  margin: 0 0.25em 0 2em;
 }
 
 .form-horizontal .form-group {
@@ -32,12 +32,12 @@
   margin-bottom: 0.2em;
 }
 
-label[class*="col-"] {
+label[class*=col-] {
   padding-right: 0.3em;
   padding-left: 0.3em;
 }
 
-div[class*="col-"] {
+div[class*=col-] {
   padding-right: 0.3em;
   padding-left: 0.3em;
 }
@@ -98,8 +98,8 @@ button.main-action {
 
 button.chat-msg {
   float: left;
-  height: 3.0em;
-  width: 6.0em;
+  height: 3em;
+  width: 6em;
   font-size: 1.2em;
 }
 
@@ -117,7 +117,7 @@ button:focus {
   color: #245580;
 }
 
-div.login-input > input[type="text"], input[type="password"] {
+div.login-input > input[type=text], input[type=password] {
   display: block;
 }
 
@@ -138,7 +138,7 @@ button:hover:enabled {
 
 button:active {
   color: rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
+  opacity: 0.6;
 }
 
 a {
@@ -147,19 +147,19 @@ a {
 
 hr.header {
   width: 100%;
-  opacity: 0.60;
+  opacity: 0.6;
   border: 2px solid darkslateblue;
   margin-top: 0.2em;
   margin-bottom: 0.2em;
 }
 hr.header.guest {
-  opacity: 1.0;
+  opacity: 1;
   border: 2px solid yellow;
 }
 
 hr.paginator {
   color: rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
+  opacity: 0.6;
   border: 3px solid darkslateblue;
   margin-top: 0.2em;
   margin-bottom: 0.2em;
@@ -188,8 +188,8 @@ hr.paginator {
 
 button.log-in {
   float: left;
-  height: 3.0em;
-  min-width: 4.0em;
+  height: 3em;
+  min-width: 4em;
   font-size: 1.2em;
   margin: 0.2em;
 }
@@ -233,13 +233,13 @@ div.login-input > input[type=checkbox] {
 
 .horiz-menu li.selected {
   color: rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
+  opacity: 0.6;
   text-decoration: underline;
 }
 
 .horiz-menu li:hover {
   color: rgba(0, 0, 0, 0.75);
-  opacity: 0.60;
+  opacity: 0.6;
 }
 
 .description {
@@ -380,7 +380,7 @@ button.paginator:focus {
 
 div.module-menu {
   overflow: hidden;
-  height: 3.0em;
+  height: 3em;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -408,7 +408,7 @@ div.menu-buttons {
 button.module-menu-item {
   height: 100%;
   width: 50px;
-  min-width: 4.0em;
+  min-width: 4em;
   font-size: 1.2em;
   margin: 0;
 }
@@ -435,7 +435,7 @@ div.quick-book-bar {
 
 button.quick-book {
   font-size: 16px;
-  height: 3.0em;
+  height: 3em;
   margin: 0;
   padding: 0.3em;
 }
@@ -466,7 +466,7 @@ button.plus {
 
 @keyframes blinker {
   50% {
-    opacity: 0.0;
+    opacity: 0;
   }
 }
 #taNotes {
@@ -768,7 +768,7 @@ div.chat-font-set {
 }
 
 div.col-msg-info {
-  flex-basis: 5.0em;
+  flex-basis: 5em;
   text-align: right;
   font-weight: normal;
 }
@@ -874,8 +874,7 @@ form.chat-msg-footer {
   flex-grow: 1;
 }
 
-.settings-section
-.datepicker.booking {
+.settings-section .datepicker.booking {
   margin-top: 5px;
   height: 290px;
   width: 100%;
@@ -914,7 +913,6 @@ div[rn-stepper] i {
   font-weight: bold;
   font-size: 25px;
 }
-
 div[rn-stepper] i[disabled] {
   opacity: 0.3;
 }

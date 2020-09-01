@@ -71,3 +71,7 @@ Password: demo
   * Perhaps a static background image of the color bands
   * Or a static collection of data elements that produce it.
   * Or separate the background from the dynamic overlay data
+  
+Deployment:
+ run: grunt build_local to use local services');
+ run: grunt build_dev to use heroku services');
